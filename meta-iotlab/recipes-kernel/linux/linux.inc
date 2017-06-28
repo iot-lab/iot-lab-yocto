@@ -6,8 +6,8 @@ require recipes-kernel/linux/linux-yocto.inc
 
 # Override SRC_URI in a copy of this recipe to point at a different source
 # tree if you do not want to build from Linus' tree.
-SRC_URI = "git://github.com/iot-lab/linux_hkb.git;user=git;protocol=ssh;branch=3.19.0"
-#SRC_URI = "git:///path/linux_hkb;protocol=file;branch=3.19.0"
+SRC_URI = "git://github.com/iot-lab/iot-lab-linux.git;user=git;protocol=ssh;branch=3.19.0"
+#SRC_URI = "git:///path/iot-lab-linux;protocol=file;branch=3.19.0"
 
 LINUX_VERSION ?= "3.19.0"
 
