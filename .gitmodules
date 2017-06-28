@@ -1,0 +1,12 @@
+[submodule "poky"]
+	path = poky
+	url = git://git.yoctoproject.org/poky
+	branch = krogoth
+[submodule "meta-openembedded"]
+	path = meta-openembedded
+	url = git://git.openembedded.org/meta-openembedded
+	branch = krogoth
+[submodule "meta-java"]
+	path = meta-java
+	url = git://git.yoctoproject.org/meta-java
+	branch = krogoth

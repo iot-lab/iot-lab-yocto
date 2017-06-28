@@ -1,0 +1,2 @@
+#! /bin/sh
+{ echo 'stop dc'; sleep 1; } | control_node_serial_interface

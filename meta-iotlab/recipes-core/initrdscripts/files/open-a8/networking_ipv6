@@ -1,0 +1,48 @@
+#!/bin/sh
+
+DESC="Open A8 IPv6 configuration"
+NAME=iotlab_ipv6_setup
+RUNNING=/var/run/${NAME}
+
+IPV6_CFG="/var/local/config/ipv6"
+
+
+if [ ! -f "${IPV6_CFG}" ]
+then
+    echo "${DESC}: No IPv6 config found in ${IPV6_CFG}" >&2
+    exit 0
+fi
+source ${IPV6_CFG}
+
+
+case "$1" in
+  start)
+    echo "Starting $DESC ... "
+    if [ -e $RUNNING ]; then
+            echo "$0 already configured"
+            exit 1
+    fi
+    touch $RUNNING
+    ip -6 addr add ${INET6_ADDR} dev eth0
+    ip -6 route add default via ${GATEWAY6_ADDR}
+    ;;
+  stop)
+    echo "Stopping $DESC ... "
+    ip -6 route del default via ${GATEWAY6_ADDR}
+    ip -6 addr del ${INET6_ADDR} dev eth0
+    rm -f $RUNNING
+    ;;
+  restart)
+    echo "Restarting $DESC ... "
+    $0 stop
+    sleep 5
+    $0 start
+    ;;
+  *)
+    echo "Usage: /etc/init.d/$0 {start|stop|restart}"
+    exit 1
+    ;;
+esac
+
+exit 0
+

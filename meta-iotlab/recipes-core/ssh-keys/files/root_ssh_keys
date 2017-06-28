@@ -1,0 +1,9 @@
+d root root 0755 /var/run/ssh/ none
+l root root 0644 /var/run/ssh/ssh_host_rsa_key /home/root/.ssh/id_rsa
+l root root 0644 /var/run/ssh/ssh_host_rsa_key.pub /home/root/.ssh/id_rsa.pub
+l root root 0644 /var/run/ssh/ssh_host_dsa_key /home/root/.ssh/id_dsa
+l root root 0644 /var/run/ssh/ssh_host_dsa_key.pub /home/root/.ssh/id_dsa.pub
+l root root 0644 /var/run/ssh/ssh_host_ecdsa_key /home/root/.ssh/id_ecdsa
+l root root 0644 /var/run/ssh/ssh_host_ecdsa_key.pub /home/root/.ssh/id_ecdsa.pub
+l root root 0644 /var/run/ssh/ssh_host_ed25519_key /home/root/.ssh/id_ed25519
+l root root 0644 /var/run/ssh/ssh_host_ed25519_key.pub /home/root/.ssh/id_ed25519.pub

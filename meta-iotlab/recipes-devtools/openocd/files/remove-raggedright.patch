@@ -1,0 +1,28 @@
+From 287f0ee8ea4f4b5e66bea0db62c6f169e5dd97bb Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Ga=C3=ABtan=20Harter?= <gaetan.harter@inria.fr>
+Date: Mon, 3 Apr 2017 16:40:40 +0200
+Subject: [PATCH] Remove raggedright, not supported on debian wheezy
+
+---
+ doc/openocd.texi | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/doc/openocd.texi b/doc/openocd.texi
+index 511bc6c..da3a109 100644
+--- a/doc/openocd.texi
++++ b/doc/openocd.texi
+@@ -8460,11 +8460,9 @@ Cyg_Thread::thread_list, Cyg_Scheduler_Base::current_thread.
+ @item ThreadX symbols
+ _tx_thread_current_ptr, _tx_thread_created_ptr, _tx_thread_created_count.
+ @item FreeRTOS symbols
+-@raggedright
+ pxCurrentTCB, pxReadyTasksLists, xDelayedTaskList1, xDelayedTaskList2,
+ pxDelayedTaskList, pxOverflowDelayedTaskList, xPendingReadyList,
+ uxCurrentNumberOfTasks, uxTopUsedPriority.
+-@end raggedright
+ @item linux symbols
+ init_task.
+ @item ChibiOS symbols
+--
+1.9.1
+

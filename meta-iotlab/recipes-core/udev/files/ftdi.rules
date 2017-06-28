@@ -1,0 +1,30 @@
+# Udev rules for iot-lab ftdi files
+
+# GATEWAY
+# Control Node TTY
+SUBSYSTEM=="tty", SUBSYSTEMS=="usb", ENV{ID_SERIAL}=="IoT-LAB_ControlNode",   ENV{ID_USB_INTERFACE_NUM}=="01",  SYMLINK+="ttyCN"
+# open nodes TTY
+SUBSYSTEM=="tty", SUBSYSTEMS=="usb", ENV{ID_SERIAL}=="IoT-LAB_M3",            ENV{ID_USB_INTERFACE_NUM}=="01",  SYMLINK+="ttyON_M3"
+SUBSYSTEM=="tty", SUBSYSTEMS=="usb", ENV{ID_SERIAL}=="IoT-LAB_A8",            ENV{ID_USB_INTERFACE_NUM}=="01",  SYMLINK+="ttyON_A8"
+# roomba serial port
+SUBSYSTEM=="tty", SUBSYSTEMS=="usb", ENV{ID_SERIAL}=="FTDI_TTL232R_FTFU46EX", ENV{ID_USB_INTERFACE_NUM}=="00",  SYMLINK+="ttyROOMBA"
+
+# Open A8 M3 node
+SUBSYSTEM=="tty", SUBSYSTEMS=="usb", ENV{ID_SERIAL}=="IoT-LAB_A8-M3",         ENV{ID_USB_INTERFACE_NUM}=="01",  SYMLINK+="ttyA8_M3"
+
+# Allow accessing jtag as dialout group
+# idProduct and idVendor got with 'udevadm -a -n /dev/bus/usb/001/00[34]'
+# https://wiki.archlinux.org/index.php/Udev#Accessing_firmware_programmers_and_USB_virtual_comm_devices
+SUBSYSTEM=="usb", ATTR{idProduct}=="6011", ATTR{idVendor}=="0403", MODE="0664", GROUP="dialout"
+SUBSYSTEM=="usb", ATTR{idProduct}=="6010", ATTR{idVendor}=="0403", MODE="0664", GROUP="dialout"
+
+# Fox Nodes
+SUBSYSTEM=="tty", SUBSYSTEMS=="usb", ENV{ID_SERIAL}=="HiKoB_HiKoB_FOX_JTAG",         ENV{ID_USB_INTERFACE_NUM}=="01",  SYMLINK+="ttyON_FOX"
+
+# Arduino leonardo
+SUBSYSTEM=="tty", SUBSYSTEMS=="usb", ENV{ID_SERIAL}=="Arduino_LLC_Arduino_Leonardo",  ATTRS{idProduct}=="8036", SYMLINK+="ttyON_LEONARDO"
+SUBSYSTEMS=="usb", ATTRS{idProduct}=="8036", ATTRS{idVendor}=="2341", MODE="0664", GROUP="dialout"
+# Rules for the programming interface of the Leonardo
+# when it reboots and waits for a new firmware to be uploaded)
+SUBSYSTEM=="tty", SUBSYSTEMS=="usb", ENV{ID_SERIAL}=="Arduino_LLC_Arduino_Leonardo",  ATTRS{idProduct}=="0036", SYMLINK+="ttyON_LEONARDO_PROG"
+SUBSYSTEMS=="usb", ATTRS{idProduct}=="0036", ATTRS{idVendor}=="2341", MODE="0664", GROUP="dialout"

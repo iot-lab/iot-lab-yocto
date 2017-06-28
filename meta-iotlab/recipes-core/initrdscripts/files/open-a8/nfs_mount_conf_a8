@@ -1,0 +1,50 @@
+#!/bin/sh
+
+
+DESC="A8 node nfs mount conf and A8 directory"
+NAME=nfs_mount_a8
+RUNNING=/var/run/${NAME}
+
+SERVER_IP='nfsserver'
+IP_ADDR=$(ip addr show dev eth0 | sed -n '/inet/ s/ *inet \([\.0-9]*\).*/\1/p')
+
+# configuration
+BASE_PATH="/iotlab/images/${IP_ADDR}"
+MOUNT_OPTIONS="rw,relatime,vers=3,rsize=131072,wsize=131072,namlen=255,hard,nolock,proto=tcp,timeo=600,retrans=2,mountvers=3"
+#MOUNT_OPTIONS="mountaddr=${SERVER_IP},rw,relatime,vers=3,rsize=131072,wsize=131072,namlen=255,hard,nolock,proto=tcp,timeo=600,retrans=2,sec=sys,mountvers=3,mountproto=tcp,local_lock=all"
+
+
+case "$1" in
+  start)
+    echo "Starting $DESC ... "
+    if [ -e $RUNNING ]; then
+            echo "$0 already mounted"
+            exit 1
+    fi
+
+    mount -n -t nfs -o "$MOUNT_OPTIONS" "$SERVER_IP":${BASE_PATH}/conf /var/local/config/
+    mount -n -t nfs -o "$MOUNT_OPTIONS" "$SERVER_IP":${BASE_PATH}/A8   /home/root/A8
+
+    hostname  $(cat /etc/hostname)
+    ;;
+  stop)
+    echo "Stopping $DESC ... "
+    umount /var/local/config/
+    umount /home/root/A8
+
+    rm -f $RUNNING
+    ;;
+  restart)
+    echo -n "Restarting $DESC ... "
+    $0 stop
+    sleep 5
+    $0 start
+    ;;
+  *)
+    echo "Usage: /etc/init.d/$0 {start|stop|restart}"
+    exit 1
+    ;;
+esac
+
+exit 0
+

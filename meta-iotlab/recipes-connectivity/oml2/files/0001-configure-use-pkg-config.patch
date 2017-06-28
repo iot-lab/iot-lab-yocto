@@ -1,0 +1,28 @@
+From b6c751330553835e0966c835a463efeae7e5cbf4 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Ga=C3=ABtan=20Harter?= <gaetan.harter@inria.fr>
+Date: Tue, 9 May 2017 17:01:47 +0200
+Subject: [PATCH] configure: use pkg-config
+
+---
+ configure.ac | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/configure.ac b/configure.ac
+index 7fc1243..d879ca8 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -110,7 +110,10 @@ AC_SEARCH_LIBS([xmlParseFile], [xml2], [
+ 		AS_IF([test "$LIBS" != "$oldLIBS"], [AC_SUBST([XML2_LIBS], $ac_res)])
+ 
+ 		AS_IF([test x$cross_compiling = xno], [
+-			AC_PATH_PROG([HAVE_XML2CFG], [xml2-config])
++			# Try using 'pkg-config' if available, else check xml2-config
++			PKG_CHECK_MODULES([LIBXML], [libxml-2.0],
++				[HAVE_XML2CFG="pkg-config libxml-2.0"],
++				[AC_PATH_PROG([HAVE_XML2CFG], [xml2-config])])
+ 			AS_IF([test "x$HAVE_XML2CFG" != "x" ],
+ 				[
+ 				xxCFLAGS=`$HAVE_XML2CFG --cflags`
+-- 
+1.9.1
+

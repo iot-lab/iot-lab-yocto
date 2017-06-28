@@ -1,0 +1,13 @@
+diff --git a/src/Makefile.am b/src/Makefile.am
+index c78e81c..3aca8a4 100644
+--- a/src/Makefile.am
++++ b/src/Makefile.am
+@@ -55,7 +55,7 @@ endif
+ libopenocd_la_CPPFLAGS += $(AM_CPPFLAGS) $(CPPFLAGS)
+ 
+ # the library search path.
+-libopenocd_la_LDFLAGS = $(all_libraries)
++libopenocd_la_LDFLAGS = -static $(all_libraries)
+ 
+ if IS_MINGW
+ MINGWLDADD = -lws2_32
