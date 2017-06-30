@@ -8,6 +8,8 @@ SRC_URI += "file://hosts"
 SRC_URI += "file://hostname"
 SRC_URI += "file://sysctl.conf"
 SRC_URI += "file://inputrc"
+SRC_URI += "file://bashrc"
+SRC_URI += "file://profile"
 
 do_install () {
   # create local conf directory
@@ -25,9 +27,13 @@ do_install () {
   ln -s ${localstatedir}/local/config/hostname   ${D}${sysconfdir}/hostname
 
   install -d                                     ${D}${sysconfdir}/iotlab-config/
+  install -m 0755 ${S}/bashrc                    ${D}${sysconfdir}/iotlab-config/bashrc
+  install -m 0755 ${S}/profile                   ${D}${sysconfdir}/iotlab-config/profile
   install -m 0600 ${S}/inputrc                   ${D}${sysconfdir}/iotlab-config/inputrc
 }
 
 pkg_postinst_${PN} () {
-  install -m 0600 $D${sysconfdir}/iotlab-config/inputrc             $D${ROOT_HOME}/.inputrc
+  install -m 0600 $D${sysconfdir}/iotlab-config/bashrc             $D${ROOT_HOME}/.bashrc
+  install -m 0600 $D${sysconfdir}/iotlab-config/profile            $D${ROOT_HOME}/.profile
+  install -m 0600 $D${sysconfdir}/iotlab-config/inputrc            $D${ROOT_HOME}/.inputrc
 }
