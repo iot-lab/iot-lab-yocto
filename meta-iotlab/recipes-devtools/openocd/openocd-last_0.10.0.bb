@@ -29,8 +29,8 @@ S = "${WORKDIR}/git"
 
 PACKAGES = "${PN}-dbg ${PN}"
 
-FILES_${PN}-dbg += "/usr/local/bin/.debug"
-FILES_${PN}     += "/usr/local"
+FILES_${PN}-dbg += "/opt/openocd-0.10.0/.debug"
+FILES_${PN}     += "/opt/openocd-0.10.0"
 
 # inherit autotools
 # Don't use out of tree build
@@ -38,11 +38,6 @@ inherit autotools-brokensep
 
 EXTRA_OECONF = ""
 EXTRA_OECONF += " --disable-werror "
-
-# FTDI for m3 nodes old 'ft2232'
-EXTRA_OECONF += " --enable-legacy-ft2232_libftdi --disable-ftdi2232 --disable-ftd2xx "
-# Newer ftdi interface too
-EXTRA_OECONF += " --enable-ftdi "
 
 # samr21
 EXTRA_OECONF += " --enable-cmsis-dap --enable-hidapi-libusb "
@@ -56,7 +51,7 @@ PARAMS_BUILD += " --disable-internal-jimtcl "
 
 PARAMS_CROSS  = " --build=${BUILD_SYS} --host=${HOST_SYS} --target=${TARGET_SYS} "
 PARAMS_CROSS += " --libdir=${STAGING_DIR_TARGET}/lib "
-PARAMS_INST   = " --prefix=/usr/local "
+PARAMS_INST   = " --prefix=/opt/openocd-0.10.0 "
 
 ## --enable-ipv6
 ## --libdir=${STAGING_DIR_TARGET}/lib
@@ -78,7 +73,7 @@ do_configure() {
     # So nosubmodule
     ./bootstrap nosubmodule
     ## oe_runconf does *not* work and must not be used here
-    ./configure ${PARAMS_CROSS} ${PARAMS_BUILD} ${EXTRA_OECONF}
+    ./configure ${PARAMS_INST} ${PARAMS_CROSS} ${PARAMS_BUILD} ${EXTRA_OECONF}
     #oe_runconf ./configure ${PARAMS_CROSS} ${PARAMS_BUILD} ${EXTRA_OECONF}
 }
 
