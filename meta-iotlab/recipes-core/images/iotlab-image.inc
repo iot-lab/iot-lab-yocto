@@ -56,7 +56,10 @@ IMAGE_INSTALL +="               \
         python-setuptools       \
         python-pip              \
         python3                 \
+        python3-pyserial        \
         python3-dev             \
+        python3-misc            \
+        python3-modules         \
         python3-pip             \
         python3-setuptools      \
         vim                     \
