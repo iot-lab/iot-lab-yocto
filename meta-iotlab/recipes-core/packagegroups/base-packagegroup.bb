@@ -8,6 +8,7 @@ RDEPENDS_${PN} += " \
     initrdscripts-settime \
     initrdscripts-volatile \
     openocd \
+    openocd-last \
     admin-servers-ssh-keys \
     udev-extrarules \
     "
