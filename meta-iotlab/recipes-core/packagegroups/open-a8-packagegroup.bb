@@ -3,6 +3,21 @@ LICENSE = "GPLv2"
 
 inherit packagegroup
 
+# OpenWSN python package depedencies
+RDEPENDS_${PN} += " \
+    python-scons \
+    python-bottle \
+    python-pydispatcher \
+    python-yappi \
+    python-pyzmq \
+    python-netifaces \
+    python-cbor \
+    python-hkdf \
+    python-pycryptodome \
+    python-numpy \
+    python-intelhex \
+    "
+
 RDEPENDS_${PN} += " \
     base-packagegroup \
     base-config \
@@ -13,9 +28,6 @@ RDEPENDS_${PN} += " \
     initrdscripts-flashidle \
     initrdscripts-serial \
     root-ssh-keys-open-a8 \
-    python-scons \
-    python-bottle \
-    python-pydispatcher \
     mosquitto \
     mosquitto-rsmb \
     nodejs \
