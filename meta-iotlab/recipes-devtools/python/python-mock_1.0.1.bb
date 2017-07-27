@@ -1,6 +1,6 @@
 DESCRIPTION = "A Python Mocking and Patching Library for Testing"
 SECTION = "devel/python"
-LICENSE = ""
+LICENSE = "Apache-2.0"
 LIC_FILES_CHKSUM = "file://LICENSE.txt;md5=80e5ba73891255687dff3bee2b4cbb16"
 
 SRCNAME = "mock"
@@ -11,3 +11,11 @@ SRC_URI[sha256sum] = "b839dd2d9c117c701430c149956918a423a9863b48b09c90e30a6013e7
 
 S = "${WORKDIR}/${SRCNAME}-${PV}"
 inherit setuptools
+
+RDEPENDS_${PN} += " \
+    python-prettytable \
+    python-cmd2 \
+    python-pyparsing \
+    python-mccabe \
+    python-pep8 \
+    python-pyflakes"
