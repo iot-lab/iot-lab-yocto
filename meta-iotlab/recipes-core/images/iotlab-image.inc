@@ -112,6 +112,7 @@ IMAGE_INSTALL += "              \
 IMAGE_INSTALL += "              \
         bash                    \
         bind-utils              \
+        oml2-dev                \
         \
         \
         \
