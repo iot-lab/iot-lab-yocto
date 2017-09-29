@@ -55,6 +55,7 @@ IMAGE_INSTALL +="               \
         python-modules          \
         python-setuptools       \
         python-pip              \
+        python-magic            \
         python3                 \
         python3-pyserial        \
         python3-dev             \
@@ -112,6 +113,7 @@ IMAGE_INSTALL += "              \
 IMAGE_INSTALL += "              \
         bash                    \
         bind-utils              \
+        oml2-dev                \
         \
         \
         \
