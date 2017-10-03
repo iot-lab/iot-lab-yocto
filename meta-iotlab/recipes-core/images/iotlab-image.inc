@@ -29,7 +29,7 @@ re_add_rw_to_rootfs() {
 # do it after inheriting core-image
 ROOTFS_POSTPROCESS_COMMAND += "re_add_rw_to_rootfs; "
 
-ROOTFS_RO_UNNEEDED = "base-passwd shadow ${VIRTUAL-RUNTIME_update-alternatives} ${ROOTFS_BOOTSTRAP_INSTALL}"
+ROOTFS_RO_UNNEEDED = "${VIRTUAL-RUNTIME_update-alternatives} ${ROOTFS_BOOTSTRAP_INSTALL}"
 
 DISTRO_FEATURES += "nfs ipv6"
 
