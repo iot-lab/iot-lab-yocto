@@ -8,6 +8,7 @@ RDEPENDS_${PN} += " \
     base-config \
     flash-scripts-gateway \
     gateway-code \
+    cc2538-bsl \
     ftdi-utils \
     initrdscripts-mountgw \
     root-sshd-ssh-keys-gw \
