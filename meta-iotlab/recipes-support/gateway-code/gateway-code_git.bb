@@ -27,7 +27,7 @@ RDEPENDS_${PN} += "python-testfixtures"
 
 PV = "git-src${SRCDATE}-r${SRCPV}"
 
-SRC_URI  = "git://github.com/iot-lab/iot-lab-gateway.git;user=git;protocol=ssh;branch=master"
+SRC_URI  = "git://github.com/iot-lab/iot-lab-gateway.git;user=git;protocol=ssh;branch=release"
 SRC_URI += "file://start_dc_on"
 SRC_URI += "file://stop_dc_on"
 
