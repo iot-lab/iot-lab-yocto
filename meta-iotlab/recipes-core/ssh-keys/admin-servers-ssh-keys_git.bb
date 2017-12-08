@@ -4,6 +4,9 @@ LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/CECILL-2.0;md5=574109ac4bdff61f
 
 S = "${WORKDIR}"
 
+PR = "r1"
+PV = "git-src${SRCDATE}-r${SRCPV}"
+
 # files can be overwritten
 SRC_URI += "git://github.com/iot-lab/iot-lab-dev.git;user=git;protocol=ssh;branch=master"
 SRCREV = "${AUTOREV}"

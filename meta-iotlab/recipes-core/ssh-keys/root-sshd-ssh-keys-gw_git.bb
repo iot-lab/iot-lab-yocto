@@ -11,6 +11,8 @@ RDEPENDS_${PN} += "coreutils"
 
 S = "${WORKDIR}"
 
+PV = "git-src${SRCDATE}-r${SRCPV}"
+
 SRC_URI = "git://github.com/iot-lab/iot-lab-dev.git;user=git;protocol=ssh;branch=master"
 SRCREV = "${AUTOREV}"
 
