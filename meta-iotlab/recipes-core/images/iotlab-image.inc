@@ -103,6 +103,7 @@ IMAGE_INSTALL += "              \
         htop                    \
         \
         gcov                    \
+        gcov-symlinks           \
         \
         \
         tcpdump                 \
