@@ -27,7 +27,7 @@ RDEPENDS_${PN} += " \
     initrdscripts-ipv6 \
     initrdscripts-flashidle \
     initrdscripts-serial \
-    root-ssh-keys-open-a8 \
+    sshd-keys-open-a8 \
     mosquitto \
     mosquitto-rsmb \
     nodejs \

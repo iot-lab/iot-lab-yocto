@@ -11,5 +11,5 @@ RDEPENDS_${PN} += " \
     cc2538-bsl \
     ftdi-utils \
     initrdscripts-mountgw \
-    root-sshd-ssh-keys-gw \
+    sshd-keys-gw \
     "
