@@ -116,6 +116,22 @@ IMAGE_INSTALL += "              \
         bash                    \
         bind-utils              \
         oml2-dev                \
+        jansson                 \
+        jansson-dev             \
+        c-ares                  \
+        c-ares-dev              \
+        libev                   \
+        libev-dev               \
+        libevent                \
+        libevent-dev            \
+        boost                   \
+        boost-dev               \
+        jemalloc                \
+        jemalloc-dev            \
+        cunit                   \
+        cunit-dev               \
+        openssl                 \
+        openssl-dev             \
         \
         \
         \

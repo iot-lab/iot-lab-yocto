@@ -16,6 +16,11 @@ RDEPENDS_${PN} += " \
     python-pycryptodome \
     python-numpy \
     "
+# nghttp2 package depedencies
+RDEPENDS_${PN} += " \
+    python-cython \
+    python3-cython \
+    "
 
 RDEPENDS_${PN} += " \
     base-packagegroup \
