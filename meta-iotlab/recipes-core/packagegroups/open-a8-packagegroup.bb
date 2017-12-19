@@ -17,6 +17,11 @@ RDEPENDS_${PN} += " \
     python-numpy \
     python-intelhex \
     "
+# nghttp2 package depedencies
+RDEPENDS_${PN} += " \
+    python-cython \
+    python3-cython \
+    "
 
 RDEPENDS_${PN} += " \
     base-packagegroup \
