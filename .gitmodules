@@ -10,3 +10,7 @@
 	path = meta-java
 	url = git://git.yoctoproject.org/meta-java
 	branch = krogoth
+[submodule "meta-raspberrypi"]
+	path = meta-raspberrypi
+	url = git://git.yoctoproject.org/meta-raspberrypi
+	branch = krogoth
