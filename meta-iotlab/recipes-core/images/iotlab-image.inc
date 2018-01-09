@@ -35,7 +35,6 @@ DISTRO_FEATURES += "nfs ipv6"
 
 IMAGE_INSTALL +="               \
         lsb                     \
-        u-boot-fw-utils         \
         tzdata                  \
         cronie                  \
         logrotate               \
