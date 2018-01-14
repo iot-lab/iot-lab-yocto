@@ -1,0 +1,4 @@
+SANITY_VERSION 1
+TMPDIR /data/yocto/iot-lab-yocto/build-rpi3/tmp
+SSTATE_DIR /data/yocto/iot-lab-yocto/build-rpi3/sstate-cache
+NATIVELSBSTRING CentOS-7.2.1511
