@@ -10,6 +10,7 @@ RDEPENDS_${PN} += " \
     gateway-code \
     cc2538-bsl \
     msp430-bsl \
+    edbg \
     ftdi-utils \
     initrdscripts-mountgw \
     sshd-keys-gw \
