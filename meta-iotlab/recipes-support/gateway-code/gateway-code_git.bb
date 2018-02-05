@@ -55,6 +55,12 @@ do_install_append () {
     install -d                       ${D}${bindir}
     install -m 0755 ${WORKDIR}/stop_dc_on  ${D}${bindir}/
     install -m 0755 ${WORKDIR}/start_dc_on ${D}${bindir}/
+
+    # create www-data home folder and .ssh folder
+    # used to access A8 open nodes
+    install         -o www-data -g www-data -d               ${D}${localstatedir}/www
+    install -m 0755 -o www-data -g www-data -d               ${D}${localstatedir}/www/.ssh
+
 }
 
 pkg_postinst_${PN} () {

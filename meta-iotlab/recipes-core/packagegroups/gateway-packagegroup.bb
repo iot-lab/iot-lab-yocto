@@ -12,5 +12,5 @@ RDEPENDS_${PN} += " \
     msp430-bsl \
     ftdi-utils \
     initrdscripts-mountgw \
-    root-sshd-ssh-keys-gw \
+    sshd-keys-gw \
     "
