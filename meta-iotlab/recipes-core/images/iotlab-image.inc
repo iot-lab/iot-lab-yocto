@@ -57,6 +57,7 @@ IMAGE_INSTALL +="               \
         python-setuptools       \
         python-pip              \
         python-magic            \
+        python-intelhex         \
         python3                 \
         python3-pyserial        \
         python3-dev             \
