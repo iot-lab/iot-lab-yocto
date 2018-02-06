@@ -15,7 +15,6 @@ RDEPENDS_${PN} += " \
     python-hkdf \
     python-pycryptodome \
     python-numpy \
-    python-intelhex \
     "
 
 RDEPENDS_${PN} += " \
