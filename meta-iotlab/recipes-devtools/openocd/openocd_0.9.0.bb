@@ -19,7 +19,7 @@ DEPENDS += "texinfo-native"
 # Use git version 0.9.0: issues when using source code
 SRCREV = "7b8b2f944322161334e21f30709504e4d42da18e"
 
-SRC_URI = "git://git.code.sf.net/p/openocd/code;protocol=git"
+SRC_URI = "git://github.com/ntfreak/openocd.git;protocol=https"
 SRC_URI += "file://openocd-link-static.patch"
 SRC_URI += "file://remove-raggedright.patch"
 

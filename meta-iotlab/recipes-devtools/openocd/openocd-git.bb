@@ -26,7 +26,7 @@ SRCREV = "${AUTOREV}"
 
 PV = "gitr${SRCPV}"
 
-SRC_URI = "git://git.code.sf.net/p/openocd/code;protocol=git \
+SRC_URI = "git://github.com/ntfreak/openocd.git;protocol=https \
            file://openocd-link-static.patch"
 
 S = "${WORKDIR}/git"
