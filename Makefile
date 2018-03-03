@@ -3,7 +3,41 @@
 #
 #
 
-BUILD_DIR = build
+TARGET ?= a8
+
+IMAGES = iotlab-image
+IMAGES += iotlab-image-gateway
+
+# Define variables specific to the given target
+ifeq ($(TARGET), a8)
+  BUILD_DIR = build
+  TARGET_ARCH = cortexa8hf-neon
+  TARGET_IMG = var-som-am35
+  KERNEL_IMG = uImage
+
+  # Use a mapping between image target of make with image name in yocto
+  iotlab-image = iotlab-image-open-a8
+  iotlab-image-gateway = iotlab-image-gateway
+
+  # A8 also has an autotest image
+  iotlab-image-autotest = iotlab-image-open-a8-autotest
+  IMAGES += iotlab-image-autotest
+else ifeq ($(TARGET), rpi3)
+  BUILD_DIR = build-rpi3
+  TARGET_ARCH = cortexa7hf-neon-vfpv4
+  TARGET_IMG = raspberrypi3
+  KERNEL_IMG = zImage
+
+  # Use a mapping between image target of make with image name in yocto
+  iotlab-image = iotlab-image-rpi3
+  iotlab-image-gateway = iotlab-image-gateway-rpi3
+else
+  $(error Unsupported target, '$(TARGET)')
+endif
+
+PKGS_DIR = $(BUILD_DIR)/tmp/deploy/ipk/$(TARGET_ARCH)
+IMGS_DIR = $(BUILD_DIR)/tmp/deploy/images/$(TARGET_IMG)
+IMGS_MTD_RW_DIR = $(IMGS_DIR)-mtd-rw
 
 .PHONY: init submodules $(BUILD_DIR)/conf/local.conf
 
@@ -16,100 +50,105 @@ $(BUILD_DIR)/conf/local.conf:
 submodules:
 	git submodule update --init
 
-
 # # # # # # # # # # # # # # # # # # # # #
 # Building images and packages targets  #
 # # # # # # # # # # # # # # # # # # # # #
 
-IMGS_DIR = build/tmp/deploy/images/var-som-am35
-IMGS_MTD_RW_DIR = $(IMGS_DIR)-mtd-rw
-PKGS_DIR = build/tmp/deploy/ipk/cortexa8hf-neon
+.PHONY: build-all build-img-% iotlab-image-%
 
-IMAGES  = iotlab-image-gateway
-IMAGES += iotlab-image-open-a8
-IMAGES += iotlab-image-open-a8-autotest
-
-.PHONY: build-all build-pkg-% build-pkg-%-native build-img-% clean-img-% iotlab-image-% clean-pkg-% build-uboot clean-uboot build-kernel clean-kernel build-kernel-mtd-rw clean-kernel-mtd-rw
+list-images: init
+	@for img in $(IMAGES); do echo $$img; done;
 
 build-all: $(IMAGES) build-uboot build-kernel-mtd-rw
 
 $(IMAGES): %: build-img-% clean-img-%
 
-build-pkg-%: init
+.PHONY: build-pkg-%
+build-pkg-%:
 	@# build package
 	time bash -c \
-                "source ./poky/oe-init-build-env build; bitbake -k $*"
+                "source ./poky/oe-init-build-env $(BUILD_DIR); bitbake -k $($*)"
 	@echo ""
 	@echo ""
-	@echo "$*" ipk package files should be found here:
-	ls $(PKGS_DIR)/$**
+	ackage files should be found here:
+	ls $(PKGS_DIR)
 
+.PHONY: build-pkg-%-native
 build-pkg-%-native: init
 	@# build native package
 	time bash -c \
-                "source ./poky/oe-init-build-env build; bitbake -k $*-native"
+                "source ./poky/oe-init-build-env $(BUILD_DIR); bitbake -k $($*)-native"
 
+.PHONY: clean-pkg-%
 clean-pkg-%: init
 	@# clean package
 	time bash -c \
-                "source ./poky/oe-init-build-env build; bitbake -c cleanall $*"
+                "source ./poky/oe-init-build-env $(BUILD_DIR); bitbake -c cleanall $($*)"
 
+.PHONY: build-uboot
 build-uboot: init
 	@# build u-Boot
 	time bash -c \
-                "source ./poky/oe-init-build-env build; bitbake -k virtual/bootloader"
+                "source ./poky/oe-init-build-env $(BUILD_DIR); bitbake -k virtual/bootloader"
 	@echo ""
 	@echo ""
 	@echo "$*" U-Boot files should be found here:
 	ls $(IMGS_DIR)/u-boot*
 	ls $(IMGS_DIR)/MLO*
 
+.PHONY: clean-uboot
 clean-uboot: init
 	@# clean u-boot
 	time bash -c \
-                "source ./poky/oe-init-build-env build; bitbake -c cleanall virtual/bootloader"
+                "source ./poky/oe-init-build-env $(BUILD_DIR); bitbake -c cleanall virtual/bootloader"
 
+.PHONY: build-kernel
 build-kernel: init
 	@# build kernel
 	time bash -c \
-                "source ./poky/oe-init-build-env build; bitbake -k virtual/kernel"
+                "source ./poky/oe-init-build-env $(BUILD_DIR); bitbake -k virtual/kernel"
 	@echo ""
 	@echo ""
 	@echo "$*" Kernel files should be found here:
-	ls $(IMGS_DIR)/uImage*
+	ls $(IMGS_DIR)/$(KERNEL_IMG)*
 
+.PHONY: clean-kernel
 clean-kernel: init
 	@# clean kernel
 	time bash -c \
-                "source ./poky/oe-init-build-env build; bitbake -c cleanall virtual/kernel"
+                "source ./poky/oe-init-build-env $(BUILD_DIR); bitbake -c cleanall virtual/kernel"
 
+.PHONY: build-kernel-mtd-rw
 build-kernel-mtd-rw: init
 	@# build mtd writeable Kernel
 	time bash -c \
-                "source ./poky/oe-init-build-env build; MACHINE=var-som-am35-mtd-rw bitbake -k virtual/kernel"
+                "source ./poky/oe-init-build-env $(BUILD_DIR); MACHINE=$(TARGET_IMG)-mtd-rw bitbake -k virtual/kernel"
 	@echo ""
 	@echo ""
 	@echo "$*" Kernel mtd writeable files should be found here:
-	ls $(IMGS_MTD_RW_DIR)/uImage*
+	ls $(IMGS_MTD_RW_DIR)/$(KERNEL_IMG)*
 
+.PHONY: clean-kernel-mtd-rw
 clean-kernel-mtd-rw: init
 	@# clean kernel mtd writeable package
 	time bash -c \
-                "source ./poky/oe-init-build-env build; MACHINE=var-som-am35-mtd-rw bitbake -c cleanall virtual/kernel"
+                "source ./poky/oe-init-build-env $(BUILD_DIR); MACHINE=$(TARGET_IMG)-mtd-rw bitbake -c cleanall virtual/kernel"
 
+.PHONY: build-img-%
 build-img-%: init
 	@# build image
 	time bash -c \
-		"source ./poky/oe-init-build-env build; bitbake -k $*"
+		"source ./poky/oe-init-build-env $(BUILD_DIR); bitbake -k $($*)"
 	@echo ""
 	@echo ""
 	@echo "$*" image files should be found here:
 	ls $(IMGS_DIR)/$**
 
+.PHONY: clean-img-%
 clean-img-%:
 	@# keep only the last one
 	@# don't match the symlink or the last build image
-	rm -f $(shell find $(IMGS_DIR)/ -name '$*-var-som-am35*' -type f  \
-		! -name $(shell readlink $(IMGS_DIR)/$*-var-som-am35.tar.gz) \
-		! -name $(shell readlink $(IMGS_DIR)/$*-var-som-am35.manifest) \
+	rm -f $(shell find $(IMGS_DIR)/ -name '$($*)-$(TARGET_IMG)*' -type f  \
+		! -name $(shell readlink $(IMGS_DIR)/$($*)-$(TARGET_IMG).tar.gz) \
+		! -name $(shell readlink $(IMGS_DIR)/$($*)-$(TARGET_IMG).manifest) \
                 )
