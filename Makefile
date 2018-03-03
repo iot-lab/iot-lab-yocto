@@ -8,6 +8,8 @@ TARGET ?= a8
 IMAGES = iotlab-image
 IMAGES += iotlab-image-gateway
 
+EXTRA_BUILDS =
+
 # Define variables specific to the given target
 ifeq ($(TARGET), a8)
   BUILD_DIR = build
@@ -22,6 +24,9 @@ ifeq ($(TARGET), a8)
   # A8 also has an autotest image
   iotlab-image-autotest = iotlab-image-open-a8-autotest
   IMAGES += iotlab-image-autotest
+
+  # We also build uboot and a mtd-rw version of the kernel for A8
+  EXTRA_BUILDS = build-uboot build-kernel-mtd-rw
 else ifeq ($(TARGET), rpi3)
   BUILD_DIR = build-rpi3
   TARGET_ARCH = cortexa7hf-neon-vfpv4
@@ -56,10 +61,10 @@ submodules:
 
 .PHONY: build-all build-img-% iotlab-image-%
 
-list-images: init
+list-images:
 	@for img in $(IMAGES); do echo $$img; done;
 
-build-all: $(IMAGES) build-uboot build-kernel-mtd-rw
+build-all: $(IMAGES) $(EXTRA_BUILDS)
 
 $(IMAGES): %: build-img-% clean-img-%
 
