@@ -24,7 +24,7 @@ To build images you can run:
 
     $ make build-all 
     # or one by one
-    $ make iotlab-image-open-a8
+    $ make iotlab-image
 
 > Do NOT attempt to build on an encrypted partition ecryptfs limits filename length to 150 characters.
 
