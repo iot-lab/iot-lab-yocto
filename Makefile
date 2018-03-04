@@ -80,23 +80,23 @@ $(IMAGES): %: build-img-% clean-img-%
 build-pkg-%:
 	@# build package
 	time bash -c \
-                "source ./poky/oe-init-build-env $(BUILD_DIR); bitbake -k $($*)"
+                "source ./poky/oe-init-build-env $(BUILD_DIR); bitbake -k $*"
 	@echo ""
 	@echo ""
-	ackage files should be found here:
-	ls $(PKGS_DIR)
+	@echo "$*" ipk package files should be found here:
+	@ls $(PKGS_DIR)/$**
 
 .PHONY: build-pkg-%-native
 build-pkg-%-native: init
 	@# build native package
 	time bash -c \
-                "source ./poky/oe-init-build-env $(BUILD_DIR); bitbake -k $($*)-native"
+                "source ./poky/oe-init-build-env $(BUILD_DIR); bitbake -k $*-native"
 
 .PHONY: clean-pkg-%
 clean-pkg-%: init
 	@# clean package
 	time bash -c \
-                "source ./poky/oe-init-build-env $(BUILD_DIR); bitbake -c cleanall $($*)"
+                "source ./poky/oe-init-build-env $(BUILD_DIR); bitbake -c cleanall $*"
 
 .PHONY: build-uboot
 build-uboot: init
@@ -106,8 +106,8 @@ build-uboot: init
 	@echo ""
 	@echo ""
 	@echo "$*" U-Boot files should be found here:
-	ls $(IMGS_DIR)/u-boot*
-	ls $(IMGS_DIR)/MLO*
+	@ls $(IMGS_DIR)/u-boot*
+	@ls $(IMGS_DIR)/MLO*
 
 .PHONY: clean-uboot
 clean-uboot: init
@@ -123,7 +123,7 @@ build-kernel: init
 	@echo ""
 	@echo ""
 	@echo "$*" Kernel files should be found here:
-	ls $(IMGS_DIR)/$(KERNEL_IMG)*
+	@ls $(IMGS_DIR)/$(KERNEL_IMG)*
 
 .PHONY: clean-kernel
 clean-kernel: init
@@ -139,7 +139,7 @@ build-kernel-mtd-rw: init
 	@echo ""
 	@echo ""
 	@echo "$*" Kernel mtd writeable files should be found here:
-	ls $(IMGS_MTD_RW_DIR)/$(KERNEL_IMG)*
+	@ls $(IMGS_MTD_RW_DIR)/$(KERNEL_IMG)*
 
 .PHONY: clean-kernel-mtd-rw
 clean-kernel-mtd-rw: init
@@ -155,7 +155,7 @@ build-img-%: init
 	@echo ""
 	@echo ""
 	@echo "$*" image files should be found here:
-	ls $(IMGS_DIR)/$**
+	@ls $(IMGS_DIR)/$**
 
 .PHONY: clean-img-%
 clean-img-%:
