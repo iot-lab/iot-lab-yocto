@@ -59,10 +59,18 @@ submodules:
 # Building images and packages targets  #
 # # # # # # # # # # # # # # # # # # # # #
 
-.PHONY: build-all build-img-% iotlab-image-%
+.PHONY: target-info build-all build-img-% iotlab-image-%
 
-list-images:
-	@for img in $(IMAGES); do echo $$img; done;
+target-info:
+	@echo Using target: $(TARGET)
+	@echo ""
+	@echo "Available image targets:"
+	@for img in $(IMAGES); do echo "  - $$img"; done;
+	@if [ ! -z "$(EXTRA_BUILDS)" ]; \
+	then \
+	echo "\nOther build targets:"; \
+	for target in $(EXTRA_BUILDS); do echo "  - $$target"; done; \
+	fi
 
 build-all: $(IMAGES) $(EXTRA_BUILDS)
 
