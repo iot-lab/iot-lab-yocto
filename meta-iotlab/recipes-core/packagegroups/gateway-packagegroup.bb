@@ -9,6 +9,7 @@ RDEPENDS_${PN} += " \
     flash-scripts-gateway \
     gateway-code \
     cc2538-bsl \
+    python-pyocd \
     msp430-bsl \
     edbg \
     ftdi-utils \
