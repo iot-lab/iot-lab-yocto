@@ -155,7 +155,7 @@ build-img-%: init
 	@echo ""
 	@echo ""
 	@echo "$*" image files should be found here:
-	@ls $(IMGS_DIR)/$**
+	@ls $(IMGS_DIR)/$($*)*
 
 .PHONY: clean-img-%
 clean-img-%:
