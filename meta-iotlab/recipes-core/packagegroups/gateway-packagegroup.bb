@@ -8,10 +8,10 @@ RDEPENDS_${PN} += " \
     base-config \
     flash-scripts-gateway \
     gateway-code \
-    cc2538-bsl \
+    python-cc2538-bsl \
     python-pyocd \
-    msp430-bsl \
     edbg \
+    python-msp430-bsl \
     ftdi-utils \
     initrdscripts-mountgw \
     sshd-keys-gw \
