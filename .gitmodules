@@ -14,3 +14,6 @@
 	path = meta-raspberrypi
 	url = git://git.yoctoproject.org/meta-raspberrypi
 	branch = krogoth
+[submodule "meta-maker"]
+	path = meta-maker
+	url = https://git.yoctoproject.org/git/meta-maker
