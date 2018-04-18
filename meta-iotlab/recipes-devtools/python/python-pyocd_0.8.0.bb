@@ -1,5 +1,5 @@
 DESCRIPTION = "pyOCD, an Open Source python 2.7 based library for programming and debugging ARM Cortex-M microcontrollers using CMSIS-DAP. " 
-LICENSE = "Apache"
+LICENSE = "Apache-2.0"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=715f3348ed8b9bf4fac3b08133384a4d"
 
 HOMEPAGE = "https://github.com/mbedmicro/pyOCD"
