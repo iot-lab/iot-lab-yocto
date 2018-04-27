@@ -37,6 +37,7 @@ RDEPENDS_${PN} += " \
     nodejs \
     openjdk-8 \
     openjre-8 \
+    openvpn \
     python-paho-mqtt \
     wpantund \
     "
