@@ -2,14 +2,14 @@ DESCRIPTION = "A script that communicates with the boot loader of the TI CC2538 
 HOMEPAGE = "https://github.com/JelmerT/cc2538-bsl"
 SECTION = "console"
 LICENSE = "BSD"
-LIC_FILES_CHKSUM = "file://cc2538-bsl.py;md5=d1bcb7441b237a8b695b4d6624dcf7b2"
+LIC_FILES_CHKSUM = "file://cc2538-bsl.py;md5=5f327903d00b5eb1c61740f7050e873f"
 
 PR = "r1"
 
 PV = "git-src${SRCDATE}-r${SRCPV}"
 
 SRC_URI = "git://github.com/JelmerT/cc2538-bsl.git;protocol=https"
-SRCREV = "${AUTOREV}"
+SRCREV = "331ef5176baf1aa172f03df383a749ed878d073e"
 
 S = "${WORKDIR}/git"
 
