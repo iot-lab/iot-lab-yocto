@@ -5,4 +5,5 @@ include iotlab-image.inc
 IMAGE_INSTALL += " \
     kernel-modules \
     gateway-packagegroup \
+    mjpg-streamer \
 	"

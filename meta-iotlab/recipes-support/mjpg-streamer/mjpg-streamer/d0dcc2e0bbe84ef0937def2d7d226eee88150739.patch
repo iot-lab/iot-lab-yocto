@@ -1,0 +1,284 @@
+From d0dcc2e0bbe84ef0937def2d7d226eee88150739 Mon Sep 17 00:00:00 2001
+From: buergi <patbuergi@gmx.de>
+Date: Sat, 23 Sep 2017 17:01:11 +0200
+Subject: [PATCH] Use linux/uvcvideo.h instead of own uvcvideo.h, remove
+ deprecated UVCIOC_CTRL_ADD
+
+Upstream-status: Submitted [https://github.com/jacksonliam/mjpg-streamer/pull/92]
+
+---
+ .../plugins/input_uvc/dynctrl.c                    |  56 -----------
+ .../plugins/input_uvc/dynctrl.h                    |  55 +---------
+ .../plugins/input_uvc/uvcvideo.h                   | 111 ---------------------
+ 3 files changed, 1 insertion(+), 221 deletions(-)
+ delete mode 100644 mjpg-streamer-experimental/plugins/input_uvc/uvcvideo.h
+
+diff --git a/mjpg-streamer-experimental/plugins/input_uvc/dynctrl.c b/mjpg-streamer-experimental/plugins/input_uvc/dynctrl.c
+index 7830b32..b424f37 100644
+--- a/mjpg-streamer-experimental/plugins/input_uvc/dynctrl.c
++++ b/mjpg-streamer-experimental/plugins/input_uvc/dynctrl.c
+@@ -36,52 +36,6 @@
+ #define LENGTH_OF_XU_CTR (6)
+ #define LENGTH_OF_XU_MAP (10)
+ 
+-static struct uvc_xu_control_info xu_ctrls[] = {
+-    {
+-        .entity   = UVC_GUID_LOGITECH_MOTOR_CONTROL,
+-        .selector = XU_MOTORCONTROL_PANTILT_RELATIVE,
+-        .index    = 0,
+-        .size     = 4,
+-        .flags    = UVC_CONTROL_SET_CUR | UVC_CONTROL_GET_MIN | UVC_CONTROL_GET_MAX | UVC_CONTROL_GET_DEF | UVC_CONTROL_AUTO_UPDATE
+-    },
+-    {
+-        .entity   = UVC_GUID_LOGITECH_MOTOR_CONTROL,
+-        .selector = XU_MOTORCONTROL_PANTILT_RESET,
+-        .index    = 1,
+-        .size     = 1,
+-        .flags    = UVC_CONTROL_SET_CUR | UVC_CONTROL_GET_MIN | UVC_CONTROL_GET_MAX | UVC_CONTROL_GET_RES | UVC_CONTROL_GET_DEF | UVC_CONTROL_AUTO_UPDATE
+-    },
+-    {
+-        .entity   = UVC_GUID_LOGITECH_MOTOR_CONTROL,
+-        .selector = XU_MOTORCONTROL_FOCUS,
+-        .index    = 2,
+-        .size     = 6,
+-        .flags    = UVC_CONTROL_SET_CUR | UVC_CONTROL_GET_CUR | UVC_CONTROL_GET_MIN | UVC_CONTROL_GET_MAX | UVC_CONTROL_GET_DEF | UVC_CONTROL_AUTO_UPDATE
+-    },
+-    {
+-        .entity   = UVC_GUID_LOGITECH_VIDEO_PIPE,
+-        .selector = XU_COLOR_PROCESSING_DISABLE,
+-        .index    = 4,
+-        .size     = 1,
+-        .flags    = UVC_CONTROL_SET_CUR | UVC_CONTROL_GET_CUR | UVC_CONTROL_GET_MIN | UVC_CONTROL_GET_MAX | UVC_CONTROL_GET_RES | UVC_CONTROL_GET_DEF | UVC_CONTROL_AUTO_UPDATE
+-    },
+-    {
+-        .entity   = UVC_GUID_LOGITECH_VIDEO_PIPE,
+-        .selector = XU_RAW_DATA_BITS_PER_PIXEL,
+-        .index    = 7,
+-        .size     = 1,
+-        .flags    = UVC_CONTROL_SET_CUR | UVC_CONTROL_GET_CUR | UVC_CONTROL_GET_MIN | UVC_CONTROL_GET_MAX | UVC_CONTROL_GET_RES | UVC_CONTROL_GET_DEF | UVC_CONTROL_AUTO_UPDATE
+-    },
+-    {
+-        .entity   = UVC_GUID_LOGITECH_USER_HW_CONTROL,
+-        .selector = XU_HW_CONTROL_LED1,
+-        .index    = 0,
+-        .size     = 3,
+-        .flags    = UVC_CONTROL_SET_CUR | UVC_CONTROL_GET_CUR | UVC_CONTROL_GET_MIN | UVC_CONTROL_GET_MAX | UVC_CONTROL_GET_RES | UVC_CONTROL_GET_DEF | UVC_CONTROL_AUTO_UPDATE
+-    },
+-
+-};
+-
+ /* mapping for Pan/Tilt/Focus */
+ static struct uvc_xu_control_mapping xu_mappings[] = {
+     {
+@@ -191,16 +145,6 @@ int initDynCtrls(int fd)
+ {
+     int i = 0;
+     int err = 0;
+-    /* try to add all controls listed above */
+-    for(i = 0; i < LENGTH_OF_XU_CTR; i++) {
+-        if((err = xioctl(fd, UVCIOC_CTRL_ADD, &xu_ctrls[i])) < 0) {
+-            if(errno == EEXIST)
+-                fprintf(stderr,"Control exists\n");
+-            else if (errno != 0)
+-                fprintf(stderr, "UVCIOC_CTRL_ADD - Error at %s: %s (%d)\n", xu_mappings[i].name, strerror(errno), errno);
+-        }
+-    }
+-
+     /* after adding the controls, add the mapping now */
+     for(i = 0; i < LENGTH_OF_XU_MAP; i++) {
+         if((err = xioctl(fd, UVCIOC_CTRL_MAP, &xu_mappings[i])) < 0) {
+diff --git a/mjpg-streamer-experimental/plugins/input_uvc/dynctrl.h b/mjpg-streamer-experimental/plugins/input_uvc/dynctrl.h
+index 6aa0bad..74a213d 100644
+--- a/mjpg-streamer-experimental/plugins/input_uvc/dynctrl.h
++++ b/mjpg-streamer-experimental/plugins/input_uvc/dynctrl.h
+@@ -23,18 +23,12 @@
+ #define V4L2_DYNA_CTRLS_H
+ 
+ #include <linux/videodev2.h>
++#include <linux/uvcvideo.h>
+ #include "v4l2uvc.h"
+ /*
+  * Dynamic controls
+  */
+ 
+-#define UVC_CTRL_DATA_TYPE_RAW      0
+-#define UVC_CTRL_DATA_TYPE_SIGNED   1
+-#define UVC_CTRL_DATA_TYPE_UNSIGNED 2
+-#define UVC_CTRL_DATA_TYPE_BOOLEAN  3
+-#define UVC_CTRL_DATA_TYPE_ENUM     4
+-#define UVC_CTRL_DATA_TYPE_BITMASK  5
+-
+ #define V4L2_CID_BASE_EXTCTR                0x0A046D01
+ #define V4L2_CID_BASE_LOGITECH              V4L2_CID_BASE_EXTCTR
+ //#define V4L2_CID_PAN_RELATIVE_LOGITECH        V4L2_CID_BASE_LOGITECH
+@@ -60,53 +54,6 @@
+ #define XU_COLOR_PROCESSING_DISABLE     5
+ #define XU_RAW_DATA_BITS_PER_PIXEL      8
+ 
+-#define UVC_CONTROL_SET_CUR (1 << 0)
+-#define UVC_CONTROL_GET_CUR (1 << 1)
+-#define UVC_CONTROL_GET_MIN (1 << 2)
+-#define UVC_CONTROL_GET_MAX (1 << 3)
+-#define UVC_CONTROL_GET_RES (1 << 4)
+-#define UVC_CONTROL_GET_DEF (1 << 5)
+-/* Control should be saved at suspend and restored at resume. */
+-#define UVC_CONTROL_RESTORE (1 << 6)
+-/* Control can be updated by the camera. */
+-#define UVC_CONTROL_AUTO_UPDATE (1 << 7)
+-
+-#define UVC_CONTROL_GET_RANGE   (UVC_CONTROL_GET_CUR | UVC_CONTROL_GET_MIN | \
+-                                 UVC_CONTROL_GET_MAX | UVC_CONTROL_GET_RES | \
+-                                 UVC_CONTROL_GET_DEF)
+-
+-struct uvc_xu_control_info {
+-    __u8 entity[16];
+-    __u8 index;
+-    __u8 selector;
+-    __u16 size;
+-    __u32 flags;
+-};
+-
+-struct uvc_xu_control_mapping {
+-    __u32 id;
+-    __u8 name[32];
+-    __u8 entity[16];
+-    __u8 selector;
+-
+-    __u8 size;
+-    __u8 offset;
+-    enum v4l2_ctrl_type v4l2_type;
+-    __u32 data_type;
+-};
+-
+-struct uvc_xu_control {
+-    __u8 unit;
+-    __u8 selector;
+-    __u16 size;
+-    __u8 *data;
+-};
+-
+-#define UVCIOC_CTRL_ADD     _IOW('U', 1, struct uvc_xu_control_info)
+-#define UVCIOC_CTRL_MAP     _IOWR('U', 2, struct uvc_xu_control_mapping)
+-#define UVCIOC_CTRL_GET     _IOWR('U', 3, struct uvc_xu_control)
+-#define UVCIOC_CTRL_SET     _IOW('U', 4, struct uvc_xu_control)
+-
+ int initDynCtrls(int fd);
+ 
+ #endif
+diff --git a/mjpg-streamer-experimental/plugins/input_uvc/uvcvideo.h b/mjpg-streamer-experimental/plugins/input_uvc/uvcvideo.h
+deleted file mode 100644
+index b2135f2..0000000
+--- a/mjpg-streamer-experimental/plugins/input_uvc/uvcvideo.h
++++ /dev/null
+@@ -1,111 +0,0 @@
+-/*******************************************************************************
+-# Linux-UVC streaming input-plugin for MJPG-streamer                           #
+-#                                                                              #
+-# This package work with the Logitech UVC based webcams with the mjpeg feature #
+-#                                                                              #
+-# Copyright (C) 2005 2006 Laurent Pinchart &&  Michel Xhaard                   #
+-#                    2007 Lucas van Staden                                     #
+-#                    2007 Tom Stöveken                                         #
+-#                                                                              #
+-# This program is free software; you can redistribute it and/or modify         #
+-# it under the terms of the GNU General Public License as published by         #
+-# the Free Software Foundation; either version 2 of the License, or            #
+-# (at your option) any later version.                                          #
+-#                                                                              #
+-# This program is distributed in the hope that it will be useful,              #
+-# but WITHOUT ANY WARRANTY; without even the implied warranty of               #
+-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                #
+-# GNU General Public License for more details.                                 #
+-#                                                                              #
+-# You should have received a copy of the GNU General Public License            #
+-# along with this program; if not, write to the Free Software                  #
+-# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA    #
+-#                                                                              #
+-*******************************************************************************/
+-#ifndef _USB_VIDEO_H_
+-#define _USB_VIDEO_H_
+-
+-#include <linux/kernel.h>
+-#include <linux/types.h>          /* for videodev2.h */
+-#include <linux/videodev2.h>
+-
+-#ifdef USE_LIBV4L2
+-#include <libv4l2.h>
+-#define IOCTL_VIDEO(fd, req, value) v4l2_ioctl(fd, req, value)
+-#define OPEN_VIDEO(fd, flags) v4l2_open(fd, flags)
+-#define CLOSE_VIDEO(fd) v4l2_close(fd)
+-#else
+-#define IOCTL_VIDEO(fd, req, value) ioctl(fd, req, value)
+-#define OPEN_VIDEO(fd, flags) open(fd, flags)
+-#define CLOSE_VIDEO(fd) close(fd)
+-#endif
+-
+-/* Compatibility */
+-#include "uvc_compat.h"
+-
+-/*
+- * Private V4L2 control identifiers.
+- */
+-
+-/*
+- * Dynamic controls
+- */
+-/* Data types for UVC control data */
+-enum uvc_control_data_type {
+-    UVC_CTRL_DATA_TYPE_RAW = 0,
+-    UVC_CTRL_DATA_TYPE_SIGNED,
+-    UVC_CTRL_DATA_TYPE_UNSIGNED,
+-    UVC_CTRL_DATA_TYPE_BOOLEAN,
+-    UVC_CTRL_DATA_TYPE_ENUM,
+-    UVC_CTRL_DATA_TYPE_BITMASK,
+-};
+-
+-#define UVC_CONTROL_SET_CUR (1 << 0)
+-#define UVC_CONTROL_GET_CUR (1 << 1)
+-#define UVC_CONTROL_GET_MIN (1 << 2)
+-#define UVC_CONTROL_GET_MAX (1 << 3)
+-#define UVC_CONTROL_GET_RES (1 << 4)
+-#define UVC_CONTROL_GET_DEF (1 << 5)
+-/* Control should be saved at suspend and restored at resume. */
+-#define UVC_CONTROL_RESTORE (1 << 6)
+-
+-#define UVC_CONTROL_GET_RANGE   (UVC_CONTROL_GET_CUR | UVC_CONTROL_GET_MIN | \
+-                                 UVC_CONTROL_GET_MAX | UVC_CONTROL_GET_RES | \
+-                                 UVC_CONTROL_GET_DEF)
+-
+-struct uvc_xu_control_info {
+-    __u8 entity[16];
+-    __u8 index;
+-    __u8 selector;
+-    __u16 size;
+-    __u32 flags;
+-};
+-
+-struct uvc_xu_control_mapping {
+-    __u32 id;
+-    __u8 name[32];
+-    __u8 entity[16];
+-    __u8 selector;
+-
+-    __u8 size;
+-    __u8 offset;
+-    enum v4l2_ctrl_type v4l2_type;
+-    enum uvc_control_data_type data_type;
+-};
+-
+-struct uvc_xu_control {
+-    __u8 unit;
+-    __u8 selector;
+-    __u16 size;
+-    __u8 __user *data;
+-};
+-
+-#define UVCIOC_CTRL_ADD     _IOW  ('U', 1, struct uvc_xu_control_info)
+-#define UVCIOC_CTRL_MAP     _IOWR ('U', 2, struct uvc_xu_control_mapping)
+-#define UVCIOC_CTRL_GET     _IOWR ('U', 3, struct uvc_xu_control)
+-#define UVCIOC_CTRL_SET     _IOW  ('U', 4, struct uvc_xu_control)
+-
+-
+-
+-#endif
+-
