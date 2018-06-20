@@ -9,6 +9,7 @@ PR = "r1"
 DEPENDS = ""
 DEPENDS += "libftdi"
 DEPENDS += "libusb1"
+DEPENDS += "libjaylink"
 DEPENDS += "jimtcl"
 DEPENDS += "hidapi"
 DEPENDS += "texinfo-native"
@@ -42,6 +43,9 @@ EXTRA_OECONF += " --disable-werror "
 # samr21
 EXTRA_OECONF += " --enable-cmsis-dap --enable-hidapi-libusb "
 EXTRA_OECONF += " --enable-maintainer-mode "
+
+# nrf52dk
+EXTRA_OECONF += " --enable-jlink "
 
 # disable libjaylink (no submodule)
 EXTRA_OECONF += " --disable-internal-libjaylink "
