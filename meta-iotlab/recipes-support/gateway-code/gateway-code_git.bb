@@ -24,6 +24,8 @@ RDEPENDS_${PN} += "python-mock python-pep8"
 RDEPENDS_${PN} += "python-pylint"
 RDEPENDS_${PN} += "python-tox (>= 1.8.0)"
 RDEPENDS_${PN} += "python-testfixtures"
+RDEPENDS_${PN} += "python-pytest"
+RDEPENDS_${PN} += "python-pytest-cov"
 
 PV = "git-src${SRCDATE}-r${SRCPV}"
 
