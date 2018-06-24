@@ -13,6 +13,12 @@ SRC_URI[sha256sum] = "8ea01fc4fcc8e1b1e305252b4bc80a1528019ab99fd3b88666c9dc38d7
 
 RDEPENDS_${PN} = "python-py python-contextlib"
 
+RDEPENDS_${PN}_class-target += " \
+    ${PYTHON_PN}-argparse \
+    ${PYTHON_PN}-compiler \
+    ${PYTHON_PN}-funcsigs \
+"
+
 S = "${WORKDIR}/${SRCNAME}-${PV}"
 
 inherit setuptools
