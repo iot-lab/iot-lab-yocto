@@ -10,13 +10,17 @@ PR = "r0"
 SRC_URI[md5sum] = "f773f6fd2e093f59a0939be028e570b3"
 SRC_URI[sha256sum] = "8ea01fc4fcc8e1b1e305252b4bc80a1528019ab99fd3b88666c9dc38d754406c"
 
-RDEPENDS_${PN} = "python-py python-contextlib"
-
 RDEPENDS_${PN}_class-target += " \
     ${PYTHON_PN}-argparse \
+    ${PYTHON_PN}-atomicwrites \
+    ${PYTHON_PN}-attrs \
     ${PYTHON_PN}-compiler \
+    ${PYTHON_PN}-contextlib \
     ${PYTHON_PN}-funcsigs \
+    ${PYTHON_PN}-more-itertools \
     ${PYTHON_PN}-pluggy \
+    ${PYTHON_PN}-py \
+    ${PYTHON_PN}-six \
 "
 
 inherit pypi setuptools
