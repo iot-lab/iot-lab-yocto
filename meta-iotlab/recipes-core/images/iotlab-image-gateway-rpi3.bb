@@ -8,4 +8,5 @@ IMAGE_INSTALL += " \
     mjpg-streamer \
     hub-ctrl \
     sudo \
+    rtl-sdr \
 	"
