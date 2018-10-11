@@ -33,6 +33,16 @@ do_install() {
     oe_runmake install DESTDIR=${D}
 }
 
+pkg_postinst_${PN} () {
+  # Add www-data to video group
+  if test "x$D" != "x"; then
+    OPT="--root $D"   # Installing into a sysroot
+  else
+    OPT=""
+  fi
+  usermod $OPT -a -G video www-data
+}
+
 FILES_${PN} += "${libdir}/*.so"
 
 # And make it rpi specific due to depending on rpi binaries
