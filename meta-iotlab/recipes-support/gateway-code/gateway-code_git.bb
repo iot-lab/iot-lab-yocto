@@ -49,16 +49,12 @@ inherit update-rc.d
 INITSCRIPT_NAME = "gateway-server-daemon"
 INITSCRIPT_PARAMS = "start 80 2 3 4 5 . stop 20 0 1 6 ."
 FILES_${PN} += "${sysconfdir}/init.d/gateway-server-daemon"
-FILES_${PN} += "${sysconfdir}/init.d/mjpg-streamer-daemon"
-FILES_${PN} += "${sysconfdir}/init.d/rtl-tcp-daemon"
 do_install_append () {
     install -d                               ${D}${sysconfdir}/udev/rules.d/
     install -m 0644 ${S}/bin/rules.d/*.rules ${D}${sysconfdir}/udev/rules.d/
 
     install -d                                                 ${D}${sysconfdir}/init.d/
     install -m 0755 ${S}/bin/init_script/gateway-server-daemon ${D}${sysconfdir}/init.d/gateway-server-daemon
-    install -m 0755 ${S}/bin/init_script/mjpg-streamer-daemon ${D}${sysconfdir}/init.d/mjpg-streamer-daemon
-    install -m 0755 ${S}/bin/init_script/rtl-tcp-daemon ${D}${sysconfdir}/init.d/rtl-tcp-daemon
 
     install -d                       ${D}${bindir}
     install -m 0755 ${WORKDIR}/stop_dc_on  ${D}${bindir}/
