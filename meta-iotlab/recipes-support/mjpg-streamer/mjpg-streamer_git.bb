@@ -12,7 +12,7 @@ SRC_URI = "git://github.com/jacksonliam/mjpg-streamer.git;protocol=https \
 
 PATCHTOOL = "git"
 
-DEPENDS = "libgphoto2 v4l-utils libsdl"
+DEPENDS = "libgphoto2 v4l-utils libsdl udev"
 
 # Add support for raspicam on rpi platforms
 DEPENDS_append_rpi = " ${@bb.utils.contains("MACHINE_FEATURES", "vc4graphics", "", "userland", d)}"
@@ -29,8 +29,15 @@ EXTRA_OECMAKE = "-DENABLE_HTTP_MANAGEMENT=ON"
 
 EXTRA_OECMAKE_append_rpi = " ${@bb.utils.contains("MACHINE_FEATURES", "vc4graphics", "-DHAS_RASPI=OFF", "-DHAS_RASPI=ON", d)}"
 
+SRC_URI += " \
+    file://vchiq-udev-rule \
+"
+
 do_install() {
     oe_runmake install DESTDIR=${D}
+
+    install -d                                 ${D}${sysconfdir}/udev/rules.d/
+    install -m 0644 ${WORKDIR}/vchiq-udev-rule ${D}${sysconfdir}/udev/rules.d/10-vchiq-permissions.rules
 }
 
 pkg_postinst_${PN} () {
