@@ -9,5 +9,6 @@ RDEPENDS_${PN} += " \
     initrdscripts-volatile \
     openocd \
     openocd-last \
+    openocd-upstream \
     udev-extrarules \
     "
