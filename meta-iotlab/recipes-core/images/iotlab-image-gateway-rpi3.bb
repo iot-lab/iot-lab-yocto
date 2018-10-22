@@ -10,4 +10,5 @@ IMAGE_INSTALL += " \
     uhubctl \
     sudo \
     rtl-sdr \
+    ykush \
 	"
