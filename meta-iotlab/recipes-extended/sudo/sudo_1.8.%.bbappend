@@ -3,5 +3,5 @@
 do_install_append () {
     echo "www-data ALL= NOPASSWD: /usr/bin/hub-ctrl" > ${D}${sysconfdir}/sudoers.d/www-data
     echo "www-data ALL= NOPASSWD: /usr/bin/uhubctl" >> ${D}${sysconfdir}/sudoers.d/www-data
-
+    echo "www-data ALL= NOPASSWD: /usr/bin/ykushcmd" >> ${D}${sysconfdir}/sudoers.d/www-data
 }
