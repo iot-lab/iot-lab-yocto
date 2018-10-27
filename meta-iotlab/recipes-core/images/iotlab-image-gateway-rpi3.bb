@@ -7,7 +7,6 @@ IMAGE_INSTALL += " \
     gateway-packagegroup \
     mjpg-streamer \
     hub-ctrl \
-    uhubctl \
     sudo \
     rtl-sdr \
     ykush \
