@@ -6,7 +6,6 @@ IMAGE_INSTALL += " \
     kernel-modules \
     gateway-packagegroup \
     mjpg-streamer \
-    hub-ctrl \
     sudo \
     rtl-sdr \
     ykush \
