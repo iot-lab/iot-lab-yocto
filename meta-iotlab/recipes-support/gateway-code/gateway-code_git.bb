@@ -27,6 +27,7 @@ RDEPENDS_${PN} += "python-testfixtures"
 RDEPENDS_${PN} += "python-pytest"
 RDEPENDS_${PN} += "python-pytest-cov"
 RDEPENDS_${PN} += "python-webtest"
+RDEPENDS_${PN} += "python-codecov"
 
 PV = "git-src${SRCDATE}-r${SRCPV}"
 
