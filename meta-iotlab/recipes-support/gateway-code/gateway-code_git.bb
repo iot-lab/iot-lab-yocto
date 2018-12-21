@@ -36,8 +36,8 @@ SRC_URI += "file://start_dc_on"
 SRC_URI += "file://stop_dc_on"
 
 S = "${WORKDIR}/git/"
-SRCREV = "${AUTOREV}"
-# SRCREV = "2.6.0"
+# SRCREV = "${AUTOREV}"
+SRCREV = "2.7.0"
 
 inherit setuptools
 FILES_${PN} += "${libdir}/*"
