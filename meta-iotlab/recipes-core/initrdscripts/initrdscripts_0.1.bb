@@ -97,4 +97,6 @@ do_install() {
 
 pkg_postinst_${PN}-mounta8 () {
   install -m 0755 -d $D${ROOT_HOME}/A8
+  # add shared symlink to A8 directory for other Linux nodes (eg. RPI3)
+  ln -s -r $D${ROOT_HOME}/A8 $D${ROOT_HOME}/shared
 }
