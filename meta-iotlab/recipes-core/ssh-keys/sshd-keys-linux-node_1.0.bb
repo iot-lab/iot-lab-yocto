@@ -6,7 +6,7 @@ S = "${WORKDIR}"
 SRC_URI = "file://sshd_volatile_keys"
 
 # Use systemd-tmpfiles to create volatiles files and dirs
-# root@node-a8-<id>:~# ls /run/ssh/ssh_host_* 
+# root@node-a8-<id>:~# ls /run/ssh/ssh_host_*
 # ssh_host_rsa_key          ssh_host_rsa_key.pub
 
 
