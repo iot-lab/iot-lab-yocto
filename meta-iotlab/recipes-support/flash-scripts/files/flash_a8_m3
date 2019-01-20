@@ -1,0 +1,10 @@
+#!/bin/bash
+
+if [ $# != 1 ]
+then
+    echo "Usage: $0 <firmware_path>" >&2
+    exit 1
+fi
+
+/usr/bin/iotlab_flash -firmware $1
+exit $?

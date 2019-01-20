@@ -1,0 +1,4 @@
+#!/bin/bash
+
+/usr/bin/iotlab_reset
+exit $?
