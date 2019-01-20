@@ -36,6 +36,10 @@ else ifeq ($(TARGET), rpi3)
   # Use a mapping between image target of make with image name in yocto
   iotlab-image = iotlab-image-rpi3
   iotlab-image-gateway = iotlab-image-gateway-rpi3
+
+  # RPI3 also has an autotest image
+  iotlab-image-autotest = iotlab-image-rpi3-autotest
+  IMAGES += iotlab-image-autotest
 else
   $(error Unsupported target, '$(TARGET)')
 endif
