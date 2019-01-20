@@ -3,6 +3,18 @@ LICENSE = "GPLv2"
 
 inherit packagegroup
 
+# gateway-code-standalone 
+RDEPENDS_${PN} += " \
+    base-packagegroup \
+    gateway-code \
+    sshd-keys-linux-node \
+    ftdi-utils-list \
+    initrdscripts-mounta8 \
+    initrdscripts-ipv6 \
+    initrdscripts-flashidle \
+    initrdscripts-serial \
+    "
+
 # OpenWSN python package depedencies
 RDEPENDS_${PN} += " \
     python-scons \
@@ -23,15 +35,6 @@ RDEPENDS_${PN} += " \
     "
 
 RDEPENDS_${PN} += " \
-    base-packagegroup \
-    base-config \
-    flash-scripts-open-a8 \
-    ftdi-utils-list \
-    initrdscripts-mounta8 \
-    initrdscripts-ipv6 \
-    initrdscripts-flashidle \
-    initrdscripts-serial \
-    sshd-keys-open-a8 \
     mosquitto \
     mosquitto-rsmb \
     nodejs \
