@@ -5,10 +5,14 @@ inherit packagegroup
 
 RDEPENDS_${PN} += " \
     base-files \
+    base-config \
     initrdscripts-settime \
     initrdscripts-volatile \
     openocd \
     openocd-last \
     openocd-upstream \
-    udev-extrarules \
+    python-cc2538-bsl \
+    python-pyocd \
+    edbg \
+    python-msp430-bsl \
     "
