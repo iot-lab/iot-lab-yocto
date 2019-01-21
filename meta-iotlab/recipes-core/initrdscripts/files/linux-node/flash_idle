@@ -12,5 +12,5 @@ PATH=/bin:/usr/bin:/usr/local/bin
 NAME=flash_idle
 
 # flash open node with an idle firmware
-/usr/bin/iotlab_flash -autotest
+/usr/bin/iotlab_flash -idle
 exit $?
