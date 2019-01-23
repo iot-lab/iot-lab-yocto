@@ -2,4 +2,5 @@
 
 build/
 build-rpi3/
+build-rpi2/
 .idea/

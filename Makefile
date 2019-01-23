@@ -27,6 +27,15 @@ ifeq ($(TARGET), a8)
 
   # We also build uboot and a mtd-rw version of the kernel for A8
   EXTRA_BUILDS = build-uboot build-kernel-mtd-rw
+else ifeq ($(TARGET), rpi2)
+  BUILD_DIR = build-rpi2
+  TARGET_ARCH = cortexa7hf-neon-vfpv4
+  TARGET_IMG = raspberrypi2
+  KERNEL_IMG = zImage
+
+  # Use a mapping between image target of make with image name in yocto
+  iotlab-image = iotlab-image-rpi2
+  iotlab-image-gateway = iotlab-image-gateway-rpi2
 else ifeq ($(TARGET), rpi3)
   BUILD_DIR = build-rpi3
   TARGET_ARCH = cortexa7hf-neon-vfpv4
