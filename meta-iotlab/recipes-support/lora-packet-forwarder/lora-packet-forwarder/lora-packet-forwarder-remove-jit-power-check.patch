@@ -1,0 +1,24 @@
+diff --git a/lora_pkt_fwd/src/lora_pkt_fwd.c b/lora_pkt_fwd/src/lora_pkt_fwd.c
+index 1c54d57..1e74d7f 100644
+--- a/lora_pkt_fwd/src/lora_pkt_fwd.c
++++ b/lora_pkt_fwd/src/lora_pkt_fwd.c
+@@ -2360,19 +2360,6 @@ void thread_down(void) {
+                 jit_result = JIT_ERROR_TX_FREQ;
+                 MSG("ERROR: Packet REJECTED, unsupported frequency - %u (min:%u,max:%u)\n", txpkt.freq_hz, tx_freq_min[txpkt.rf_chain], tx_freq_max[txpkt.rf_chain]);
+             }
+-            if (jit_result == JIT_ERROR_OK) {
+-                for (i=0; i<txlut.size; i++) {
+-                    if (txlut.lut[i].rf_power == txpkt.rf_power) {
+-                        /* this RF power is supported, we can continue */
+-                        break;
+-                    }
+-                }
+-                if (i == txlut.size) {
+-                    /* this RF power is not supported */
+-                    jit_result = JIT_ERROR_TX_POWER;
+-                    MSG("ERROR: Packet REJECTED, unsupported RF power for TX - %d\n", txpkt.rf_power);
+-                }
+-            }
+ 
+             /* insert packet to be sent into JIT queue */
+             if (jit_result == JIT_ERROR_OK) {

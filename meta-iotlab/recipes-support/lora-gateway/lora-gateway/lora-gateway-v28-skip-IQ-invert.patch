@@ -1,0 +1,24 @@
+diff --git a/libloragw/src/loragw_fpga.c b/libloragw/src/loragw_fpga.c
+index fa83a2a..7e667e3 100644
+--- a/libloragw/src/loragw_fpga.c
++++ b/libloragw/src/loragw_fpga.c
+@@ -144,11 +144,14 @@ int lgw_fpga_configure(uint32_t tx_notch_freq) {
+         return LGW_REG_ERROR;
+     }
+ 
+-    /* Required for Semtech AP2 reference design */
+-    x  = lgw_fpga_reg_w(LGW_FPGA_CTRL_INVERT_IQ, 1);
+-    if (x != LGW_REG_SUCCESS) {
+-        DEBUG_MSG("ERROR: Failed to configure FPGA polarity\n");
+-        return LGW_REG_ERROR;
++
++    if (read_fpga_version() > 28) {
++        /* Required for Semtech AP2 reference design and AP1.5 > v28 */
++        x  = lgw_fpga_reg_w(LGW_FPGA_CTRL_INVERT_IQ, 1);
++        if (x != LGW_REG_SUCCESS) {
++            DEBUG_MSG("ERROR: Failed to configure FPGA polarity\n");
++            return LGW_REG_ERROR;
++        }
+     }
+ 
+     /* Configure TX notch filter */
