@@ -1,0 +1,57 @@
+diff --git a/libloragw/inc/loragw_spi.h b/libloragw/inc/loragw_spi.h
+index fef1f48..74ef251 100644
+--- a/libloragw/inc/loragw_spi.h
++++ b/libloragw/inc/loragw_spi.h
+@@ -46,6 +46,14 @@ Maintainer: Sylvain Miermont
+ /* -------------------------------------------------------------------------- */
+ /* --- PUBLIC FUNCTIONS PROTOTYPES ------------------------------------------ */
+ 
++/* set SPI device */
++/**
++@brief LoRa concentrator SPI path configuration for spidev
++@param path pointer to spidev device
++@return LGW_SPI_SUCCESS if path is valid, LGW_SPI_ERROR if not
++*/
++int lgw_spi_set_path(const char *path);
++
+ /**
+ @brief LoRa concentrator SPI setup (configure I/O and peripherals)
+ @param spi_target_ptr pointer on a generic pointer to SPI target (implementation dependant)
+diff --git a/libloragw/src/loragw_spi.native.c b/libloragw/src/loragw_spi.native.c
+index c01ed1c..3472133 100644
+--- a/libloragw/src/loragw_spi.native.c
++++ b/libloragw/src/loragw_spi.native.c
+@@ -56,10 +56,24 @@ Maintainer: Sylvain Miermont
+ #define SPI_SPEED       8000000
+ #define SPI_DEV_PATH    "/dev/spidev0.0"
+ //#define SPI_DEV_PATH    "/dev/spidev32766.0"
++char* spi_dev_path = SPI_DEV_PATH;
+ 
+ /* -------------------------------------------------------------------------- */
+ /* --- PUBLIC FUNCTIONS DEFINITION ------------------------------------------ */
+ 
++/* set SPI device */
++int lgw_spi_set_path(const char *path) {
++    if (path) {
++        spi_dev_path = path;
++        return LGW_SPI_SUCCESS;
++    }
++    else {
++        return LGW_SPI_ERROR;
++    }
++}
++
++
++
+ /* SPI initialization and configuration */
+ int lgw_spi_open(void **spi_target_ptr) {
+     int *spi_device = NULL;
+@@ -78,7 +92,7 @@ int lgw_spi_open(void **spi_target_ptr) {
+     }
+ 
+     /* open SPI device */
+-    dev = open(SPI_DEV_PATH, O_RDWR);
++    dev = open(spi_dev_path, O_RDWR);
+     if (dev < 0) {
+         DEBUG_PRINTF("ERROR: failed to open SPI device %s\n", SPI_DEV_PATH);
+         return LGW_SPI_ERROR;
