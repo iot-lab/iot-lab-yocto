@@ -7,6 +7,7 @@ TARGET ?= a8
 
 IMAGES = iotlab-image
 IMAGES += iotlab-image-gateway
+IMAGES += iotlab-image-autotest
 
 EXTRA_BUILDS =
 
@@ -20,10 +21,7 @@ ifeq ($(TARGET), a8)
   # Use a mapping between image target of make with image name in yocto
   iotlab-image = iotlab-image-open-a8
   iotlab-image-gateway = iotlab-image-gateway
-
-  # A8 also has an autotest image
   iotlab-image-autotest = iotlab-image-open-a8-autotest
-  IMAGES += iotlab-image-autotest
 
   # We also build uboot and a mtd-rw version of the kernel for A8
   EXTRA_BUILDS = build-uboot build-kernel-mtd-rw
@@ -36,10 +34,7 @@ else ifeq ($(TARGET), rpi3)
   # Use a mapping between image target of make with image name in yocto
   iotlab-image = iotlab-image-rpi3
   iotlab-image-gateway = iotlab-image-gateway-rpi3
-
-  # RPI3 also has an autotest image
   iotlab-image-autotest = iotlab-image-rpi3-autotest
-  IMAGES += iotlab-image-autotest
 else
   $(error Unsupported target, '$(TARGET)')
 endif
