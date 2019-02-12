@@ -50,7 +50,7 @@ FILES_${PN}-ipv6                 += "${sysconfdir}/init.d/networking_ipv6"
 FILES_${PN}-ipv6                 += "${sysconfdir}/profile.d/ipv6.sh"
 
 # don't start by default by update-rc.d
-RDEPENDS_${PN}-serial              += "socat"
+RDEPENDS_${PN}-serial              += "gateway-code"
 FILES_${PN}-serial                 = "${sysconfdir}/init.d/serial_redirection"
 
 # don't try to check elf files
