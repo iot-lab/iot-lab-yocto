@@ -6,26 +6,13 @@
 # Default-Start:
 # Default-Stop:
 # Short-Description: Start/stop serial_redirection
-#
 # Description: The serial_redirection init script will start/stop socat to
-#              redirect serial port to a tcp socket
-#              Then log (FATAL,ERROR,WARN,INFO and Notic) in
-#              /var/log/serial_redirection.log
+#              redirect serial port to a tcp socket on port 20000
 ### END INIT INFO
 
-# inspired from: https://raw.githubusercontent.com/asaif/socat-init/master/socat
-
 NAME=serial_redirection
-DAEMON=/usr/bin/socat
+DAEMON=/usr/bin/${NAME}
 PIDFILE=/var/run/${NAME}.pid
-
-SOCAT_DEFAULTS='-d -d -lf /var/log/serial_redirection.log'
-
-PORT=20000
-TTY="/dev/ttyA8_M3"
-BAUD="b500000"
-MSG="serial_redirection ${TTY}:${PORT}"
-OPTIONS="TCP4-LISTEN:${PORT},reuseaddr,fork open:${TTY},${BAUD},echo=0,raw"
 
 PATH=/bin:/usr/bin:/sbin:/usr/sbin
 
@@ -33,31 +20,31 @@ PATH=/bin:/usr/bin:/sbin:/usr/sbin
 
 [ -x $DAEMON ] || exit 0
 
-start_socat() {
-    start-stop-daemon --oknodo --quiet --start \
+start_redirection() {
+    start-stop-daemon --start \
         --pidfile ${PIDFILE} \
         --background --make-pidfile \
-        --exec $DAEMON -- $SOCAT_DEFAULTS $OPTIONS < /dev/null
+        --exec $DAEMON
 }
 
-stop_socat() {
-    start-stop-daemon --oknodo --stop --quiet --pidfile ${PIDFILE} --exec $DAEMON
+stop_redirection() {
+    start-stop-daemon --stop --pidfile ${PIDFILE}
     rm -f ${PIDFILE}
 }
 
 start () {
-    echo -n "Starting ${MSG} "
-    start_socat
+    echo -n "Starting ${NAME}: "
+    start_redirection
     echo $?
     return $?
 }
 
 stop () {
-    echo -n "Stopping ${MSG} "
+    echo -n "Stopping ${NAME}: "
     for PIDFILE in `ls ${PIDFILE} 2> /dev/null`; do
         NAME=`echo $PIDFILE | cut -c16-`
         NAME=${NAME%%.pid}
-        stop_socat
+        stop_redirection
     done
     echo $?
 }
