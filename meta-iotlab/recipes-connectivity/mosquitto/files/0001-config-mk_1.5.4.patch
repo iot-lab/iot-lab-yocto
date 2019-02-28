@@ -1,0 +1,25 @@
+From d8af15b60e6c4ab28195146a932b755cbd92c00b Mon Sep 17 00:00:00 2001
+From: Alexandre Abadie <alexandre.abadie@inria.fr>
+Date: Thu, 28 Feb 2019 18:13:47 +0100
+Subject: [PATCH] config-mk
+
+---
+ config.mk | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/config.mk b/config.mk
+index d591cd4..bad099b 100644
+--- a/config.mk
++++ b/config.mk
+@@ -281,7 +281,7 @@ ifeq ($(WITH_WEBSOCKETS),static)
+ endif
+ 
+ INSTALL?=install
+-prefix?=/usr/local
++prefix?=/usr
+ incdir?=${prefix}/include
+ libdir?=${prefix}/lib${LIB_SUFFIX}
+ localedir?=${prefix}/share/locale
+-- 
+2.19.1
+
