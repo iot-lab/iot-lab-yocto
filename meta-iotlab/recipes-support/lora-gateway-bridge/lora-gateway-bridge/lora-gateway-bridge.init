@@ -1,0 +1,51 @@
+#!/usr/bin/env bash
+
+DESC="LoRa Gateway Bridge"
+NAME=lora-gateway-bridge
+DAEMON=/opt/$NAME/$NAME
+PID_FILE=/var/run/$NAME.pid
+CONFIG_FILE=/var/config/$NAME/$NAME.toml
+
+
+function do_start {
+	start-stop-daemon \
+        --start \
+        --background \
+        --make-pidfile --pidfile "$PID_FILE" \
+		--exec $DAEMON -- --config $CONFIG_FILE
+}
+
+function do_stop {
+	start-stop-daemon \
+        --stop \
+        --retry=TERM/30/KILL/5 \
+        --pidfile "$PID_FILE" \
+        --exec "$DAEMON"
+	retval="$?"
+	sleep 1
+	return "$retval"
+}
+
+case "$1" in
+	start)
+		echo "Starting $DESC"
+		do_start
+		;;
+	stop)
+		echo "Stopping $DESC"
+		do_stop
+		;;
+	restart)
+		echo "Restarting $DESC"
+		do_stop
+		case "$?" in
+			0|1)
+				do_start
+				;;
+		esac
+		;;
+	*)
+		echo "Usage: $NAME {start|stop|restart}" >&2
+		exit 3
+		;;
+esac
