@@ -2,4 +2,5 @@
 # on the RPI3 gateway image
 do_install_append () {
     echo "www-data ALL= NOPASSWD: /usr/bin/ykushcmd" >> ${D}${sysconfdir}/sudoers.d/www-data
+    echo "www-data ALL= NOPASSWD:SETENV: /opt/lora/start.sh" >> ${D}${sysconfdir}/sudoers.d/www-data
 }
