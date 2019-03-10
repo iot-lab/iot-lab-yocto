@@ -37,6 +37,7 @@ RDEPENDS_${PN} += " \
 RDEPENDS_${PN} += " \
     mosquitto \
     mosquitto-rsmb \
+    paho-mqtt-c \
     nodejs \
     openjdk-8 \
     openjre-8 \
