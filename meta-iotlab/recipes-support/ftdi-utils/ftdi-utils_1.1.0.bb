@@ -12,6 +12,7 @@ DEPENDS = "libftdi libusb1"
 RDEPENDS_${PN} += "${PN}-list ${PN}-config"
 ALLOW_EMPTY_${PN} = "1"
 
+inherit pkgconfig
 
 DESCRIPTION_${PN}-list = "IOT-LAB ftdi list"
 FILES_${PN}-list = "${bindir}/ftdi-devices-list"
