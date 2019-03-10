@@ -13,7 +13,7 @@ SRC_URI = "https://pypi.python.org/packages/source/b/${SRCNAME}/${SRCNAME}-${PV}
 SRC_URI[md5sum] = "f5850258a86224a791171e8ecbb66d99"
 SRC_URI[sha256sum] = "fe0a24b59385596d02df7ae7845fe7d7135eea73799d03348aeb9f3771500051"
 
-RDEPENDS_${PN} = "python python-wsgiref"
+RDEPENDS_${PN} = "python"
 
 S = "${WORKDIR}/${SRCNAME}-${PV}"
 
