@@ -28,3 +28,6 @@ do_install() {
         install -m 0755 ${B}/broker_mqtts       ${D}${bindir}/broker_mqtts
         install         ${B}/Messages.1.3.0.2   ${D}${bindir}/Messages.1.3.0.2
 }
+
+INSANE_SKIP_${PN} = "ldflags"
+INSANE_SKIP_${PN}-dev = "ldflags"

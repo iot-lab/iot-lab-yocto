@@ -32,3 +32,6 @@ do_install() {
 	install -d ${D}${bindir}
 	install -m 755 ${S}/git/edbg ${D}${bindir}
 }
+
+INSANE_SKIP_${PN} = "ldflags"
+INSANE_SKIP_${PN}-dev = "ldflags"
