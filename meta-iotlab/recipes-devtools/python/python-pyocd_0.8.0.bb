@@ -14,6 +14,8 @@ SRC_URI[sha256sum] = "b89f41b1d6c1f81777220d0dfdaf42f73064709df9842cf81027812b4d
 
 S = "${WORKDIR}/pyOCD-${PV}"
 
+DEPENDS += "${PYTHON_PN}-setuptools-scm-native"
+
 inherit setuptools
 
-RDEPENDS_${PN} += "python-pyusb python-websocket-client python-enum34 python-future python-backports-ssl"
+RDEPENDS_${PN} += "python-pyusb python-websocket-client python-enum34 python-future"
