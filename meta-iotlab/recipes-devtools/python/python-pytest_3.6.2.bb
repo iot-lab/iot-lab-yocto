@@ -22,5 +22,6 @@ RDEPENDS_${PN}_class-target += " \
     ${PYTHON_PN}-py \
     ${PYTHON_PN}-six \
 "
+DEPENDS += "${PYTHON_PN}-setuptools-scm-native"
 
 inherit pypi setuptools
