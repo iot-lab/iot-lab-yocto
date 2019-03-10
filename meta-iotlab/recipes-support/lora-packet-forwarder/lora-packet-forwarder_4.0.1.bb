@@ -17,6 +17,7 @@ SRC_URI = "git://github.com/Lora-net/packet_forwarder.git;protocol=git \
            file://start.sh \
            file://lora-packet-forwarder-add-spi-dev-path.patch \
            file://lora-packet-forwarder-remove-jit-power-check.patch \
+           file://lora-packet-forwarder-custom-conf-dir.patch \
 "
 
 S = "${WORKDIR}/git"

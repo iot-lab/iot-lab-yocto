@@ -1,0 +1,49 @@
+From 843d63c38e7be8bbb593c9ca6226c0cebd68a2fb Mon Sep 17 00:00:00 2001
+From: Alexandre Abadie <alexandre.abadie@inria.fr>
+Date: Sun, 10 Mar 2019 11:44:54 +0100
+Subject: [PATCH] packet_forwarder: allow getting local config from other
+ directory
+
+---
+ lora_pkt_fwd/src/lora_pkt_fwd.c | 18 +++++++++++++++++-
+ 1 file changed, 17 insertions(+), 1 deletion(-)
+
+diff --git a/lora_pkt_fwd/src/lora_pkt_fwd.c b/lora_pkt_fwd/src/lora_pkt_fwd.c
+index 801f28d..4e87469 100644
+--- a/lora_pkt_fwd/src/lora_pkt_fwd.c
++++ b/lora_pkt_fwd/src/lora_pkt_fwd.c
+@@ -981,7 +981,20 @@ int main(void)
+ 
+     /* configuration file related */
+     char *global_cfg_path= "global_conf.json"; /* contain global (typ. network-wide) configuration */
+-    char *local_cfg_path = "local_conf.json"; /* contain node specific configuration, overwrite global parameters for parameters that are defined in both */
++    char *local_cfg_path;
++    char *local_cfg_filename = "local_conf.json";
++    char *cfg_dir = getenv("CFG_DIR");
++    if (cfg_dir != NULL) {
++        MSG("INFO: using custom local configuration dir %s\n", cfg_dir);
++        local_cfg_path = malloc(strlen(cfg_dir) + strlen(local_cfg_filename) + 2);
++        sprintf(local_cfg_path, "%s/%s", cfg_dir, local_cfg_filename);
++    }
++    else {
++        local_cfg_path = malloc(strlen(local_cfg_filename) + 1);
++        sprintf(local_cfg_path, "%s", local_cfg_filename);
++    }
++    MSG("INFO: using local configuration file %s\n", local_cfg_path);
++
+     char *debug_cfg_path = "debug_conf.json"; /* if present, all other configuration files are ignored */
+ 
+     /* threads */
+@@ -1082,6 +1095,9 @@ int main(void)
+             parse_SX1301_configuration(local_cfg_path);
+             parse_gateway_configuration(local_cfg_path);
+         }
++        else {
++            MSG("INFO: cannot find local configuration file %s\n", local_cfg_path);
++        }
+     } else if (access(local_cfg_path, R_OK) == 0) { /* if there is only a local conf, parse it and that's all */
+         MSG("INFO: found local configuration file %s, parsing it\n", local_cfg_path);
+         x = parse_SX1301_configuration(local_cfg_path);
+-- 
+2.19.1
+
