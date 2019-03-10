@@ -21,7 +21,10 @@ SRCREV = "${AUTOREV}"
 
 PACKAGES =+ "${PN}-server"
 
-inherit update-rc.d setuptools
+WWW_DIR ?= "${localstatedir}/www"
+WWW_USER ?= "www-data"
+
+inherit update-rc.d setuptools useradd
 INITSCRIPT_PACKAGES = "${PN}-server"
 INITSCRIPT_NAME_${PN}-server = "gateway-server-daemon"
 INITSCRIPT_PARAMS_${PN}-server = "defaults"
@@ -39,8 +42,8 @@ do_install_append () {
 
 	# create www-data home folder and .ssh folder
 	# used to access A8 open nodes
-	install -m 0755 -o www-data -g www-data -d ${D}${localstatedir}/www/
-	install -m 0755 -o www-data -g www-data -d ${D}${localstatedir}/www/.ssh
+	install -m 0755 -o ${WWW_USER} -g ${WWW_USER} -d ${D}${WWW_DIR}/
+	install -m 0755 -o ${WWW_USER} -g ${WWW_USER} -d ${D}${WWW_DIR}/.ssh
 }
 
 FILES_${PN} += "${libdir}/*"
@@ -71,6 +74,9 @@ RDEPENDS_${PN} += "python-pytest-cov"
 RDEPENDS_${PN} += "python-webtest"
 RDEPENDS_${PN} += "python-codecov"
 
+USERADD_PACKAGES = "${PN}"
+USERADD_PARAM_${PN} = "-u 33 -g 33 -d ${WWWDIR} -r -M -s /bin/sh ${WWW_USER}"
+GROUPADD_PARAM_${PN} = "-g 33 ${WWW_USER}"
 
 pkg_postinst_${PN}-server () {
   # Add www-data to dialout group
@@ -79,7 +85,7 @@ pkg_postinst_${PN}-server () {
   else
     OPT=""
   fi
-  usermod $OPT -a -G dialout www-data
+  usermod $OPT -a -G dialout ${WWW_USER}
 }
 
 # Allow shipping arduino elf files
