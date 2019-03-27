@@ -17,13 +17,10 @@ do_configure_prepend() {
 }
 
 # Add ntpq tool
-PACKAGES =+ "${PN}-ntpq ${PN}-waitsync"
-FILES_${PN}-ntpq += "${sbindir}/ntpq"
-RDEPENDS_${PN}-waitsync = "${PN}-ntpq"
+PACKAGES =+ "${PN}-waitsync"
 
 do_install_append() {
     find ${WORKDIR}
-    install -m 0755 ${B}/ntpq/ntpq ${D}/${sbindir}/
     install -m 0755 ${WORKDIR}/ntp_wait_synced.sh    ${D}/${sbindir}/
 }
 
