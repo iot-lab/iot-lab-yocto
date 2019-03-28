@@ -1,6 +1,6 @@
 DESCRIPTION = "Jim is an opensource small-footprint implementation of the Tcl programming language"
 HOMEPAGE = "http://jim.tcl.tk"
-LICENSE = "FreeBSD"
+LICENSE = "BSD"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=670d6aae00a2c7a4da40f70b78bdf992"
 
 ## SRCREV = ${AUTOREV}

@@ -3,7 +3,7 @@ HOMEPAGE = "https://github.com/Yepkit/ykush"
 LICENSE = "Apache-2.0"
 LIC_FILES_CHKSUM = "file://LICENSE.md;md5=4b29e96047e31a3c38509d2c49b768b3"
 
-DEPENDS += "libusb"
+DEPENDS += "libusb hidapi udev"
 RDEPENDS_${PN} += "hidapi libusb1 udev"
 
 SRC_URI = "git://github.com/Yepkit/ykush.git;protocol=https \
@@ -18,3 +18,6 @@ do_install() {
 	install -d ${D}${bindir}
 	install -m 755 ${S}/bin/ykushcmd ${D}${bindir}
 }
+
+INSANE_SKIP_${PN} = "ldflags"
+INSANE_SKIP_${PN}-dev = "ldflags"

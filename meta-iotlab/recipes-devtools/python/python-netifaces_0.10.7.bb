@@ -9,8 +9,8 @@ SRCNAME = "netifaces"
 
 SRC_URI = "http://distfiles.exherbo.org/distfiles/${SRCNAME}-${PV}.tar.gz"
 
-SRC_URI[md5sum] = "1d424cb5ef52907c5ab913011122a98b"
-SRC_URI[sha256sum] = "0c4da523f36d36f1ef92ee183f2512f3ceb9a9d2a45f7d19cda5a42c6689ebe0"
+SRC_URI[md5sum] = "e0cfd6c38b39f3ea3185fa7503a81765"
+SRC_URI[sha256sum] = "bd590fcb75421537d4149825e1e63cca225fd47dad861710c46bd1cb329d8cbd"
 
 S = "${WORKDIR}/${SRCNAME}-${PV}"
 

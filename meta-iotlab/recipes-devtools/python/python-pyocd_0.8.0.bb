@@ -16,4 +16,4 @@ S = "${WORKDIR}/pyOCD-${PV}"
 
 inherit setuptools
 
-RDEPENDS_${PN} += "python-pyusb python-websocket-client python-enum34 python-future python-backports-ssl"
+RDEPENDS_${PN} += "python-pyusb python-websocket-client python-enum34 python-future"
