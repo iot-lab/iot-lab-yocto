@@ -6,5 +6,5 @@ then
     exit 1
 fi
 
-/usr/bin/iotlab_flash -firmware $1
+/usr/bin/iotlab_flash $1
 exit $?
