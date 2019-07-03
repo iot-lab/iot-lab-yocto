@@ -146,6 +146,9 @@ IMAGE_INSTALL += "              \
         avrdude                 \
         \
         "
+IMAGE_INSTALL += "              \
+        ptpd                    \
+	"
 # Broken
 IMAGE_INSTALL_BROKEN += "       \
         libgcov-dev             \
