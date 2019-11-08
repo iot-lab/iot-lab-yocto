@@ -12,8 +12,8 @@ PR = "r4"
 PV = "git-src${SRCDATE}-r${SRCPV}"
 
 S = "${WORKDIR}/git/"
-# SRCREV = "${AUTOREV}"
-SRCREV = "2.9.0"
+SRCREV = "${AUTOREV}"
+# SRCREV = "2.9.0"
 
 # Add a package gateway-code-server with update-rc.d script & start|stop_dc_on scripts & post install dialout group
 # gateway: install gateway-code and gateway-code-server packages
