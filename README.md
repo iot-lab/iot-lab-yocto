@@ -1,8 +1,7 @@
 Build IoT-LAB images and packages
 =================================
 
-[Yocto Project](https://www.yoctoproject.org/) aim to develop embedded Linux images and
-user-space applications that run on targeted devices like IoT-LAB Open A8 nodes. 
+[Yocto Project](https://www.yoctoproject.org/) aim to develop embedded Linux images and user-space applications that run on targeted devices like IoT-LAB Open A8 and RPI3 hardware.
 
 The process of building images and packages has been wrapped in a Makefile for easier use. This will setup you environment  if it hasn't been set before, update the configuration for your machine and build the images or packages.
 
@@ -26,7 +25,9 @@ To build images you can run:
     # or one by one
     $ make iotlab-image
 
-> Do NOT attempt to build on an encrypted partition ecryptfs limits filename length to 150 characters.
+By default the Makefile builds an image for IoT-LAB A8 hardware. If you want to build image for RPI3 hardware you should specify the target as follows:
+
+    $ make TARGET=rpi3 iotlab-image
 
 Build packages
 -----------------
@@ -48,6 +49,12 @@ Manual process
     $ source ./poky/oe-init-build-env build
     $ bitbake -k iotlab-image-open-a8
     $ bitbake -k <pkg_name>
+
+If you want to build for RPI3 hardware:
+
+    $ source ./poky/oe-init-build-env build-rpi3
+    $ bitbake -k iotlab-image-rpi3
+
 
 Yocto and OpenEmbedded
 ----------------------
