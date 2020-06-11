@@ -9,7 +9,7 @@ RDEPENDS_${PN} += " \
     gateway-code \
     sshd-keys-linux-node \
     ftdi-utils-list \
-    initrdscripts-mounta8 \
+    initrdscripts-mountnode \
     initrdscripts-ipv6 \
     initrdscripts-flashidle \
     initrdscripts-serial \
