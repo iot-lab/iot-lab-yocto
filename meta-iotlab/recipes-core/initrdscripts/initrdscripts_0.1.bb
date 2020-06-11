@@ -11,18 +11,18 @@ SRC_URI += "file://set_time.sh"
 SRC_URI += "file://networking_ipv6"
 SRC_URI += "file://ipv6.profile"
 SRC_URI += "file://flash_idle"
-SRC_URI += "file://nfs_mount_conf_a8"
+SRC_URI += "file://nfs_mount_conf_shared"
 SRC_URI += "file://nfs_mount_conf_users"
 SRC_URI += "file://serial_redirection"
 
 # split package to use update-rc.d class
 ALLOW_EMPTY_${PN}   = "1"
 
-RDEPENDS_${PN}      = "${PN}-settime ${PN}-volatile ${PN}-ipv6 ${PN}-flashidle ${PN}-mounta8 ${PN}-mountgw ${PN}-serial"
-PACKAGES            =+ "${PN}-settime ${PN}-volatile ${PN}-ipv6 ${PN}-flashidle ${PN}-mounta8 ${PN}-mountgw ${PN}-serial"
+RDEPENDS_${PN}      = "${PN}-settime ${PN}-volatile ${PN}-ipv6 ${PN}-flashidle ${PN}-mountnode ${PN}-mountgw ${PN}-serial"
+PACKAGES            =+ "${PN}-settime ${PN}-volatile ${PN}-ipv6 ${PN}-flashidle ${PN}-mountnode ${PN}-mountgw ${PN}-serial"
 
 inherit update-rc.d
-INITSCRIPT_PACKAGES = "${PN}-settime ${PN}-volatile ${PN}-ipv6 ${PN}-flashidle ${PN}-mounta8 ${PN}-mountgw"
+INITSCRIPT_PACKAGES = "${PN}-settime ${PN}-volatile ${PN}-ipv6 ${PN}-flashidle ${PN}-mountnode ${PN}-mountgw"
 
 INITSCRIPT_NAME_${PN}-volatile   = "set_default_values_to_volatile.sh"
 INITSCRIPT_PARAMS_${PN}-volatile = "start 80 S ."
@@ -34,9 +34,9 @@ INITSCRIPT_NAME_${PN}-settime    = "set_time.sh"
 INITSCRIPT_PARAMS_${PN}-settime  = "start 81 S ."
 FILES_${PN}-settime              = "${sysconfdir}/init.d/set_time.sh"
 
-INITSCRIPT_NAME_${PN}-mounta8       = "nfs_mount_conf_a8"
-INITSCRIPT_PARAMS_${PN}-mounta8     = "start 82 S . stop 18 0 6 ."
-FILES_${PN}-mounta8                 = "${sysconfdir}/init.d/nfs_mount_conf_a8"
+INITSCRIPT_NAME_${PN}-mountnode       = "nfs_mount_conf_shared"
+INITSCRIPT_PARAMS_${PN}-mountnode     = "start 82 S . stop 18 0 6 ."
+FILES_${PN}-mountnode                 = "${sysconfdir}/init.d/nfs_mount_conf_shared"
 
 INITSCRIPT_NAME_${PN}-mountgw       = "nfs_mount_conf_users"
 INITSCRIPT_PARAMS_${PN}-mountgw     = "start 82 S . stop 18 0 6 ."
@@ -88,15 +88,15 @@ do_install() {
     install -m 0755 ${S}/nfs_mount_conf_users              ${D}/${sysconfdir}/init.d/
     install -d                                             ${D}/iotlab/users
 
-    # mount a8
-    install -m 0755 ${S}/nfs_mount_conf_a8                 ${D}/${sysconfdir}/init.d/
+    # mount linux node
+    install -m 0755 ${S}/nfs_mount_conf_shared             ${D}/${sysconfdir}/init.d/
 
     # serial redirection
     install -m 0755 ${S}/serial_redirection                ${D}/${sysconfdir}/init.d/
 }
 
-pkg_postinst_${PN}-mounta8 () {
-  install -m 0755 -d $D${ROOT_HOME}/A8
-  # add shared symlink to A8 directory for other Linux nodes (eg. RPI3)
-  ln -s -r $D${ROOT_HOME}/A8 $D${ROOT_HOME}/shared
+pkg_postinst_${PN}-mountnode() {
+  install -m 0755 -d $D${ROOT_HOME}/shared
+  # add A8 symlink to shared directory (eg. A8 Open node backward compatibility)
+  ln -s -r $D${ROOT_HOME}/shared $D${ROOT_HOME}/A8
 }
