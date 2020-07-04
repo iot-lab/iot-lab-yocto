@@ -143,8 +143,6 @@ IMAGE_INSTALL += "              \
         \
         curl                    \
         \
-        avrdude                 \
-        \
         "
 # Broken
 IMAGE_INSTALL_BROKEN += "       \

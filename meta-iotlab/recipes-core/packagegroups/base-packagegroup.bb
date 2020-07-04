@@ -4,6 +4,8 @@ LICENSE = "GPLv2"
 inherit packagegroup
 
 RDEPENDS_${PN} += " \
+    avarice \
+    avrdude \
     base-files \
     base-config \
     initrdscripts-settime \
