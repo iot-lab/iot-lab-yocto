@@ -1,16 +1,16 @@
 [submodule "poky"]
 	path = poky
 	url = git://git.yoctoproject.org/poky
-	branch = krogoth
+	branch = dunfell
 [submodule "meta-openembedded"]
 	path = meta-openembedded
 	url = git://git.openembedded.org/meta-openembedded
-	branch = krogoth
+	branch = dunfell
 [submodule "meta-java"]
 	path = meta-java
 	url = git://git.yoctoproject.org/meta-java
-	branch = krogoth
+	branch = dunfell
 [submodule "meta-raspberrypi"]
 	path = meta-raspberrypi
 	url = git://git.yoctoproject.org/meta-raspberrypi
-	branch = krogoth
+	branch = dunfell
