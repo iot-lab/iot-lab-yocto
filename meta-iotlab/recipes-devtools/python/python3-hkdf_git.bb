@@ -3,7 +3,7 @@ HOMEPAGE = "https://github.com/casebeer/python-hkdf"
 LICENSE = "BSD-2-Clause"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=f553aec9729c2f78a3dcc38d78a3cc80"
 
-inherit setuptools
+inherit setuptools3
 
 PV = "git-src${SRCDATE}-r${SRCPV}"
 
