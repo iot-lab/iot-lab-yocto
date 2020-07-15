@@ -1,5 +1,10 @@
 *.orig
 
-build/
-build-rpi3/
+cache/
+downloads/
+sstate-cache/
+tmp/
+*.log
+sanity_info
+templateconf.cfg
 .idea/

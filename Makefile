@@ -35,6 +35,16 @@ else ifeq ($(TARGET), rpi3)
   iotlab-image = iotlab-image-rpi3
   iotlab-image-gateway = iotlab-image-gateway-rpi3
   iotlab-image-autotest = iotlab-image-rpi3-autotest
+else ifeq ($(TARGET), rpi4)
+  BUILD_DIR = build-rpi4
+  TARGET_ARCH = cortexa7t2hf-neon-vfpv4
+  TARGET_IMG = raspberrypi4
+  KERNEL_IMG = zImage
+
+  # Use a mapping between image target of make with image name in yocto
+  iotlab-image = iotlab-image-rpi4
+  iotlab-image-gateway = iotlab-image-gateway-rpi4
+  iotlab-image-autotest = iotlab-image-rpi4-autotest
 else
   $(error Unsupported target, '$(TARGET)')
 endif
