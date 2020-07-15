@@ -5,10 +5,9 @@ SECTION = "devel/python"
 LICENSE = "MIT"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=cbc4e25353c748c817db2daffe605e43"
 
-PR = "r0"
-SRC_URI[md5sum] = "5acf38d4909e19819eb5c1754fbfc0ac"
-SRC_URI[sha256sum] = "03aa752cf11db41d281ea1d807d954c4eda35cfa1b21d6971966cc041bbf6e2d"
+SRC_URI[md5sum] = "59f10b3749cfba88df81ecc02b7b4202"
+SRC_URI[sha256sum] = "1a629dc9f48e53512fcbfda6b07de490c374b0c83c55ff7a1720b3fccff0ac87"
 
-RDEPENDS_${PN} = "python-pytest"
+RDEPENDS_${PN} = "${PYTHON_PN}-pytest"
 
-inherit pypi setuptools
+inherit pypi setuptools3
