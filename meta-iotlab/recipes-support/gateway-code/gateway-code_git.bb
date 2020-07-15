@@ -2,7 +2,7 @@ DESCRIPTION = "Gateway Python Code"
 LICENSE = "CECILL-2.0"
 LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/CECILL-2.0;md5=574109ac4bdff61f9c3e0de892ecbd19"
 
-DEPENDS = "python oml2 oml2-native control-node-serial"
+DEPENDS = "python3 oml2 oml2-native control-node-serial"
 
 SRC_URI  = "git://github.com/iot-lab/iot-lab-gateway.git;protocol=https \
 	    file://start_dc_on \
@@ -24,7 +24,7 @@ PACKAGES =+ "${PN}-server"
 WWW_DIR ?= "${localstatedir}/www"
 WWW_USER ?= "www-data"
 
-inherit update-rc.d setuptools useradd
+inherit update-rc.d setuptools3 useradd
 INITSCRIPT_PACKAGES = "${PN}-server"
 INITSCRIPT_NAME_${PN}-server = "gateway-server-daemon"
 INITSCRIPT_PARAMS_${PN}-server = "defaults"
@@ -53,26 +53,26 @@ FILES_${PN}-server += "${bindir}/stop_dc_on"
 FILES_${PN}-server += "${sysconfdir}/init.d/gateway-server-daemon"
 
 RDEPENDS_${PN} = "openocd socat oml2"
-RDEPENDS_${PN} += "python python-pyserial python-modules"
-RDEPENDS_${PN} += "python-argparse python-bottle python-paste"
-RDEPENDS_${PN} += "python-subprocess32 python-pyelftools"
+RDEPENDS_${PN} += "python3 python3-pyserial"
+RDEPENDS_${PN} += "python3-bottle python3-paste"
+RDEPENDS_${PN} += "python3-pyelftools"
 # for usermod on postinst
 RDEPENDS_${PN} += "shadow"
 RDEPENDS_${PN} += "openssh-ssh openssh-scp"
 
 # for development
-RDEPENDS_${PN} += "python-gcovr"
-RDEPENDS_${PN} += "python-nose (>= 1.3.0)"
-RDEPENDS_${PN} += "python-coverage"
-RDEPENDS_${PN} += "python-nosexcover"
-RDEPENDS_${PN} += "python-mock python-pep8"
-RDEPENDS_${PN} += "python-pylint"
-RDEPENDS_${PN} += "python-tox (>= 3.4)"
-RDEPENDS_${PN} += "python-testfixtures"
-RDEPENDS_${PN} += "python-pytest"
-RDEPENDS_${PN} += "python-pytest-cov"
-RDEPENDS_${PN} += "python-webtest"
-RDEPENDS_${PN} += "python-codecov"
+RDEPENDS_${PN} += "python3-gcovr"
+RDEPENDS_${PN} += "python3-nose (>= 1.3.0)"
+RDEPENDS_${PN} += "python3-coverage"
+RDEPENDS_${PN} += "python3-nosexcover"
+RDEPENDS_${PN} += "python3-mock python3-pep8"
+RDEPENDS_${PN} += "python3-pylint"
+RDEPENDS_${PN} += "python3-tox (>= 3.4)"
+RDEPENDS_${PN} += "python3-testfixtures"
+RDEPENDS_${PN} += "python3-pytest"
+RDEPENDS_${PN} += "python3-pytest-cov"
+RDEPENDS_${PN} += "python3-webtest"
+RDEPENDS_${PN} += "python3-codecov"
 
 USERADD_PACKAGES = "${PN}"
 USERADD_PARAM_${PN} = "-u 33 -g 33 -d ${WWWDIR} -r -M -s /bin/sh ${WWW_USER}"
