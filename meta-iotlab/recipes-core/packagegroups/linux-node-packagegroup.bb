@@ -17,20 +17,19 @@ RDEPENDS_${PN} += " \
 
 # OpenWSN python package depedencies
 RDEPENDS_${PN} += " \
-    python-scons \
-    python-bottle \
-    python-pydispatcher \
-    python-yappi \
-    python-pyzmq \
-    python-netifaces \
-    python-cbor \
-    python-hkdf \
-    python-pycryptodome \
-    python-numpy \
+    python3-scons \
+    python3-bottle \
+    python3-pydispatcher \
+    python3-yappi \
+    python3-pyzmq \
+    python3-netifaces \
+    python3-cbor \
+    python3-hkdf \
+    python3-pycryptodome \
+    python3-numpy \
     "
 # nghttp2 package depedencies
 RDEPENDS_${PN} += " \
-    python-cython \
     python3-cython \
     "
 
@@ -42,6 +41,6 @@ RDEPENDS_${PN} += " \
     openjdk-8 \
     openjre-8 \
     openvpn \
-    python-paho-mqtt \
+    python3-paho-mqtt \
     wpantund \
     "
