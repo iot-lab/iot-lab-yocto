@@ -11,8 +11,7 @@ RDEPENDS_${PN} += " \
     openocd \
     openocd-last \
     openocd-upstream \
-    python-cc2538-bsl \
-    python-pyocd \
+    python3-cc2538-bsl \
+    python3-pyocd \
     edbg \
-    python-msp430-bsl \
     "
