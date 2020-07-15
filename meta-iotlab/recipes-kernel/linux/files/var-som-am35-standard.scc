@@ -1,5 +1,0 @@
-define KMACHINE var-som-am35
-define KTYPE standard
-define KARCH arm
-
-branch 3.19.0
