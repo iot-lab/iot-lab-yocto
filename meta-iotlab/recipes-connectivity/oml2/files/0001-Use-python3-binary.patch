@@ -1,0 +1,19 @@
+From 10b81e43ebbeeb417de42ac8ede5bfd94770782e Mon Sep 17 00:00:00 2001
+From: root <root@iot-lab-debian-9.cs1cloud.internal>
+Date: Thu, 16 Jul 2020 10:20:30 +0200
+Subject: [PATCH] Use python3 binary
+
+---
+ test/lib/stddev.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/test/lib/stddev.py b/test/lib/stddev.py
+index b814819..fd2be8e 100755
+--- a/test/lib/stddev.py
++++ b/test/lib/stddev.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ 
+ import math
+ import sys
