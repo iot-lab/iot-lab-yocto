@@ -11,6 +11,7 @@ RDEPENDS_${PN} += "libxml2 libtool sqlite3"
 RDEPENDS_${PN} += "ruby"
 
 SRC_URI += "file://oml2-2.11.0.tar.gz"
+SRC_URI += "file://0001-Use-python3-binary.patch"
 
 S = "${WORKDIR}/${PN}-${PV}"
 
