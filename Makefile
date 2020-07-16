@@ -27,7 +27,7 @@ ifeq ($(TARGET), a8)
   EXTRA_BUILDS = build-uboot build-kernel-mtd-rw
 else ifeq ($(TARGET), rpi3)
   BUILD_DIR = build-rpi3
-  TARGET_ARCH = cortexa7hf-neon-vfpv4
+  TARGET_ARCH = cortexa7t2hf-neon-vfpv4
   TARGET_IMG = raspberrypi3
   KERNEL_IMG = zImage
 
