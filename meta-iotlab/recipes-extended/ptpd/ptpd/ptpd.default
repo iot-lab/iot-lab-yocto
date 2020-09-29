@@ -1,0 +1,7 @@
+# /etc/default/ptpd
+
+# pid file
+PTPD_PID_FILE="/var/run/ptpd2.lock"
+
+# Add command line options for ptpd
+PTPD_OPTIONS="-c /etc/ptpd.conf"
