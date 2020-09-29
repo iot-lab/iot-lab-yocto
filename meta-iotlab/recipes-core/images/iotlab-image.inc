@@ -45,9 +45,6 @@ IMAGE_INSTALL +="               \
         socat                   \
         iputils                 \
         rsync                   \
-        ntp                     \
-        ntp-waitsync            \
-        ntp-utils               \
         python                  \
         python-pyserial         \
         python-dev              \
