@@ -1,10 +1,10 @@
-require python-setuptools.inc
+require python3-setuptools.inc
 
-PROVIDES = "python-distribute"
+PROVIDES = "python3-distribute"
 
 inherit setuptools3
 
-RREPLACES_${PN} = "python-distribute"
-RPROVIDES_${PN} = "python-distribute"
-RCONFLICTS_${PN} = "python-distribute"
+RREPLACES_${PN} = "python3-distribute"
+RPROVIDES_${PN} = "python3-distribute"
+RCONFLICTS_${PN} = "python3-distribute"
 
