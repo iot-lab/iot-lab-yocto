@@ -13,8 +13,8 @@ RDEPENDS_${PN} += " \
     openocd \
     openocd-git \
     openocd-ti \
-    python-cc2538-bsl \
-    python-pyocd \
+    python3-cc2538-bsl \
+    python3-pyocd \
     edbg \
-    python-msp430-bsl \
+    python3-msp430-bsl \
     "
