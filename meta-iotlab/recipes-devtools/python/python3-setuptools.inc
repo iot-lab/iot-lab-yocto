@@ -25,7 +25,6 @@ RDEPENDS_${PN} = "\
   ${PYTHON_PN}-netserver \
   ${PYTHON_PN}-numbers \
   ${PYTHON_PN}-pkgutil \
-  ${PYTHON_PN}-plistlib \
   ${PYTHON_PN}-shell \
   ${PYTHON_PN}-stringold \
   ${PYTHON_PN}-threading \
