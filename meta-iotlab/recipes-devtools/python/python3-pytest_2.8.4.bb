@@ -11,7 +11,7 @@ SRC_URI = "https://pypi.python.org/packages/source/p/${SRCNAME}/${SRCNAME}-${PV}
 SRC_URI[md5sum] = "0671eab4cd12b7e67c73123360d86b9c"
 SRC_URI[sha256sum] = "ca8afa5e216acfba6df7f26f2ef8a45baedf6a952e6b2f033ab55ec7e0a679eb"
 
-RDEPENDS_${PN} = "python-py python-contextlib"
+RDEPENDS_${PN} = "python3-py"
 
 S = "${WORKDIR}/${SRCNAME}-${PV}"
 

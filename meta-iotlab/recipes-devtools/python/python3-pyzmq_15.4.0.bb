@@ -8,9 +8,9 @@ SRC_URI = "file://0001-fix-bad-RPATH.patch"
 SRC_URI[md5sum] = "d92fa329c20c72f4831a6aaca8057b2a"
 SRC_URI[sha256sum] = "9d1d69da7ee78dce8721a1617c7938ded1cd1df76a6c1abf19acebb1a5ccc2bf"
 
-inherit pypi setuptools pkgconfig
+inherit pypi setuptools3 pkgconfig
 
-RDEPENDS_${PN} += "python-multiprocessing"
+RDEPENDS_${PN} += "python3-multiprocessing"
 
 FILES_${PN}-dbg =+ "${PYTHON_SITEPACKAGES_DIR}/zmq/backend/cython/.debug"
 

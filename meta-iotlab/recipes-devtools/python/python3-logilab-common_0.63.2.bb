@@ -4,7 +4,7 @@ LICENSE = "LGPL-2.1"
 LIC_FILES_CHKSUM = "file://COPYING.LESSER;md5=2d5025d4aa3495befef8f17206a5b0a1"
 
 SRCNAME = "logilab-common"
-RDEPENDS_${PN} = "python-six"
+RDEPENDS_${PN} = "python3-six"
 
 SRC_URI = "https://pypi.python.org/packages/source/${@SRCNAME[0]}/${SRCNAME}/${SRCNAME}-${PV}.tar.gz"
 SRC_URI[md5sum] = "2bf4599ae1f2ccf4603ca02c5d7e798e"

@@ -4,7 +4,7 @@ LICENSE = "BSD"
 LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/BSD;md5=3775480a712fc46a69647678acb234cb"
 
 SRCNAME = "setuptools-pep8"
-RDEPENDS_${PN} = "python-pep8"
+RDEPENDS_${PN} = "python3-pep8"
 
 SRC_URI = "https://pypi.python.org/packages/source/${@SRCNAME[0]}/${SRCNAME}/${SRCNAME}-${PV}.tar.gz"
 SRC_URI[md5sum] = "8d21d3dbee4e82652b15b1873e789e6c"

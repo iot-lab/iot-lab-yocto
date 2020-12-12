@@ -4,7 +4,7 @@ LICENSE = "GPL-2.0"
 LIC_FILES_CHKSUM = "file://COPYING;md5=4325afd396febcb659c36b49533135d4"
 
 SRCNAME = "pylint"
-RDEPENDS_${PN} = "python-logilab-common python-astroid python-six"
+RDEPENDS_${PN} = "python3-logilab-common python3-astroid python3-six"
 
 SRC_URI = "https://pypi.python.org/packages/source/${@SRCNAME[0]}/${SRCNAME}/${SRCNAME}-${PV}.tar.gz"
 SRC_URI[md5sum] = "c164738f90213981db5d3297a60b4138"

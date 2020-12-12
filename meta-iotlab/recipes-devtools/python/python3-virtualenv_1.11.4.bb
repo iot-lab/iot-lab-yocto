@@ -17,9 +17,9 @@ S = "${WORKDIR}/${SRCNAME}-${PV}"
 inherit setuptools3
 
 DEPENDS += " \
-        python-pip \
+        python3-pip \
         "
 
 RDEPENDS_${PN} += " \
-        python-dateutil \
+        python3-dateutil \
         "

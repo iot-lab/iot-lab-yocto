@@ -4,7 +4,7 @@ LICENSE = "BSD"
 LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/BSD;md5=3775480a712fc46a69647678acb234cb"
 
 SRCNAME = "setuptools-lint"
-RDEPENDS_${PN} = "python-pylint"
+RDEPENDS_${PN} = "python3-pylint"
 
 SRC_URI = "https://pypi.python.org/packages/source/${@SRCNAME[0]}/${SRCNAME}/${SRCNAME}-${PV}.tar.gz"
 SRC_URI[md5sum] = "1a44bb3e64fd173579eb22d4b15e7869"

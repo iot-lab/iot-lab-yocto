@@ -17,4 +17,4 @@ S = "${WORKDIR}/${SRCNAME}-${PV}"
 
 inherit setuptools3
 
-RDEPENDS_${PN} = "python-sqlite3"
+RDEPENDS_${PN} = "python3-sqlite3"
