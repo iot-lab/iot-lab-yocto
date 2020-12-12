@@ -16,5 +16,4 @@ RDEPENDS_${PN} += " \
     python3-cc2538-bsl \
     python3-pyocd \
     edbg \
-    python3-msp430-bsl \
     "
