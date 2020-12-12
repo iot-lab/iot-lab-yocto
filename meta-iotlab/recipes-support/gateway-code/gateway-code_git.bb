@@ -62,7 +62,6 @@ RDEPENDS_${PN} += "openssh-ssh openssh-scp"
 
 # for development
 RDEPENDS_${PN} += "python3-gcovr"
-RDEPENDS_${PN} += "python3-nose (>= 1.3.0)"
 RDEPENDS_${PN} += "python3-coverage"
 RDEPENDS_${PN} += "python3-nosexcover"
 RDEPENDS_${PN} += "python3-mock python3-pep8"
