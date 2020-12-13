@@ -7,7 +7,7 @@ PYTHON_BINABI= "${PYTHON_MAJMIN}m"
 DISTRO_SRC_URI ?= "file://sitecustomize.py"
 DISTRO_SRC_URI_linuxstdbase = ""
 SRC_URI = "http://www.python.org/ftp/python/${PV}/Python-${PV}.tar.xz \
-file://python-config.patch \
+file://python3-config.patch \
 file://000-cross-compile.patch \
 file://020-dont-compile-python-files.patch \
 file://030-fixup-include-dirs.patch \
@@ -26,7 +26,7 @@ SRC_URI += "\
             file://avoid_warning_about_tkinter.patch \
             file://cgi_py.patch \
             file://host_include_contamination.patch \
-            file://python-3.3-multilib.patch \
+            file://python3-3.3-multilib.patch \
             file://shutil-follow-symlink-fix.patch \
             file://sysroot-include-headers.patch \
             file://unixccompiler.patch \

@@ -6,7 +6,7 @@ DISTRO_SRC_URI ?= "file://sitecustomize.py"
 DISTRO_SRC_URI_linuxstdbase = ""
 SRC_URI = "http://www.python.org/ftp/python/${PV}/Python-${PV}.tar.xz \
 file://12-distutils-prefix-is-inside-staging-area.patch \
-file://python-config.patch \
+file://python3-config.patch \
 file://000-cross-compile.patch \
 file://020-dont-compile-python-files.patch \
 file://030-fixup-include-dirs.patch \
@@ -15,7 +15,7 @@ file://080-distutils-dont_adjust_files.patch \
 file://110-enable-zlib.patch \
 file://130-readline-setup.patch \
 file://150-fix-setupterm.patch \
-file://python-3.3-multilib.patch \
+file://python3-3.3-multilib.patch \
 file://03-fix-tkinter-detection.patch \
 file://avoid_warning_about_tkinter.patch \
 file://shutil-follow-symlink-fix.patch \
