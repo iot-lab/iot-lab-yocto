@@ -5,7 +5,7 @@ LIC_FILES_CHKSUM ?= "file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecd
 
 PR = "r2"
 
-DEPENDS += "ruby-native popt libxml2 sqlite3"
+DEPENDS += "ruby-native popt libxml2 sqlite3 python3"
 RDEPENDS_${PN} += "libxml2 libtool sqlite3"
 # oml2-scaffold needed for gateway-code
 RDEPENDS_${PN} += "ruby"

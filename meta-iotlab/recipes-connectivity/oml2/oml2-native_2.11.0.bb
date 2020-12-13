@@ -6,7 +6,7 @@ LIC_FILES_CHKSUM ?= "file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecd
 require oml2_${PV}.bb
 inherit native
 
-DEPENDS += "libxml2-native pkgconfig-native gnulib-native"
+DEPENDS += "libxml2-native pkgconfig-native gnulib-native python3"
 
 SRC_URI += "file://0001-configure-use-pkg-config.patch"
 
