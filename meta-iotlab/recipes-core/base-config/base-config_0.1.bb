@@ -6,7 +6,6 @@ S = "${WORKDIR}"
 
 SRC_URI += "file://hosts"
 SRC_URI += "file://hostname"
-SRC_URI += "file://sysctl.conf"
 SRC_URI += "file://inputrc"
 SRC_URI += "file://bashrc"
 SRC_URI += "file://profile"
@@ -20,8 +19,6 @@ do_install () {
   #     didn't manage to dynamically copy original 'netbase' file
   install -d                                     ${D}${sysconfdir}/default
   install -m 0644 ${S}/hosts                     ${D}${sysconfdir}/default/
-  # Sysctl for IPv6, no autoconf by default
-  install -m 0644 ${S}/sysctl.conf               ${D}${sysconfdir}/
 
   # hostame link
   ln -s ${localstatedir}/local/config/hostname   ${D}${sysconfdir}/hostname
