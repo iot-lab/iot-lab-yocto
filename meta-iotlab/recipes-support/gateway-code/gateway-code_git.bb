@@ -73,7 +73,7 @@ RDEPENDS_${PN} += "python3-webtest"
 RDEPENDS_${PN} += "python3-codecov"
 
 USERADD_PACKAGES = "${PN}"
-USERADD_PARAM_${PN} = "-u 33 -g 33 -d ${WWWDIR} -r -M -s /bin/sh ${WWW_USER}"
+USERADD_PARAM_${PN} = "-u 33 -g 33 -d ${WWW_DIR} -r -M -s /bin/sh ${WWW_USER}"
 GROUPADD_PARAM_${PN} = "-g 33 ${WWW_USER}"
 
 pkg_postinst_${PN}-server () {
