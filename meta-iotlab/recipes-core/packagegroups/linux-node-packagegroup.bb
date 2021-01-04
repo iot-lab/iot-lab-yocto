@@ -26,8 +26,8 @@ RDEPENDS_${PN} += " \
     python3-cbor \
     python3-hkdf \
     python3-pycryptodome \
-    python3-numpy \
     "
+
 # nghttp2 package depedencies
 RDEPENDS_${PN} += " \
     python3-cython \
