@@ -17,6 +17,16 @@ RDEPENDS_${PN} += " \
 
 # OpenWSN python package depedencies
 RDEPENDS_${PN} += " \
+    python-scons \
+    python-bottle \
+    python-pydispatcher \
+    python-yappi \
+    python-pyzmq \
+    python-netifaces \
+    python-cbor \
+    python-hkdf \
+    python-pycryptodome \
+    python-numpy \
     python3-scons \
     python3-bottle \
     python3-pydispatcher \
@@ -38,9 +48,10 @@ RDEPENDS_${PN} += " \
     mosquitto-rsmb \
     paho-mqtt-c \
     nodejs \
+    openvpn \
     openjdk-8 \
     openjre-8 \
-    openvpn \
+    python-paho-mqtt \
     python3-paho-mqtt \
     wpantund \
     "

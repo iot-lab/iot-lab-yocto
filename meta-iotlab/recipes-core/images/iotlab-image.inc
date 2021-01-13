@@ -34,6 +34,7 @@ ROOTFS_RO_UNNEEDED = "${VIRTUAL-RUNTIME_update-alternatives} ${ROOTFS_BOOTSTRAP_
 DISTRO_FEATURES += "nfs ipv6"
 
 IMAGE_INSTALL +="               \
+        lsb                     \
         tzdata                  \
         cronie                  \
         logrotate               \
@@ -47,6 +48,15 @@ IMAGE_INSTALL +="               \
         ntp                     \
         ntp-waitsync            \
         ntp-utils               \
+        python                  \
+        python-pyserial         \
+        python-dev              \
+        python-misc             \
+        python-modules          \
+        python-setuptools       \
+        python-pip              \
+        python-magic            \
+        python-intelhex         \
         python3                 \
         python3-pyserial        \
         python3-dev             \
