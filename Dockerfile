@@ -2,7 +2,7 @@ FROM debian:jessie
 
 RUN apt-get update -yq \
  && DEBIAN_FRONTEND=noninteractive \
-    apt-get install -yq \
+    apt-get install -yq --no-install-recommends \
     # Yocto requirements
     build-essential \
     chrpath \
@@ -38,9 +38,7 @@ RUN apt-get update -yq \
     xterm \
     xz-utils \
     # Oml2 requirements
-    asciidoc \
     check \
-    doxygen \
     libpopt-dev \
     libsqlite3-dev \
     libtool \
@@ -51,14 +49,16 @@ RUN apt-get update -yq \
     ruby \
     sqlite3 \
     valgrind \
- && rm -rf /var/lib/apt/lists/*
+ && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 RUN wget https://www.iot-lab.info/yocto-images/oml2/oml2-2.11.0.tar.gz \
  && tar -xzvf oml2-2.11.0.tar.gz \
  && cd oml2-2.11.0 \
- && ./configure \
+ && ./configure --disable-doc --disable-doxygen-doc --disable-doxygen-dot \
+        --disable-android --disable-doxygen-html --disable-option-checking \
  && make \
- && make install
+ && make install \
+ && cd .. && rm -rf oml2-2.11.0
 
 ARG USERNAME=dev
 ARG PUID=1000
