@@ -12,7 +12,6 @@ RUN apt-get update -yq \
     debianutils \
     diffstat \
     gawk \
-    gcc-avr \
     gcc-multilib \
     git-core \
     iputils-ping \ 
@@ -29,11 +28,9 @@ RUN apt-get update -yq \
     python3-jinja2 \
     python-dev \
     screen \
-    socat \
     texinfo \
     time \
     unzip \
-    vim \
     wget \
     xterm \
     xz-utils \
