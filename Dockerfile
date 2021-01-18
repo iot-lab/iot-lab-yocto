@@ -35,6 +35,10 @@ RUN apt-get update -yq \
     xterm \
     xz-utils \
     # Oml2 requirements
+    autoconf \
+    automake \
+    libtool \
+    gnulib \
     check \
     libpopt-dev \
     libsqlite3-dev \
@@ -48,23 +52,17 @@ RUN apt-get update -yq \
     valgrind \
  && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-RUN wget https://www.iot-lab.info/yocto-images/oml2/oml2-2.11.0.tar.gz \
- && tar -xzvf oml2-2.11.0.tar.gz \
- && cd oml2-2.11.0 \
- && ./configure --disable-doc --disable-doxygen-doc --disable-doxygen-dot \
-        --disable-android --disable-doxygen-html --disable-option-checking \
- && make \
- && make install \
- && cd .. && rm -rf oml2-2.11.0
+RUN mkdir /var/www && chown www-data:www-data /var/www
 
-ARG USERNAME=dev
-ARG PUID=1000
-ARG PGID=1000
-
-RUN groupadd -g ${PGID} ${USERNAME} \
- && useradd -u ${PUID} -g ${USERNAME} -d /home/${USERNAME} ${USERNAME} \
- && mkdir /home/${USERNAME} \
- && chown -R ${USERNAME}:${USERNAME} /home/${USERNAME}
+RUN git clone https://github.com/mytestbed/oml.git && \
+    cd oml && \
+    git checkout tags/v2.11.0 && \
+    ./autogen.sh && \
+    ./configure --disable-doc --disable-doxygen-doc --disable-doxygen-dot \
+        --disable-android --disable-doxygen-html --disable-option-checking && \
+    make && \
+    make install && \
+    cd .. && rm -rf oml
 
 RUN sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen \
  && locale-gen
@@ -72,7 +70,16 @@ ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US.UTF-8 
 ENV LC_ALL en_US.UTF-8
 
-USER ${USERNAME}
-WORKDIR /home/${USERNAME}
+WORKDIR /shared
 
+RUN groupadd -g 1000 dev
+RUN useradd -u 1000 -g 1000 -m -N dev
 
+RUN chown -R dev:dev /shared
+
+USER dev
+
+RUN git config --global user.email "admin@iot-lab.info"
+RUN git config --global user.name "IoT-LAB"
+
+CMD ["/bin/bash"]
