@@ -23,3 +23,8 @@ DEPENDS += " \
 RDEPENDS_${PN} += " \
         python-dateutil \
         "
+
+do_install_append() {
+    # python3-virtualenv recipe clash
+    rm -f ${D}${bindir}/virtualenv
+}
