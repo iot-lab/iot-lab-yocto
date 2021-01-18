@@ -10,5 +10,12 @@ SRC_URI[sha256sum] = "304177defdcb403d84aeb0400b1625b1e65a7fff19f0441329f9f76ebf
 
 inherit pypi setuptools3
 
+RDEPENDS_${PN}_class-target += " \
+        python3-virtualenv \
+        python3-py \
+        python3-filelock \
+        python3-toml \
+        "
+
 DEPENDS += "${PYTHON_PN}-setuptools-scm-git-archive"
 
