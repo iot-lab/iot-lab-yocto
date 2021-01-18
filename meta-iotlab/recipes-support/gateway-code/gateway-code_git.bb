@@ -2,9 +2,9 @@ DESCRIPTION = "Gateway Python Code"
 LICENSE = "CECILL-2.0"
 LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/CECILL-2.0;md5=574109ac4bdff61f9c3e0de892ecbd19"
 
-DEPENDS = "python oml2 oml2-native"
+DEPENDS = "python oml2 oml2-native control-node-serial"
 
-SRC_URI  = "git://github.com/iot-lab/iot-lab-gateway.git;user=git;protocol=ssh \
+SRC_URI  = "git://github.com/iot-lab/iot-lab-gateway.git;protocol=https \
 	    file://start_dc_on \
 	    file://stop_dc_on"
 
