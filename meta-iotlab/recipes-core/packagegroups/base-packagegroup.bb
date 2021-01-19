@@ -21,7 +21,7 @@ RDEPENDS_${PN} += " \
     edbg \
     "
 
-# Python3 gateway code depedencies
+# Python3 gateway code dependencies
 RDEPENDS_${PN} += " \
     python3 \
     python3-pyserial \

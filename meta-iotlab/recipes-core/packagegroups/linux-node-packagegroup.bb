@@ -15,7 +15,7 @@ RDEPENDS_${PN} += " \
     initrdscripts-serial \
     "
 
-# OpenWSN python package depedencies
+# OpenWSN python package dependencies
 RDEPENDS_${PN} += " \
     python-scons \
     python-bottle \
@@ -38,7 +38,7 @@ RDEPENDS_${PN} += " \
     python3-pycryptodome \
     "
 
-# nghttp2 package depedencies
+# nghttp2 package dependencies
 RDEPENDS_${PN} += " \
     python3-cython \
     "

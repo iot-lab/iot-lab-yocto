@@ -173,7 +173,7 @@ IMAGE_INSTALL +="               \
 | recipes-kernel       | Linux kernel (eg. A8 nodes)                       |
 | recipes-support      | Gateway python app                                |
 | recipes-connectivity | OpenSSL/SSH, OML, websocket, MQTT, NTP            |
-| recipes-devtools     | OpenOCD, Edbg, Python2/3 depedencies              |
+| recipes-devtools     | OpenOCD, Edbg, Python2/3 dependencies              |
 
 
 
