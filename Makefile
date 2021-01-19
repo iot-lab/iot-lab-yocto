@@ -45,7 +45,13 @@ IMGS_MTD_RW_DIR = $(IMGS_DIR)-mtd-rw
 
 .PHONY: init submodules $(BUILD_DIR)/conf/local.conf
 
-init: submodules $(BUILD_DIR)/conf/local.conf
+ifeq (0,$(BUILD_IN_DOCKER))
+  # BUILD_IN_DOCKER set to 0 means we are running inside the container
+  IN_DOCKER = 1
+endif
+
+# only init when not in docker
+init: $(if $(IN_DOCKER),,submodules $(BUILD_DIR)/conf/local.conf)
 
 $(BUILD_DIR)/conf/local.conf:
 	sed -i "s/^BB_NUMBER_THREADS.*$$/BB_NUMBER_THREADS ?= \"$$(( $$(nproc) * 2 ))\"/" $@
@@ -75,8 +81,22 @@ build-all: $(IMAGES) $(EXTRA_BUILDS)
 
 $(IMAGES): %: build-img-% clean-img-%
 
+DOCKER_IMAGE ?= fitiotlab/iot-lab-yocto
+DOCKER_IMAGE_VERSION ?= latest
+# Use BUILD_IN_DOCKER=0 env to disable build in docker for sub-make, to avoid
+# recursive calls to docker
+DOCKER_CMD = docker run -ti --rm --hostname yocto   \
+    -v $(shell pwd):/shared                         \
+    -e BUILD_IN_DOCKER=0                            \
+    -e TARGET=$(TARGET)                             \
+    -u $(shell id -u):$(shell id -g)                \
+    $(DOCKER_IMAGE):$(DOCKER_IMAGE_VERSION)
+
 .PHONY: build-pkg-%
 build-pkg-%:
+ifeq (1,$(BUILD_IN_DOCKER))
+	$(DOCKER_CMD) make $@
+else
 	@# build package
 	time bash -c \
                 "source ./poky/oe-init-build-env $(BUILD_DIR); bitbake -k $*"
@@ -84,21 +104,33 @@ build-pkg-%:
 	@echo ""
 	@echo "$*" ipk package files should be found here:
 	@ls $(PKGS_DIR)/$**
+endif
 
 .PHONY: build-pkg-%-native
 build-pkg-%-native: init
+ifeq (1,$(BUILD_IN_DOCKER))
+	$(DOCKER_CMD) make $@
+else
 	@# build native package
 	time bash -c \
                 "source ./poky/oe-init-build-env $(BUILD_DIR); bitbake -k $*-native"
+endif
 
 .PHONY: clean-pkg-%
 clean-pkg-%: init
+ifeq (1,$(BUILD_IN_DOCKER))
+	$(DOCKER_CMD) make $@
+else
 	@# clean package
 	time bash -c \
                 "source ./poky/oe-init-build-env $(BUILD_DIR); bitbake -c cleanall $*"
+endif
 
 .PHONY: build-uboot
 build-uboot: init
+ifeq (1,$(BUILD_IN_DOCKER))
+	$(DOCKER_CMD) make $@
+else
 	@# build u-Boot
 	time bash -c \
                 "source ./poky/oe-init-build-env $(BUILD_DIR); bitbake -k virtual/bootloader"
@@ -107,15 +139,23 @@ build-uboot: init
 	@echo "$*" U-Boot files should be found here:
 	@ls $(IMGS_DIR)/u-boot*
 	@ls $(IMGS_DIR)/MLO*
+endif
 
 .PHONY: clean-uboot
 clean-uboot: init
+ifeq (1,$(BUILD_IN_DOCKER))
+	$(DOCKER_CMD) make $@
+else
 	@# clean u-boot
 	time bash -c \
                 "source ./poky/oe-init-build-env $(BUILD_DIR); bitbake -c cleanall virtual/bootloader"
+endif
 
 .PHONY: build-kernel
 build-kernel: init
+ifeq (1,$(BUILD_IN_DOCKER))
+	$(DOCKER_CMD) make $@
+else
 	@# build kernel
 	time bash -c \
                 "source ./poky/oe-init-build-env $(BUILD_DIR); bitbake -k virtual/kernel"
@@ -123,15 +163,23 @@ build-kernel: init
 	@echo ""
 	@echo "$*" Kernel files should be found here:
 	@ls $(IMGS_DIR)/$(KERNEL_IMG)*
+endif
 
 .PHONY: clean-kernel
 clean-kernel: init
+ifeq (1,$(BUILD_IN_DOCKER))
+	$(DOCKER_CMD) make $@
+else
 	@# clean kernel
 	time bash -c \
                 "source ./poky/oe-init-build-env $(BUILD_DIR); bitbake -c cleanall virtual/kernel"
+endif
 
 .PHONY: build-kernel-mtd-rw
 build-kernel-mtd-rw: init
+ifeq (1,$(BUILD_IN_DOCKER))
+	$(DOCKER_CMD) make $@
+else
 	@# build mtd writeable Kernel
 	time bash -c \
                 "source ./poky/oe-init-build-env $(BUILD_DIR); MACHINE=$(TARGET_IMG)-mtd-rw bitbake -k virtual/kernel"
@@ -139,15 +187,23 @@ build-kernel-mtd-rw: init
 	@echo ""
 	@echo "$*" Kernel mtd writeable files should be found here:
 	@ls $(IMGS_MTD_RW_DIR)/$(KERNEL_IMG)*
+endif
 
 .PHONY: clean-kernel-mtd-rw
 clean-kernel-mtd-rw: init
+ifeq (1,$(BUILD_IN_DOCKER))
+	$(DOCKER_CMD) make $@
+else
 	@# clean kernel mtd writeable package
 	time bash -c \
                 "source ./poky/oe-init-build-env $(BUILD_DIR); MACHINE=$(TARGET_IMG)-mtd-rw bitbake -c cleanall virtual/kernel"
+endif
 
 .PHONY: build-img-%
 build-img-%: init
+ifeq (1,$(BUILD_IN_DOCKER))
+	$(DOCKER_CMD) make $@
+else
 	@# build image
 	time bash -c \
 		"source ./poky/oe-init-build-env $(BUILD_DIR); bitbake -k $($*)"
@@ -155,6 +211,7 @@ build-img-%: init
 	@echo ""
 	@echo "$*" image files should be found here:
 	@ls $(IMGS_DIR)/$($*)*
+endif
 
 .PHONY: clean-img-%
 clean-img-%:
