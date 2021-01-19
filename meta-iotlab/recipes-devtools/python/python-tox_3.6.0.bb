@@ -17,10 +17,3 @@ RDEPENDS_${PN}_class-target += " \
         python-toml \
         "
 
-do_install_append() {
-    # python3-tox recipe clash
-    rm -f ${D}${bindir}/tox
-    rm -f ${D}${bindir}/tox-quickstart
-    rmdir ${D}${bindir}
-}
-

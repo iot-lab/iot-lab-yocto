@@ -20,3 +20,9 @@ RDEPENDS_${PN}_class-target += " \
 
 DEPENDS += "${PYTHON_PN}-setuptools-scm-git-archive"
 
+do_install_append() {
+    # python2-tox recipe clash
+    rm -f ${D}${bindir}/tox
+    rm -f ${D}${bindir}/tox-quickstart
+    rmdir ${D}${bindir}
+}
