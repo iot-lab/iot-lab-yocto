@@ -4,39 +4,38 @@ We provide a Docker image with all requirements to build and cross-compile IoT-L
 
 ### Build Yocto images and packages using the Docker container
 
-To build the `iotlab-image` using the Docker container, use the following
-command:
+To build the `iotlab-image` using the Docker container, just add
+`BUILD_IN_DOCKER=1` to the make command:
 
 ```
-docker run -it --rm --hostname yocto -u $(id -u):$(id -g) -v $(pwd):/shared fitiotlab/iot-lab-yocto make iotlab-image
+BUILD_IN_DOCKER=1 make iotlab-image
 ```
 
-The `make iotlab-image` is then run inside the container and use the provided
-build environment.
+And the `make iotlab-image` is run inside the container.
 
-Using the `-u $(id -u):$(id -g)` option, the local host user ids are
-automatically mapped to the `dev` user inside the container so the files
-created by the container have the right ownership.
+The local host user ids are automatically mapped to the `dev` user inside the
+container so the files created by the container have the right ownership.
 
 Other make target can also be used the same way:
 
 - build the `iotlab-image-gateway` image:
 
 ```
-docker run -it --rm --hostname yocto -u $(id -u):$(id -g) -v $(pwd):/shared fitiotlab/iot-lab-yocto make iotlab-image
+BUILD_IN_DOCKER=1 make iotlab-image
 ```
 
 - build a package (replace `<pkg-name>` at the end):
 
 ```
-docker run -it --rm --hostname yocto -u $(id -u):$(id -g) -v $(pwd):/shared fitiotlab/iot-lab-yocto make build-pkg-<pkg-name>
+BUILD_IN_DOCKER=1 make build-pkg-<pkg-name>
 ```
 
 By default, the target architecture is the var-som-am35 (e.g. the A8 chips). If
-you want to build for `rpi3`, add the `-e TARGET=rpi3` option to the Docker command:
+you want to build for `rpi3`, add `TARGET=rpi3` option to the make command, as
+usual:
 
 ```
-docker run -it --rm --hostname yocto -u $(id -u):$(id -g) -v $(pwd):/shared -e TARGET=rpi3 fitiotlab/iot-lab-yocto make iotlab-image
+BUILD_IN_DOCKER=1 TARGET=rpi3 make iotlab-image
 ```
 
 ### Build the Docker image locally
