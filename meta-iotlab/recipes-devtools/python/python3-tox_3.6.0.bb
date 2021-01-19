@@ -15,6 +15,7 @@ RDEPENDS_${PN}_class-target += " \
         python3-py \
         python3-filelock \
         python3-toml \
+        python3-pluggy \
         "
 
 DEPENDS += "${PYTHON_PN}-setuptools-scm-git-archive"
