@@ -33,6 +33,7 @@ RDEPENDS_${PN} += " \
     python3-mock \
     python3-pep8 \
     python3-pylint \
+    python3-pytest \
     python3-tox \
     python3-testfixtures \
     python3-webtest \
