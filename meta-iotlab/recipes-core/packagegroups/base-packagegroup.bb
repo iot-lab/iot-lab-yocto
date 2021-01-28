@@ -34,6 +34,7 @@ RDEPENDS_${PN} += " \
     python3-pep8 \
     python3-pylint \
     python3-pytest \
+    python3-pytest-cov \
     python3-tox \
     python3-testfixtures \
     python3-webtest \
