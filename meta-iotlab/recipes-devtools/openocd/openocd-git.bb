@@ -2,32 +2,31 @@ DESCRIPTION = "Free and Open On-Chip Debugging, In-System Programming and Bounda
 HOMEPAGE = "http://openocd.berlios.de/"
 SECTION = "utils"
 LICENSE = "GPLv2"
-## LIC_FILES_CHKSUM = "file://COPYING;md5=52aad3ae14f33671f4d848e9579f7870"
 LIC_FILES_CHKSUM = "file://COPYING;md5=b234ee4d69f5fce4486a80fdaf4a4263"
 
-PR = "r6"
+PR = "r1"
 
-DEPENDS = "jimtcl-git libftdi"
+DEPENDS = ""
+DEPENDS += "libftdi"
+DEPENDS += "libusb1"
+DEPENDS += "hidapi"
 DEPENDS += "texinfo-native"
-
-## ##################################################
-## ##################################################
-
-# validated version,
-# please keep version of the jimtcl package in sync.
-# v0.6.0 SRCREV="a6cf60c9c2387ca9f6c5a916ebf3d164554a7165"
-# v0.6.1 SRCREV="d9c4700b4de322a578fa4812a8492df7b1d2c451"
-
-# SRCREV="d9c4700b4de322a578fa4812a8492df7b1d2c451"
-# protocol=git
-# tag=v0.6.1
-
-SRCREV = "${AUTOREV}"
 
 PV = "gitr${SRCPV}"
 
-SRC_URI = "git://github.com/ntfreak/openocd.git;protocol=https \
-           file://openocd-link-static.patch"
+SRC_URI = " \
+    git://repo.or.cz/openocd.git;protocol=http;name=openocd \
+    git://repo.or.cz/r/git2cl.git;protocol=http;destsuffix=tools/git2cl;name=git2cl \
+    git://repo.or.cz/r/jimtcl.git;protocol=http;destsuffix=git/jimtcl;name=jimtcl \
+    git://repo.or.cz/r/libjaylink.git;protocol=http;destsuffix=git/src/jtag/drivers/libjaylink;name=libjaylink \
+    file://0001-static-library.patch \
+"
+
+SRCREV_FORMAT = "openocd"
+SRCREV_openocd = "7c88e76a76588fa0e3ab645adfc46e8baff6a3e4"
+SRCREV_git2cl = "8373c9f74993e218a08819cbcdbab3f3564bbeba"
+SRCREV_jimtcl = "0aa0fb4e3a38d38a49de9eb585d93d63a370dcf6"
+SRCREV_libjaylink = "dce11b89e85179a92a0fe3a90d2693ca891ed646"
 
 S = "${WORKDIR}/git"
 
@@ -36,24 +35,36 @@ S = "${WORKDIR}/git"
 
 PACKAGES = "${PN}-dbg ${PN}"
 
-FILES_${PN}-dbg += "/usr/local/bin/.debug"
-FILES_${PN}     += "/usr/local"
+FILES_${PN}-dbg += "/opt/openocd-dev/.debug"
+FILES_${PN}     += "/opt/openocd-dev"
 
-inherit autotools
+# inherit autotools
+# Don't use out of tree build
+inherit autotools-brokensep pkgconfig gettext
 
-EXTRA_OECONF = " --enable-ft2232_libftdi --disable-ftdi2232 --disable-ftd2xx --disable-internal-jimtcl --disable-werror "
+EXTRA_OECONF = ""
+EXTRA_OECONF += " --disable-werror "
 
-PARAMS_BUILD = " --enable-largefile --disable-nls --enable-ipv6 --with-libtool-sysroot=${STAGING_DIR_TARGET} "
-PARAMS_CROSS = " --build=${BUILD_SYS} --host=${HOST_SYS} --target=${TARGET_SYS} "
-PARAMS_INST  = " --prefix=/usr/local "
+# samr21
+EXTRA_OECONF += " --enable-cmsis-dap --enable-hidapi-libusb "
+EXTRA_OECONF += " --enable-maintainer-mode "
+
+# nrf52dk
+EXTRA_OECONF += " --enable-jlink "
+
+PARAMS_BUILD  = " --enable-largefile --disable-nls --enable-ipv6 --with-sysroot=${STAGING_DIR_TARGET} --with-libtool-sysroot=${STAGING_DIR_TARGET} "
+
+PARAMS_CROSS  = " --build=${BUILD_SYS} --host=${HOST_SYS} --target=${TARGET_SYS} "
+PARAMS_CROSS += " --libdir=${STAGING_DIR_TARGET}/lib "
+PARAMS_INST   = " --prefix=/opt/openocd-dev "
 
 do_configure() {
-	       ./bootstrap nosubmodule
-	       echo -e "@set UPDATED 09 April 2012\n@set UPDATED-MONTH April 2012\n@set EDITION 0.6.0\n@set VERSION 0.6.0" > doc/version.texi
-
-	       ## oe_runconf does *not* work and must not be used here
-               ## (it includes /usr/include which is a very bad idea ...)
-	       ./configure ${PARAMS_CROSS} ${PARAMS_BUILD} ${EXTRA_OECONF}
+    # Build jimtcl in a separate package !!!!!!! got segfault when not doing it
+    # So nosubmodule
+    ./bootstrap nosubmodule
+    ## oe_runconf does *not* work and must not be used here
+    ./configure ${PARAMS_INST} ${PARAMS_CROSS} ${PARAMS_BUILD} ${EXTRA_OECONF}
+    #oe_runconf ${PARAMS_INST} ${PARAMS_CROSS} ${PARAMS_BUILD} ${EXTRA_OECONF}
 }
 
 ## ##################################################

@@ -9,8 +9,7 @@ RDEPENDS_${PN} += " \
     initrdscripts-settime \
     initrdscripts-volatile \
     openocd \
-    openocd-last \
-    openocd-upstream \
+    openocd-git \
     python-cc2538-bsl \
     python-pyocd \
     edbg \

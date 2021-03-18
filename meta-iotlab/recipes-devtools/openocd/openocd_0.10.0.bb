@@ -30,8 +30,8 @@ S = "${WORKDIR}/git"
 
 PACKAGES = "${PN}-dbg ${PN}"
 
-FILES_${PN}-dbg += "/opt/openocd-0.10.0/.debug"
-FILES_${PN}     += "/opt/openocd-0.10.0"
+FILES_${PN}-dbg += "/usr/local/bin/.debug"
+FILES_${PN}     += "/usr/local"
 
 # inherit autotools
 # Don't use out of tree build
@@ -55,7 +55,7 @@ PARAMS_BUILD += " --disable-internal-jimtcl "
 
 PARAMS_CROSS  = " --build=${BUILD_SYS} --host=${HOST_SYS} --target=${TARGET_SYS} "
 PARAMS_CROSS += " --libdir=${STAGING_DIR_TARGET}/lib "
-PARAMS_INST   = " --prefix=/opt/openocd-0.10.0 "
+PARAMS_INST   = " --prefix=/usr/local "
 
 ## --enable-ipv6
 ## --libdir=${STAGING_DIR_TARGET}/lib
