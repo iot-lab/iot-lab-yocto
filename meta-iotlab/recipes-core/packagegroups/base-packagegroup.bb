@@ -10,6 +10,7 @@ RDEPENDS_${PN} += " \
     initrdscripts-volatile \
     openocd \
     openocd-git \
+    openocd-ti \
     python-cc2538-bsl \
     python-pyocd \
     edbg \
