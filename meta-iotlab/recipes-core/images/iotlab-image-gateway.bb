@@ -3,5 +3,4 @@ include iotlab-image.inc
 
 IMAGE_INSTALL += " \
         gateway-packagegroup \
-        u-boot-fw-utils \
         "
