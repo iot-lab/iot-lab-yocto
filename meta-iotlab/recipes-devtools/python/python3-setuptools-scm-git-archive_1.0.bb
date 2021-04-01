@@ -6,8 +6,13 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=838c366f69b72c5df05c96dff79b35f2"
 
 PYPI_PACKAGE = "setuptools_scm_git_archive"
 
-DEPENDS += "${PYTHON_PN}"
-DEPENDS_class-native += "${PYTHON_PN}-native"
+DEPENDS += "\
+    ${PYTHON_PN}-setuptools-scm-native \
+"
+
+RDEPENDS_${PN} += "\
+    ${PYTHON_PN}-setuptools-scm \
+"
 
 DEPENDS += "${PYTHON_PN}-setuptools-scm-native"
 
