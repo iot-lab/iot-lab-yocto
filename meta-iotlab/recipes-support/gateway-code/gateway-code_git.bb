@@ -74,6 +74,8 @@ RDEPENDS_${PN} += "python3-pytest"
 RDEPENDS_${PN} += "python3-pytest-cov"
 RDEPENDS_${PN} += "python3-webtest"
 RDEPENDS_${PN} += "python3-codecov"
+RDEPENDS_${PN} += "python3-beautifulsoup4"
+RDEPENDS_${PN} += "python3-webob"
 
 USERADD_PACKAGES = "${PN}"
 USERADD_PARAM_${PN} = "-u 33 -g 33 -d ${WWW_DIR} -r -M -s /bin/sh ${WWW_USER}"
