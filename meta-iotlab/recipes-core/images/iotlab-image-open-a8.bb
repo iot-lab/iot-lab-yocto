@@ -3,6 +3,5 @@ include iotlab-image.inc
 
 IMAGE_INSTALL += " \
         linux-node-packagegroup \
-        u-boot-fw-utils \
         flash-scripts-open-a8 \
         "
