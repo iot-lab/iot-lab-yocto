@@ -48,14 +48,12 @@ IMAGE_INSTALL +="               \
         ntp-waitsync            \
         ntp-utils               \
         python3                 \
-        python3-pyserial        \
         python3-dev             \
         python3-misc            \
         python3-modules         \
         python3-pip             \
         python3-magic           \
         python3-setuptools      \
-        python3-intelhex        \
         vim                     \
         "
 
@@ -134,7 +132,5 @@ IMAGE_INSTALL += "              \
         openssh-sftp-server     \
         \
         curl                    \
-        \
-        avrdude                 \
         \
         "
