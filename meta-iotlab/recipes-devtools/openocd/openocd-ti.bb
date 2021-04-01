@@ -32,7 +32,7 @@ FILES_${PN}     += "/opt/openocd-ti"
 
 # inherit autotools
 # Don't use out of tree build
-inherit autotools-brokensep
+inherit autotools-brokensep pkgconfig
 
 EXTRA_OECONF = ""
 EXTRA_OECONF += " --disable-werror "
