@@ -8,7 +8,9 @@ PYPI_PACKAGE = "tox"
 
 SRC_URI[sha256sum] = "304177defdcb403d84aeb0400b1625b1e65a7fff19f0441329f9f76ebf67882f"
 
-inherit pypi
+inherit pypi setuptools3
+
+DEPENDS += "${PYTHON_PN}-setuptools-scm-native"
 
 RDEPENDS_${PN}_class-target += " \
         python3-virtualenv \
