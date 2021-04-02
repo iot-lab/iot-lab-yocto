@@ -8,7 +8,7 @@ PYPI_PACKAGE = "tox"
 
 SRC_URI[sha256sum] = "304177defdcb403d84aeb0400b1625b1e65a7fff19f0441329f9f76ebf67882f"
 
-inherit pypi setuptools3
+inherit pypi
 
 RDEPENDS_${PN}_class-target += " \
         python3-virtualenv \
@@ -17,12 +17,3 @@ RDEPENDS_${PN}_class-target += " \
         python3-toml \
         python3-pluggy \
         "
-
-DEPENDS += "${PYTHON_PN}-setuptools-scm-git-archive"
-
-do_install_append() {
-    # python2-tox recipe clash
-    rm -f ${D}${bindir}/tox
-    rm -f ${D}${bindir}/tox-quickstart
-    rmdir ${D}${bindir}
-}
