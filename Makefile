@@ -68,7 +68,7 @@ ifdef BUILD_DOWNLOAD_DIR
 endif
 
 submodules:
-	git submodule update --init
+	git submodule update --init --force --remote
 
 # # # # # # # # # # # # # # # # # # # # #
 # Building images and packages targets  #
