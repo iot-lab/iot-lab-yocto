@@ -65,7 +65,7 @@ $(BUILD_DIR)/conf/local.conf:
 	sed -i "s/^PARALLEL_MAKE.*$$/PARALLEL_MAKE ?= \"-j $$(( $$(nproc) * 2 ))\"/"      $@
 
 submodules:
-	git submodule update --init
+	git submodule update --init --force --remote
 
 # # # # # # # # # # # # # # # # # # # # #
 # Building images and packages targets  #
