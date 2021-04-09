@@ -12,3 +12,8 @@ SRC_URI[sha256sum] = "49ec4eb4c224c6f7dd81bb6d0a28a09ecae5894f4e593c89b0db0885f5
 PYPI_PACKAGE = "virtualenv"
 
 inherit pypi setuptools3
+
+RDEPENDS_${PN}_class-target += " \
+        python3-distlib \
+        python3-appdirs \
+        "
