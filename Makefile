@@ -85,7 +85,7 @@ DOCKER_IMAGE ?= fitiotlab/iot-lab-yocto
 DOCKER_IMAGE_VERSION ?= latest
 # Use BUILD_IN_DOCKER=0 env to disable build in docker for sub-make, to avoid
 # recursive calls to docker
-DOCKER_CMD = docker run -ti --rm --hostname yocto   \
+DOCKER_CMD = docker run --rm --hostname yocto   \
     -v $(shell pwd):/shared                         \
     -e BUILD_IN_DOCKER=0                            \
     -e TARGET=$(TARGET)                             \
