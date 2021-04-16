@@ -16,6 +16,8 @@ S = "${WORKDIR}/pyOCD-${PV}"
 
 inherit setuptools
 
+DEPENDS += "${PYTHON_PN}-setuptools-scm-native"
+
 RDEPENDS_${PN} += "python-pyusb python-websocket-client python-enum34 python-future"
 
 do_install_append() {

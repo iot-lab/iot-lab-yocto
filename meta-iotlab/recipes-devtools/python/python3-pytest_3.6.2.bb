@@ -23,6 +23,8 @@ RDEPENDS_${PN}_class-target += " \
 
 inherit pypi setuptools3
 
+DEPENDS += "${PYTHON_PN}-setuptools-scm-native"
+
 do_install_append() {
     # python2-pytest recipe clash
     rm -f ${D}${bindir}/py.test
