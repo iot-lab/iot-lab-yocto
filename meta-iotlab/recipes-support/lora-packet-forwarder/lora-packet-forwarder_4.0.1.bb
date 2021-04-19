@@ -54,3 +54,5 @@ FILES_${PN}-dbg += "${LORA_DIR}/.debug ${LORA_DIR}/forwarder-utils/.debug"
 do_rm_work() {
   echo "skipping"
 }
+
+INSANE_SKIP_${PN} += "ldflags"
