@@ -49,3 +49,5 @@ FILES_${PN}-staticdev = "${libdir}/lora"
 FILES_${PN}-utils = "/opt/lora-gateway/gateway-utils/*"
 FILES_${PN}-utils-dbg = "/opt/lora-gateway/gateway-utils/.debug"
 FILES_${PN}-dev = "${includedir}/lora ${libdir}/lora/library.cfg"
+
+INSANE_SKIP_${PN} += "ldflags"
