@@ -22,6 +22,9 @@ ifeq ($(TARGET), a8)
   iotlab-image = iotlab-image-open-a8
   iotlab-image-gateway = iotlab-image-gateway
   iotlab-image-autotest = iotlab-image-open-a8-autotest
+
+  # We also build a mtd-rw version of the kernel for A8
+  EXTRA_BUILDS = build-kernel-mtd-rw
 else ifeq ($(TARGET), rpi3)
   BUILD_DIR = build-rpi3
   TARGET_ARCH = cortexa7t2hf-neon-vfpv4
