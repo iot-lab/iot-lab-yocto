@@ -32,6 +32,7 @@ ROOTFS_POSTPROCESS_COMMAND += "re_add_rw_to_rootfs; "
 ROOTFS_RO_UNNEEDED = "${VIRTUAL-RUNTIME_update-alternatives} ${ROOTFS_BOOTSTRAP_INSTALL}"
 
 DISTRO_FEATURES += "nfs ipv6"
+DISTRO_FEATURES_remove += "ptest"
 
 IMAGE_INSTALL +="               \
         tzdata                  \
