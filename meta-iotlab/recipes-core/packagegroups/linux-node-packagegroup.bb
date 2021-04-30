@@ -38,6 +38,11 @@ RDEPENDS_${PN} += " \
     python3-pycryptodome \
     "
 
+# Jool NAT64 tools
+RDEPENDS_${PN} += " \
+    jool-tools \
+    "
+
 # nghttp2 package dependencies
 RDEPENDS_${PN} += " \
     python3-cython \
