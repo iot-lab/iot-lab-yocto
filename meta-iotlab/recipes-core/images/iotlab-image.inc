@@ -80,6 +80,7 @@ IMAGE_INSTALL +="               \
         "
 
 IMAGE_INSTALL += "              \
+        libubootenv             \
         mtd-utils               \
         \
         cmake                   \
