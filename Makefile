@@ -56,6 +56,9 @@ init: $(if $(IN_DOCKER),,submodules $(BUILD_DIR)/conf/local.conf)
 $(BUILD_DIR)/conf/local.conf:
 	sed -i "s/^BB_NUMBER_THREADS.*$$/BB_NUMBER_THREADS ?= \"$$(( $$(nproc) * 2 ))\"/" $@
 	sed -i "s/^PARALLEL_MAKE.*$$/PARALLEL_MAKE ?= \"-j $$(( $$(nproc) * 2 ))\"/"      $@
+ifdef BUILD_DOWNLOAD_DIR
+	sed -i "s/^\DL_DIR.*$$/DL_DIR ?= \"$(subst /,\/,$(BUILD_DOWNLOAD_DIR))\/downloads\"/" $@
+endif
 
 submodules:
 	git submodule update --init
@@ -85,15 +88,16 @@ DOCKER_IMAGE ?= fitiotlab/iot-lab-yocto
 DOCKER_IMAGE_VERSION ?= latest
 # Use BUILD_IN_DOCKER=0 env to disable build in docker for sub-make, to avoid
 # recursive calls to docker
-DOCKER_CMD = docker run --rm --hostname yocto   \
+DOCKER_CMD = docker run --rm --hostname yocto       \
     -v $(shell pwd):/shared                         \
+    $(if $(BUILD_DOWNLOAD_DIR),-v $(BUILD_DOWNLOAD_DIR):$(BUILD_DOWNLOAD_DIR),) \
     -e BUILD_IN_DOCKER=0                            \
     -e TARGET=$(TARGET)                             \
     -u $(shell id -u):$(shell id -g)                \
     $(DOCKER_IMAGE):$(DOCKER_IMAGE_VERSION)
 
 .PHONY: build-pkg-%
-build-pkg-%:
+build-pkg-%: init
 ifeq (1,$(BUILD_IN_DOCKER))
 	$(DOCKER_CMD) make $@
 else
