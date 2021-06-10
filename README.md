@@ -45,7 +45,7 @@ Build Linux kernel/U-boot
 Manual process
 --------------
    
-    $ git submodule update --init (eg. only the first time)
+    $ git submodule update --init --remote (eg. only the first time)
     $ source ./poky/oe-init-build-env build
     $ bitbake -k iotlab-image-open-a8
     $ bitbake -k <pkg_name>
@@ -59,25 +59,31 @@ If you want to build for RPI3 hardware:
 Yocto and OpenEmbedded
 ----------------------
 
-At the top of the directory you can find a local copy of Yocto project (eg. poky directory) and a collection of [OpenEmbedded](https://www.openembedded.org/wiki/Main_Page) layers (eg. meta-openembedded).
+At the top of the directory you can find a local copy of:
+
+* Yocto project (poky)
+* [OpenEmbedded](https://www.openembedded.org/wiki/Main_Page) layers (meta-openembedded)
+* Raspberry Pi boards layer (meta-raspberrypi)
+* Java OpenJDK layer (meta-java)
 
 The build system uses sub-modules and were initialized as follows:
 
-    $ git submodule add -b krogoth git://git.yoctoproject.org/poky
-    $ git submodule add -b krogoth git://git.openembedded.org/meta-openembedded
-    $ git submodule add -b krogoth git://git.yoctoproject.org/meta-java
-    $ git commit -m "Add submodules meta-openembedded/poky/meta-java "
+    $ git submodule add -b dunfell git://git.yoctoproject.org/poky
+    $ git submodule add -b dunfell git://git.openembedded.org/meta-openembedded
+    $ git submodule add -b dunfell git://git.yoctoproject.org/meta-java
+    $ git submodule add -b dunfell git://git.yoctoproject.org/meta-raspberrypi
+    $ git commit -m "Add submodules meta-openembedded/poky/meta-java/meta-raspberrypi"
 
 Use `git submodule status` and/or check file .gitmodules for details.
    
     $ git submodule status
-    67e48693501bddb80745b9735b7b3d4d28dce9a1 meta-java (heads/krogoth)
-    851a064b53dca3b14dd33eaaaca9573b1a36bf0e meta-openembedded (851a064)
-    cca8dd15c8096626052f6d8d25ff1e9a606104a3 poky (yocto-2.1.2)
-
+    -67e48693501bddb80745b9735b7b3d4d28dce9a1 meta-java
+    -55c8a76da5dc099a7bc3838495c672140cedb78e meta-openembedded
+    -a5f9b07a820d50ae5fb62e07306cd4e72d8638a9 meta-raspberrypi
+    -50fdd784231299bedb008f20adeaeeca3eb1452d poky
 
 The sub-modules are set to allow for tracking of upstream updates
-on branch krogoth, current release of yocto as of Feb. 2017. You may
+on branch dunfell, current TLS release version of Yocto. You may
 update the sub-modules to use the latest upstream version using:
 
     $ git submodule update --remote
