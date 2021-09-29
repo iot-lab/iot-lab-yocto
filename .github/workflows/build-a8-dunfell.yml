@@ -18,7 +18,7 @@ jobs:
       - name: Check out install-lib repo
         uses: actions/checkout@v2
         with:
-          name: iot-lab/iot-lab-dev
+          repository: iot-lab/iot-lab-dev
           token: ${{ secrets.IOTLAB_TOKEN }}
       - name: Check out the repo
         uses: actions/checkout@v2
