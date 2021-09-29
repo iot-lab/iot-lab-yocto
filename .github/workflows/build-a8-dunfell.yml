@@ -11,9 +11,9 @@ on:
     - master
 
 jobs:
-  push_to_registry:
+  build_images:
     name: Build images
-    runs-on: iot-lab-debian-10-1 
+    runs-on: self-hosted 
     steps:
       - name: Check out install-lib repo
         uses: actions/checkout@v2
