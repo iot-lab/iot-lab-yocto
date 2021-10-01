@@ -1,0 +1,5 @@
+ALTERNATIVE_${PN}-dev += "python python-config"
+ALTERNATIVE_LINK_NAME[python] = "${bindir}/python"
+ALTERNATIVE_TARGET[python] = "${bindir}/python3"
+ALTERNATIVE_LINK_NAME[python-config] = "${bindir}/python-config"
+ALTERNATIVE_TARGET[python-config] = "${bindir}/python3-config"
