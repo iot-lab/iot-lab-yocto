@@ -24,3 +24,6 @@ jobs:
         uses: actions/checkout@v2
         with:
           path: ./parts/iot-lab-yocto
+      - name: Build image
+        run: |
+          make BUILD_IN_DOCKER=1 BUILD_DOWNLOAD_DIR=/home/ci DISTRO_RELEASE=dunfell build-and-upload-images
