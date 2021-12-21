@@ -13,4 +13,5 @@ IMAGE_INSTALL += " \
     lora-packet-forwarder \
     lora-gateway-bridge \
     mosquitto \
+    uhubctl \
 	"
