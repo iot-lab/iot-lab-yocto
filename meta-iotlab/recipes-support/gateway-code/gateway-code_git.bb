@@ -27,7 +27,8 @@ WWW_USER ?= "www-data"
 inherit update-rc.d setuptools3 useradd
 INITSCRIPT_PACKAGES = "${PN}-server"
 INITSCRIPT_NAME_${PN}-server = "gateway-server-daemon"
-INITSCRIPT_PARAMS_${PN}-server = "defaults"
+# must start after gateway-server-network init.d script (S83/K17) which set virtual ip for open nodes
+INITSCRIPT_PARAMS_${PN}-server = "defaults 85 15"
 
 do_install_append () {
 	install -d ${D}${sysconfdir}/udev/rules.d/
