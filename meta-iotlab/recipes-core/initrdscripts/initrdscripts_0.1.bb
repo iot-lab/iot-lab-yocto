@@ -13,16 +13,17 @@ SRC_URI += "file://ipv6.profile"
 SRC_URI += "file://flash_idle"
 SRC_URI += "file://nfs_mount_conf_shared"
 SRC_URI += "file://nfs_mount_conf_users"
+SRC_URI += "file://gateway-server-network"
 SRC_URI += "file://serial_redirection"
 
 # split package to use update-rc.d class
 ALLOW_EMPTY_${PN}   = "1"
 
-RDEPENDS_${PN}      = "${PN}-settime ${PN}-volatile ${PN}-ipv6 ${PN}-flashidle ${PN}-mountnode ${PN}-mountgw ${PN}-serial"
-PACKAGES            =+ "${PN}-settime ${PN}-volatile ${PN}-ipv6 ${PN}-flashidle ${PN}-mountnode ${PN}-mountgw ${PN}-serial"
+RDEPENDS_${PN}      = "${PN}-settime ${PN}-volatile ${PN}-ipv6 ${PN}-flashidle ${PN}-mountnode ${PN}-mountgw ${PN}-networkgw ${PN}-serial"
+PACKAGES            =+ "${PN}-settime ${PN}-volatile ${PN}-ipv6 ${PN}-flashidle ${PN}-mountnode ${PN}-mountgw ${PN}-networkgw ${PN}-serial"
 
 inherit update-rc.d
-INITSCRIPT_PACKAGES = "${PN}-settime ${PN}-volatile ${PN}-ipv6 ${PN}-flashidle ${PN}-mountnode ${PN}-mountgw"
+INITSCRIPT_PACKAGES = "${PN}-settime ${PN}-volatile ${PN}-ipv6 ${PN}-flashidle ${PN}-mountnode ${PN}-mountgw ${PN}-networkgw"
 
 INITSCRIPT_NAME_${PN}-volatile   = "set_default_values_to_volatile.sh"
 INITSCRIPT_PARAMS_${PN}-volatile = "start 80 S ."
@@ -35,17 +36,22 @@ INITSCRIPT_PARAMS_${PN}-settime  = "start 81 S ."
 FILES_${PN}-settime              = "${sysconfdir}/init.d/set_time.sh"
 
 INITSCRIPT_NAME_${PN}-mountnode       = "nfs_mount_conf_shared"
-INITSCRIPT_PARAMS_${PN}-mountnode     = "start 82 S . stop 18 0 6 ."
+INITSCRIPT_PARAMS_${PN}-mountnode     = "defaults 82 18"
 FILES_${PN}-mountnode                 = "${sysconfdir}/init.d/nfs_mount_conf_shared"
 
 INITSCRIPT_NAME_${PN}-mountgw       = "nfs_mount_conf_users"
-INITSCRIPT_PARAMS_${PN}-mountgw     = "start 82 S . stop 18 0 6 ."
+INITSCRIPT_PARAMS_${PN}-mountgw     = "defaults 82 18"
 FILES_${PN}-mountgw                 += "${sysconfdir}/init.d/nfs_mount_conf_users"
 FILES_${PN}-mountgw                 += "/iotlab/users"
 
+# start AFTER nfs mount (check eth0 ip to mount nfs directory)
+
+INITSCRIPT_NAME_${PN}-networkgw       = "gateway-server-network"
+INITSCRIPT_PARAMS_${PN}-networkgw     = "defaults 83 17"
+FILES_${PN}-networkgw                 += "${sysconfdir}/init.d/gateway-server-network"
+
 INITSCRIPT_NAME_${PN}-ipv6       = "networking_ipv6"
-# start AFTER nfs mounting
-INITSCRIPT_PARAMS_${PN}-ipv6     = "start 83 S ."
+INITSCRIPT_PARAMS_${PN}-ipv6     = "defaults 84 16"
 FILES_${PN}-ipv6                 += "${sysconfdir}/init.d/networking_ipv6"
 FILES_${PN}-ipv6                 += "${sysconfdir}/profile.d/ipv6.sh"
 
@@ -90,6 +96,9 @@ do_install() {
 
     # mount linux node
     install -m 0755 ${S}/nfs_mount_conf_shared             ${D}/${sysconfdir}/init.d/
+
+    # gateway-server network (virtual ip for open nodes)
+    install -m 0755 ${S}/gateway-server-network            ${D}/${sysconfdir}/init.d/
 
     # serial redirection
     install -m 0755 ${S}/serial_redirection                ${D}/${sysconfdir}/init.d/

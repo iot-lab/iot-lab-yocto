@@ -1,0 +1,62 @@
+#!/bin/bash
+
+# Startup script for setup network configuration of Open Nodes
+# configured on the gateway
+
+NAME=gateway-server-network
+
+: ${CONFDIR:="/var/local/config"}
+
+network_control() {
+  local command=$1
+  local bind_ip=$2
+
+  case "${command}" in
+    start)
+      echo "Adding ${bind_ip} address ... "
+      ip addr add ${bind_ip}/21 brd + dev eth0
+      ;;
+    stop)
+      echo "Deleting ${bind_ip} address ... "
+      ip addr del ${bind_ip}/21 dev eth0
+      ;;
+    restart)
+      $0 stop
+      sleep 2
+      $0 start
+      ;;
+    *)
+      echo "Usage: /etc/init.d/${NAME} {start|stop|restart}"
+      exit 1
+      ;;
+  esac
+}
+
+get_primary_ip() {
+  primary_ip=$(ip -4 addr show eth0 | grep -v "secondary" | grep -Po '(?<=inet )[\d.]+')
+}
+
+main() {
+  # Exit if only one Open Node is configured on the gateway
+  if [ -f "${CONFDIR}/board_type" ]; then exit 0; fi
+  get_primary_ip
+  for on_conf_path in $(find ${CONFDIR} -mindepth 1 -type d | sort)
+  do
+    local ip_file="${on_conf_path}"/ip
+    if [ -f "${ip_file}" ]
+    then
+      local bind_ip=$(cat "${ip_file}")
+      if [ "${bind_ip}" != "${primary_ip}" ]
+      then
+        network_control "$1" "${bind_ip}"
+      fi
+    fi
+  done
+}
+
+COMMAND="$1"
+shift # pop $1 from $@
+
+main ${COMMAND}
+
+exit 0

@@ -9,5 +9,6 @@ RDEPENDS_${PN} += " \
     gateway-code-server \
     ftdi-utils \
     initrdscripts-mountgw \
+    initrdscripts-networkgw \
     sshd-keys-gw \
     "
