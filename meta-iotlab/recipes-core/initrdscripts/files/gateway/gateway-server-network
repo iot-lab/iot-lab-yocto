@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # Startup script for setup network configuration of Open Nodes
 # configured on the gateway
