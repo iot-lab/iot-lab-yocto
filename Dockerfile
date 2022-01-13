@@ -3,6 +3,7 @@ FROM debian:stretch
 RUN apt-get update -yq \
  && DEBIAN_FRONTEND=noninteractive \
     apt-get install -yq --no-install-recommends \
+    ca-certificates \
     # Yocto requirements
     build-essential \
     chrpath \
@@ -81,5 +82,7 @@ USER dev
 
 RUN git config --global user.email "admin@iot-lab.info"
 RUN git config --global user.name "IoT-LAB"
+# bug with ca-certificates
+RUN git config --global http.sslverify false
 
 CMD ["/bin/bash"]
