@@ -1,4 +1,4 @@
-DESCRIPTION = "IoT-LAB image for Open A8 used by users"
+DESCRIPTION = "IoT-LAB image for RPI3 gateways"
 include iotlab-image.inc
 
 # Include modules in rootfs
@@ -14,4 +14,5 @@ IMAGE_INSTALL += " \
     lora-gateway-bridge \
     mosquitto \
     segger-jlink \	
+    uhubctl \
 	"
