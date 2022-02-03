@@ -18,4 +18,5 @@ RDEPENDS_${PN} += " \
     python3-cc2538-bsl \
     python3-pyocd \
     edbg \
+    pycom-utils \
     "
