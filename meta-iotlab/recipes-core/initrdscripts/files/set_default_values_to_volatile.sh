@@ -10,7 +10,7 @@ grep -e "nameserver" -e "domain" /proc/net/pnp >> /var/run/resolv.conf
 #
 # /etc/hosts
 #
-NFS_SERVER_IP=$(sed -n '/bootserver/ s/bootserver //p' /proc/net/pnp)
+NFS_SERVER_IP=$(grep -oE "([0-9]{1,3}\.){3}[0-9]{1,3}" /proc/net/nfsfs/servers)
 NETWORK_GATEWAY=$(ip route show dev eth0 | sed -n '/default/ {s/.*via //;s/ dev.*//;p}')
 # copy default and add other entries
 cp   /etc/default/hosts         /var/run/hosts
