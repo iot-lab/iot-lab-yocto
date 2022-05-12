@@ -53,11 +53,11 @@ FILES_${PN}-server += "${bindir}/start_dc_on"
 FILES_${PN}-server += "${bindir}/stop_dc_on"
 FILES_${PN}-server += "${sysconfdir}/init.d/gateway-server-daemon"
 
+RDEPENDS_${PN}-server = "bash" 
 RDEPENDS_${PN} = "openocd socat oml2 control-node-serial"
 RDEPENDS_${PN} += "python3 python3-pyserial"
 RDEPENDS_${PN} += "python3-bottle python3-paste"
 RDEPENDS_${PN} += "python3-pyelftools"
-
 # for usermod on postinst
 RDEPENDS_${PN} += "shadow"
 RDEPENDS_${PN} += "openssh-ssh openssh-scp"
