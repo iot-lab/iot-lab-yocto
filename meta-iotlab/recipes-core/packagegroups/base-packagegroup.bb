@@ -19,4 +19,5 @@ RDEPENDS_${PN} += " \
     python3-pyocd \
     edbg \
     pycom-utils \
+    segger-jlink \
     "
