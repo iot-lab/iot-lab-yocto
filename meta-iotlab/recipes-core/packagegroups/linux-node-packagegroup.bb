@@ -35,6 +35,9 @@ RDEPENDS_${PN} += " \
     "
 
 RDEPENDS_${PN} += " \
+    libmosquitto1 \
+    libmosquittopp1 \
+    mosquitto-clients \
     mosquitto \
     mosquitto-rsmb \
     paho-mqtt-c \
