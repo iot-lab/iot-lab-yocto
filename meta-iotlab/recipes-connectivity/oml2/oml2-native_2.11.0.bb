@@ -6,7 +6,7 @@ LIC_FILES_CHKSUM ?= "file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecd
 require oml2_${PV}.bb
 inherit native
 
-DEPENDS += "libxml2-native pkgconfig-native gnulib-native python3"
+DEPENDS += "libxml2-native pkgconfig-native gnulib-native python3-native popt-native"
 
 SRC_URI += "file://0001-configure-use-pkg-config.patch"
 
@@ -17,4 +17,10 @@ do_configure_prepend() {
     cd ${S}
     ./autogen.sh
     cd ${B}
+}
+
+do_install:append:class-native() {
+    if [ -f ${D}${bindir}/oml2-scaffold ]; then
+        sed -i '1s|^#!/usr/bin/ruby$|#!/usr/bin/env ruby|' ${D}${bindir}/oml2-scaffold
+    fi
 }

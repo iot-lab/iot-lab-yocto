@@ -6,8 +6,8 @@ LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/Apache-2.0;md5=89aea4e17d99a7ca
 
 PYPI_PACKAGE = "codecov"
 
-SRC_URI[md5sum] = "ff791c7e7d9cdcff322a8e08e22b1904"
-SRC_URI[sha256sum] = "491938ad774ea94a963d5d16354c7299e90422a33a353ba0d38d0943ed1d5091"
+SRC_URI[md5sum] = "8f8c02818963d34b011fd5b669cf900b"
+SRC_URI[sha256sum] = "2362b685633caeaf45b9951a9b76ce359cd3581dd515b430c6c3f5dfb4d92a8c"
 
 RDEPENDS_${PN}_class-target += " \
     ${PYTHON_PN}-requests \

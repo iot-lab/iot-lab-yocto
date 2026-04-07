@@ -1,8 +1,11 @@
-FROM debian:stretch
+FROM scratch
+ADD debian-stretch.tar.gz /
 
-RUN apt-get update -yq \
- && DEBIAN_FRONTEND=noninteractive \
-    apt-get install -yq --no-install-recommends \
+ARG DEBIAN_FRONTEND=noninteractive 
+#RUN echo "deb http://archive.debian.org/debian stretch main contrib non-free" > /etc/apt/sources.list 
+
+RUN apt-get update -qq && \
+    apt-get install -y --no-install-recommends \
     ca-certificates \
     # Yocto requirements
     build-essential \
@@ -29,12 +32,14 @@ RUN apt-get update -yq \
     python3-jinja2 \
     python-dev \
     screen \
+    socat \
     texinfo \
     time \
     unzip \
     wget \
     xterm \
     xz-utils \
+    vim \
     # Oml2 requirements
     autoconf \
     automake \

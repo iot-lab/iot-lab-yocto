@@ -8,3 +8,5 @@ tmp/
 sanity_info
 templateconf.cfg
 .idea/
+build-rpi4-v1/
+*.tar.gz

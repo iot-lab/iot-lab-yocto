@@ -3,14 +3,14 @@ LICENSE = "CLOSED"
 LIC_FILES_CHKSUM = "\
                     file://Doc/LicenseIncGUI.txt;md5=e4b273c1048dd2c3afe701297ce62697 \
                    "
-S = "${WORKDIR}/JLink_Linux_V${PV}_arm"
+S = "${WORKDIR}/JLink_Linux_V${PV}_arm64"
 PR = "r0"
 
-SRC_URI="https://www.segger.com/downloads/jlink/JLink_Linux_V${PV}_arm.tgz"
+SRC_URI="https://www.segger.com/downloads/jlink/JLink_Linux_V${PV}_arm64.tgz"
 BODY_DATA='accept_license_agreement=accepted&non_emb_ctr=confirmed&submit="Download software"'
 
 do_fetch () {
- /usr/bin/wget --post-data '${BODY_DATA}' ${SRC_URI} -O ${DL_DIR}/JLink_Linux_V${PV}_arm.tgz
+ /usr/bin/wget --post-data '${BODY_DATA}' ${SRC_URI} -O ${DL_DIR}/JLink_Linux_V${PV}_arm64.tgz
 }
 
 inherit relative_symlinks

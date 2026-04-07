@@ -92,3 +92,4 @@ pkg_postinst_${PN}-server () {
 
 # Allow shipping arduino elf files
 INSANE_SKIP_${PN} = "arch"
+INSANE_SKIP_${PN}-dbg += "arch"
