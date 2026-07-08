@@ -1,16 +1,15 @@
 [submodule "poky"]
 	path = poky
-	url = git://git.yoctoproject.org/poky
-	branch = dunfell
+	url = https://git.yoctoproject.org/poky
+	branch = walnascar
+	shallow = true
 [submodule "meta-openembedded"]
 	path = meta-openembedded
-	url = git://git.openembedded.org/meta-openembedded
-	branch = dunfell
-[submodule "meta-java"]
-	path = meta-java
-	url = git://git.yoctoproject.org/meta-java
-	branch = dunfell
+	url = https://git.openembedded.org/meta-openembedded
+	branch = walnascar
+	shallow = true
 [submodule "meta-raspberrypi"]
 	path = meta-raspberrypi
-	url = git://git.yoctoproject.org/meta-raspberrypi
-	branch = dunfell
+	url = https://git.yoctoproject.org/meta-raspberrypi
+	branch = walnascar
+	shallow = true
