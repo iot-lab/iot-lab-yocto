@@ -1,7 +1,7 @@
 SUMMARY = "A general purpose malloc(3) implementation that emphasizes fragmentation avoidance and scalable concurrency support."
 HOMEPAGE = "https://github.com/jemalloc/jemalloc"
 
-LICENSE = "BSD"
+LICENSE = "BSD-2-Clause"
 LIC_FILES_CHKSUM = "file://COPYING;md5=5cff9c9987190d1c1ab7ba635c1d9f29"
 
 PV="4.0.4"
@@ -11,9 +11,9 @@ SRC_URI[sha256sum] = "3fda8d8d7fcd041aa0bebbecd45c46b28873cf37bd36c56bf44961b36d
 
 inherit autotools
 
-FILES_${PN} = "/usr/lib/libjemalloc.so.2"
+FILES:${PN} = "/usr/lib/libjemalloc.so.2"
 
-FILES_${PN}-dev = "/usr/lib/libjemalloc.a \
+FILES:${PN}-dev = "/usr/lib/libjemalloc.a \
     /usr/lib/libjemalloc.so "
 
 PROVIDES="${PACKAGES}"

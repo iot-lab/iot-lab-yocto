@@ -1,6 +1,6 @@
 DESCRIPTION = "Jim is an opensource small-footprint implementation of the Tcl programming language"
 HOMEPAGE = "http://jim.tcl.tk"
-LICENSE = "BSD"
+LICENSE = "BSD-2-Clause"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=670d6aae00a2c7a4da40f70b78bdf992"
 
 ## SRCREV = ${AUTOREV}
@@ -20,8 +20,8 @@ PACKAGES = "${PN} ${PN}-dbg ${PN}-dev"
 
 inherit autotools
 
-SRC_URI = "git://github.com/msteveb/jimtcl.git;protocol=git;branch=master"
-S = "${WORKDIR}/git"
+SRC_URI = "git://github.com/msteveb/jimtcl.git;protocol=https;branch=master"
+S = "${UNPACKDIR}/git"
 
 CONFIGUREOPTS = ""
 

@@ -1,6 +1,6 @@
 DESCRIPTION = "Multi-producer-multi-consumer signal dispatching mechanism"
 SECTION = "devel/python"
-LICENSE = "BSD"
+LICENSE = "BSD-3-Clause"
 LIC_FILES_CHKSUM = "file://license.txt;md5=09dffabd4d29ee02f66b0b7f808d57c2"
 
 PYPI_PACKAGE = "PyDispatcher"

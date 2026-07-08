@@ -1,11 +1,11 @@
 DESCRIPTION = "Driver/HAL to build a gateway using a concentrator board based on Semtech SX1301"
 HOMEPAGE = "https://github.com/Lora-net/lora_gateway"
 PRIORITY = "optional"
-LICENSE = "BSD"
+LICENSE = "BSD-3-Clause"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=a2bdef95625509f821ba00460e3ae0eb"
 PR = "r2"
 
-SRC_URI = "git://github.com/Lora-net/lora_gateway.git;protocol=git \
+SRC_URI = "git://github.com/Lora-net/lora_gateway.git;protocol=https;nobranch=1 \
            file://library.cfg \
            file://lora-gateway-add-fpga-version-28-31-33.patch \
            file://lora-gateway-v28-skip-IQ-invert.patch \
@@ -14,11 +14,11 @@ SRC_URI = "git://github.com/Lora-net/lora_gateway.git;protocol=git \
 
 SRCREV = "a955619271b5d0a46d32e08150acfbc1eed183b7"
 
-S = "${WORKDIR}/git"
+S = "${UNPACKDIR}/git"
 CFLAGS += "-Iinc -I."
 
-do_configure_append() {
-    cp ${WORKDIR}/library.cfg ${S}/libloragw/library.cfg
+do_configure:append() {
+    cp ${UNPACKDIR}/library.cfg ${S}/libloragw/library.cfg
 }
 
 do_compile() {
@@ -45,9 +45,9 @@ do_install() {
 
 PACKAGES += "${PN}-utils ${PN}-utils-dbg"
 
-FILES_${PN}-staticdev = "${libdir}/lora"
-FILES_${PN}-utils = "/opt/lora-gateway/gateway-utils/*"
-FILES_${PN}-utils-dbg = "/opt/lora-gateway/gateway-utils/.debug"
-FILES_${PN}-dev = "${includedir}/lora ${libdir}/lora/library.cfg"
+FILES:${PN}-staticdev = "${libdir}/lora"
+FILES:${PN}-utils = "/opt/lora-gateway/gateway-utils/*"
+FILES:${PN}-utils-dbg = "/opt/lora-gateway/gateway-utils/.debug"
+FILES:${PN}-dev = "${includedir}/lora ${libdir}/lora/library.cfg"
 
-INSANE_SKIP_${PN}-utils += "ldflags"
+INSANE_SKIP:${PN}-utils += "ldflags"
