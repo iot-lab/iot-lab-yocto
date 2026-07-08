@@ -3,6 +3,8 @@ From: Alexandre Abadie <alexandre.abadie@inria.fr>
 Date: Mon, 22 Oct 2018 13:53:14 +0200
 Subject: [PATCH] fix makefile
 
+Upstream-Status: Pending
+
 ---
  Makefile | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)

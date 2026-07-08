@@ -3,6 +3,8 @@ From: =?UTF-8?q?Ga=C3=ABtan=20Harter?= <gaetan.harter@inria.fr>
 Date: Mon, 3 Apr 2017 16:40:40 +0200
 Subject: [PATCH] Remove raggedright, not supported on debian wheezy
 
+Upstream-Status: Pending
+
 ---
  doc/openocd.texi | 2 --
  1 file changed, 2 deletions(-)

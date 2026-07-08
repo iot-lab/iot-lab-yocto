@@ -1,3 +1,5 @@
+Upstream-Status: Pending
+
 diff --git a/src/Makefile.am b/src/Makefile.am
 index c78e81c..3aca8a4 100644
 --- a/src/Makefile.am

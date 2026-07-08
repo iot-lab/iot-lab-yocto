@@ -1,3 +1,5 @@
+Upstream-Status: Pending
+
 diff --git a/libloragw/src/loragw_fpga.c b/libloragw/src/loragw_fpga.c
 index fa83a2a..7e667e3 100644
 --- a/libloragw/src/loragw_fpga.c

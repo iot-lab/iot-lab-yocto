@@ -4,6 +4,8 @@ Date: Sun, 3 Dec 2017 09:21:38 +0100
 Subject: [PATCH] slightly unbreak raspi cmake
 
 Signed-off-by: Koen Kooi <koen@dominion.thruhere.net>
+Upstream-Status: Pending
+
 ---
  .../plugins/input_raspicam/CMakeLists.txt              | 18 +++---------------
  1 file changed, 3 insertions(+), 15 deletions(-)

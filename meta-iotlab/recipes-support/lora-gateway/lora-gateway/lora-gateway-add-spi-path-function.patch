@@ -1,3 +1,5 @@
+Upstream-Status: Pending
+
 diff --git a/libloragw/inc/loragw_spi.h b/libloragw/inc/loragw_spi.h
 index fef1f48..74ef251 100644
 --- a/libloragw/inc/loragw_spi.h

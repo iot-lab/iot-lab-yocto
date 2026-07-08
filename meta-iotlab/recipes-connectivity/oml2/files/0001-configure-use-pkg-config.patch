@@ -3,6 +3,8 @@ From: =?UTF-8?q?Ga=C3=ABtan=20Harter?= <gaetan.harter@inria.fr>
 Date: Tue, 9 May 2017 17:01:47 +0200
 Subject: [PATCH] configure: use pkg-config
 
+Upstream-Status: Pending
+
 ---
  configure.ac | 5 ++++-
  1 file changed, 4 insertions(+), 1 deletion(-)

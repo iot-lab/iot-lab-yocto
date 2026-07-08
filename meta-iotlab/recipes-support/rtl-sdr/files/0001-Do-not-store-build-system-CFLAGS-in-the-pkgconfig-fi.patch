@@ -4,6 +4,8 @@ Date: Fri, 12 Feb 2016 13:06:33 -0500
 Subject: [PATCH] Do not store build system CFLAGS in the pkgconfig file.
 
 Signed-off-by: Philip Balister <philip@balister.org>
+Upstream-Status: Pending
+
 ---
  librtlsdr.pc.in | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)

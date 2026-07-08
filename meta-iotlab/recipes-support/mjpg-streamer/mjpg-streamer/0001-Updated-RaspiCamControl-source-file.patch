@@ -3,6 +3,8 @@ From: Florian Harr <harr.florian@gmx.de>
 Date: Tue, 7 Feb 2017 15:42:52 -0500
 Subject: [PATCH] Updated RaspiCamControl source file
 
+Upstream-Status: Pending
+
 ---
  .../plugins/input_raspicam/RaspiCamControl.c       | 178 ++++++--
  .../plugins/input_raspicam/RaspiCamControl.h       |  10 +-

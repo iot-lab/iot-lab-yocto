@@ -1,3 +1,5 @@
+Upstream-Status: Pending
+
 diff --git a/libloragw/src/loragw_reg.c b/libloragw/src/loragw_reg.c
 index 7e396bc..478f46a 100644
 --- a/libloragw/src/loragw_reg.c

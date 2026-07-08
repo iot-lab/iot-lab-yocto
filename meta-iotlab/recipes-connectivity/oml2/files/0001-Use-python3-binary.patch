@@ -3,6 +3,8 @@ From: root <root@iot-lab-debian-9.cs1cloud.internal>
 Date: Thu, 16 Jul 2020 10:20:30 +0200
 Subject: [PATCH] Use python3 binary
 
+Upstream-Status: Pending
+
 ---
  test/lib/stddev.py | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
