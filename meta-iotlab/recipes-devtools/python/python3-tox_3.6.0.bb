@@ -12,7 +12,7 @@ inherit pypi setuptools3
 
 DEPENDS += "${PYTHON_PN}-setuptools-scm-native"
 
-RDEPENDS_${PN}_class-target += " \
+RDEPENDS:${PN}:class-target += " \
         python3-virtualenv \
         python3-py \
         python3-filelock \

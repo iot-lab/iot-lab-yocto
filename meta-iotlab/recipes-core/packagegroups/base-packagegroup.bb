@@ -1,9 +1,9 @@
 DESCRIPTION = "default package group list for images"
-LICENSE = "GPLv2"
+LICENSE = "GPL-2.0-only"
 
 inherit packagegroup
 
-RDEPENDS_${PN} += " \
+RDEPENDS:${PN} += " \
     avarice \
     avrdude \
     base-files \

@@ -7,7 +7,7 @@ inherit setuptools3
 
 PV = "git-src${SRCDATE}-r${SRCPV}"
 
-SRC_URI = "git://github.com/casebeer/python-hkdf.git;protocol=https"
+SRC_URI = "git://github.com/casebeer/python-hkdf.git;protocol=https;branch=master"
 SRCREV = "${AUTOREV}"
 
-S = "${WORKDIR}/git/"
+S = "${UNPACKDIR}/git"

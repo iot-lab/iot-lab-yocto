@@ -6,12 +6,12 @@ SECTION = "console/utils"
 LICENSE = "Proprietary"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=22af7693d7b76ef0fc76161c4be76c45"
 DEPENDS = "lora-gateway"
-RDEPENDS_${PN} += "bash"
+RDEPENDS:${PN} += "bash"
 PR = "r12"
 
 SRCREV = "v${PV}"
 
-SRC_URI = "git://github.com/Lora-net/packet_forwarder.git;protocol=git \
+SRC_URI = "git://github.com/Lora-net/packet_forwarder.git;protocol=https;nobranch=1 \
            file://global_conf.json \
            file://local_conf.json \
            file://start.sh \
@@ -20,7 +20,7 @@ SRC_URI = "git://github.com/Lora-net/packet_forwarder.git;protocol=git \
            file://lora-packet-forwarder-custom-conf-dir.patch \
 "
 
-S = "${WORKDIR}/git"
+S = "${UNPACKDIR}/git"
 B = "${S}"
 
 LORA_DIR = "/opt/lora"
@@ -37,9 +37,9 @@ do_compile() {
 do_install() {
   install -d ${D}${LORA_DIR}
   install -m 755 lora_pkt_fwd/lora_pkt_fwd ${D}${LORA_DIR}/
-  install -m 755 ${WORKDIR}/global_conf.json ${D}${LORA_DIR}/
-  install -m 755 ${WORKDIR}/local_conf.json ${D}${LORA_DIR}/
-  install -m 755 ${WORKDIR}/start.sh ${D}${LORA_DIR}/
+  install -m 755 ${UNPACKDIR}/global_conf.json ${D}${LORA_DIR}/
+  install -m 755 ${UNPACKDIR}/local_conf.json ${D}${LORA_DIR}/
+  install -m 755 ${UNPACKDIR}/start.sh ${D}${LORA_DIR}/
 
   install -d ${D}${LORA_DIR}/forwarder-utils
   install -m 755 util_sink/util_sink ${D}${LORA_DIR}/forwarder-utils/
@@ -47,12 +47,12 @@ do_install() {
   install -m 755 util_tx_test/util_tx_test ${D}${LORA_DIR}/forwarder-utils/
 }
 
-FILES_${PN} += "${LORA_DIR}"
-FILES_${PN}-dbg += "${LORA_DIR}/.debug ${LORA_DIR}/forwarder-utils/.debug"
+FILES:${PN} += "${LORA_DIR}"
+FILES:${PN}-dbg += "${LORA_DIR}/.debug ${LORA_DIR}/forwarder-utils/.debug"
 
 # disable this on purpose for dev purposes
 do_rm_work() {
   echo "skipping"
 }
 
-INSANE_SKIP_${PN} += "ldflags"
+INSANE_SKIP:${PN} += "ldflags"

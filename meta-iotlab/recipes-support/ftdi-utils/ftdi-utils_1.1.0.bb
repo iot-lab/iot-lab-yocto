@@ -3,27 +3,26 @@ LICENSE = "CECILL-2.0"
 LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/CECILL-2.0;md5=574109ac4bdff61f9c3e0de892ecbd19"
 
 PACKAGES =+ "${PN}-list ${PN}-config"
-S = "${WORKDIR}"
-FILESEXTRAPATHS_prepend := "${THISDIR}/src:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/src:"
 
 # metapackage
 DEPENDS = "libftdi libusb1"
 
-RDEPENDS_${PN} += "${PN}-list ${PN}-config"
-ALLOW_EMPTY_${PN} = "1"
+RDEPENDS:${PN} += "${PN}-list ${PN}-config"
+ALLOW_EMPTY:${PN} = "1"
 
 inherit pkgconfig
 
-DESCRIPTION_${PN}-list = "IOT-LAB ftdi list"
-FILES_${PN}-list = "${bindir}/ftdi-devices-list"
-RDEPENDS_${PN}-list = "libftdi libusb1"
+DESCRIPTION:${PN}-list = "IOT-LAB ftdi list"
+FILES:${PN}-list = "${bindir}/ftdi-devices-list"
+RDEPENDS:${PN}-list = "libftdi libusb1"
 
-DESCRIPTION_${PN}-config = "IOT-LAB ftdi eeprom config"
-FILES_${PN}-config = "${bindir}/ftdi-eeprom-config"
-RDEPENDS_${PN}-config = "libftdi libusb1"
+DESCRIPTION:${PN}-config = "IOT-LAB ftdi eeprom config"
+FILES:${PN}-config = "${bindir}/ftdi-eeprom-config"
+RDEPENDS:${PN}-config = "libftdi libusb1"
 
-SRC_URI = "git://github.com/iot-lab/iot-lab-ftdi-utils.git;protocol=git;tag=${PV}"
-S = "${WORKDIR}/git/"
+SRC_URI = "git://github.com/iot-lab/iot-lab-ftdi-utils.git;protocol=https;tag=${PV};nobranch=1"
+S = "${UNPACKDIR}/git"
 
 
 do_compile () {

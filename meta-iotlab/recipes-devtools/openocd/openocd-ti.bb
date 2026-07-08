@@ -1,7 +1,7 @@
 DESCRIPTION = "TI's fork of OpenOCD Free and Open On-Chip Debugging, In-System Programming and Boundary-Scan Testing"
 HOMEPAGE = "git://git.ti.com/sdo-emu/openocd.git"
 SECTION = "utils"
-LICENSE = "GPLv2"
+LICENSE = "GPL-2.0-only"
 LIC_FILES_CHKSUM = "file://COPYING;md5=b234ee4d69f5fce4486a80fdaf4a4263"
 
 PR = "r1"
@@ -18,17 +18,17 @@ DEPENDS += "texinfo-native"
 # Use the master merge from branch develop dated September 21 2018
 SRCREV = "4765fd4c864c47d48754350c196bd5c5ce9c5ed9"
 
-SRC_URI = "git://git.ti.com/sdo-emu/openocd.git;protocol=git"
+SRC_URI = "git://git.ti.com/sdo-emu/openocd.git;protocol=git;nobranch=1"
 
-S = "${WORKDIR}/git/openocd"
+S = "${UNPACKDIR}/git/openocd"
 
 ## ##################################################
 ## ##################################################
 
 PACKAGES = "${PN}-dbg ${PN}"
 
-FILES_${PN}-dbg += "/opt/openocd-ti/.debug"
-FILES_${PN}     += "/opt/openocd-ti"
+FILES:${PN}-dbg += "/opt/openocd-ti/.debug"
+FILES:${PN}     += "/opt/openocd-ti"
 
 # inherit autotools
 # Don't use out of tree build

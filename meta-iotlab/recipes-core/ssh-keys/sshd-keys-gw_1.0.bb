@@ -5,7 +5,7 @@ LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/CECILL-2.0;md5=574109ac4bdff61f
 SRC_URI += "file://ssh_host_rsa_key"
 SRC_URI += "file://ssh_host_rsa_key.pub"
 
-S = "${WORKDIR}"
+S = "${UNPACKDIR}"
 
 # we copy a dummy server key because in poky/meta/classes/rootfs-postcommands.bbclass
 # the read_only_rootfs_hook test if this file exist and otherwise use /etc/ssh/sshd_config_readonly

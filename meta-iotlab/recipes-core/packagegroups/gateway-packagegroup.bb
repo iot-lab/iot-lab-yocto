@@ -1,9 +1,9 @@
 DESCRIPTION = "Package group list for gateway image"
-LICENSE = "GPLv2"
+LICENSE = "GPL-2.0-only"
 
 inherit packagegroup
 
-RDEPENDS_${PN} += " \
+RDEPENDS:${PN} += " \
     base-packagegroup \
     gateway-code \
     gateway-code-server \

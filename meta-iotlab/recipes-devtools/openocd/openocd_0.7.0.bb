@@ -1,7 +1,7 @@
 DESCRIPTION = "Free and Open On-Chip Debugging, In-System Programming and Boundary-Scan Testing"
 HOMEPAGE = "http://openocd.berlios.de/"
 SECTION = "utils"
-LICENSE = "GPLv2"
+LICENSE = "GPL-2.0-only"
 LIC_FILES_CHKSUM = "file://COPYING;md5=52aad3ae14f33671f4d848e9579f7870"
 
 PR = "r6"
@@ -22,15 +22,15 @@ SRC_URI[tarball.sha256sum] = "52237b786530c8460b221556c26fa4779f668b7dcb83ff14b8
 
 SRC_URI += "file://openocd-link-static.patch"
 
-S = "${WORKDIR}/openocd-${PV}"
+S = "${UNPACKDIR}/openocd-${PV}"
 
 ## ##################################################
 ## ##################################################
 
 PACKAGES = "${PN}-dbg ${PN}"
 
-FILES_${PN}-dbg += "/usr/local/bin/.debug"
-FILES_${PN}     += "/usr/local"
+FILES:${PN}-dbg += "/usr/local/bin/.debug"
+FILES:${PN}     += "/usr/local"
 
 inherit autotools 
 

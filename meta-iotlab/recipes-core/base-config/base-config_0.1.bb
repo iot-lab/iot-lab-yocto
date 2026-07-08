@@ -2,7 +2,7 @@ DESCRIPTION = "Basic configuration for iotlab images"
 LICENSE = "CECILL-2.0"
 LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/CECILL-2.0;md5=574109ac4bdff61f9c3e0de892ecbd19"
 
-S = "${WORKDIR}"
+S = "${UNPACKDIR}"
 
 SRC_URI += "file://hosts"
 SRC_URI += "file://hostname"
@@ -29,7 +29,7 @@ do_install () {
   install -m 0600 ${S}/inputrc                   ${D}${sysconfdir}/iotlab-config/inputrc
 }
 
-pkg_postinst_${PN} () {
+pkg_postinst:${PN} () {
   install -m 0600 $D${sysconfdir}/iotlab-config/bashrc             $D${ROOT_HOME}/.bashrc
   install -m 0600 $D${sysconfdir}/iotlab-config/profile            $D${ROOT_HOME}/.profile
   install -m 0600 $D${sysconfdir}/iotlab-config/inputrc            $D${ROOT_HOME}/.inputrc

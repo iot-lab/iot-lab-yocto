@@ -10,10 +10,10 @@ DEPENDS += "libxml2-native pkgconfig-native gnulib-native python3"
 
 SRC_URI += "file://0001-configure-use-pkg-config.patch"
 
-S = "${WORKDIR}/oml2-${PV}"
+S = "${UNPACKDIR}/oml2-${PV}"
 
 # do autogen to apply configure.ac patch
-do_configure_prepend() {
+do_configure:prepend() {
     cd ${S}
     ./autogen.sh
     cd ${B}

@@ -1,7 +1,7 @@
 DESCRIPTION = "Free and Open On-Chip Debugging, In-System Programming and Boundary-Scan Testing"
 HOMEPAGE = "http://openocd.berlios.de/"
 SECTION = "utils"
-LICENSE = "GPLv2"
+LICENSE = "GPL-2.0-only"
 LIC_FILES_CHKSUM = "file://COPYING;md5=b234ee4d69f5fce4486a80fdaf4a4263"
 
 PR = "r1"
@@ -16,27 +16,28 @@ DEPENDS += "texinfo-native"
 ## ##################################################
 
 # Use git version 0.11.0: issues when using source code
-SRCREV = "f342aac0845a69d591ad39a025d74e9c765f6420"
+SRCREV_FORMAT = "openocd"
+SRCREV_openocd = "f342aac0845a69d591ad39a025d74e9c765f6420"
 
 SRC_URI = " \
-    git://repo.or.cz/openocd.git;protocol=http;name=openocd \
-    git://repo.or.cz/r/jimtcl.git;protocol=http;destsuffix=git/jimtcl;name=jimtcl \
-    git://repo.or.cz/r/libjaylink.git;protocol=http;destsuffix=git/src/jtag/drivers/libjaylink;name=libjaylink \
+    git://repo.or.cz/openocd.git;protocol=http;name=openocd;nobranch=1 \
+    git://repo.or.cz/r/jimtcl.git;protocol=http;destsuffix=git/jimtcl;name=jimtcl;nobranch=1 \
+    git://repo.or.cz/r/libjaylink.git;protocol=http;destsuffix=git/src/jtag/drivers/libjaylink;name=libjaylink;nobranch=1 \
     file://0001-static-library.patch \
 "
 
 SRCREV_jimtcl = "0aa0fb4e3a38d38a49de9eb585d93d63a370dcf6"
 SRCREV_libjaylink = "9aa7a5957c07bb6e862fc1a6d3153d109c7407e4"
 
-S = "${WORKDIR}/git"
+S = "${UNPACKDIR}/git"
 
 ## ##################################################
 ## ##################################################
 
 PACKAGES = "${PN}-dbg ${PN}"
 
-FILES_${PN}-dbg += "/usr/local/bin/.debug"
-FILES_${PN}     += "/usr/local"
+FILES:${PN}-dbg += "/usr/local/bin/.debug"
+FILES:${PN}     += "/usr/local"
 
 # inherit autotools
 # Don't use out of tree build

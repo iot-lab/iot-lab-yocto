@@ -4,13 +4,13 @@ LICENSE = "Apache-2.0"
 LIC_FILES_CHKSUM = "file://LICENSE.md;md5=4b29e96047e31a3c38509d2c49b768b3"
 
 DEPENDS += "libusb hidapi udev"
-RDEPENDS_${PN} += "hidapi libusb1 udev"
+RDEPENDS:${PN} += "hidapi libusb1 udev"
 
-SRC_URI = "git://github.com/Yepkit/ykush.git;protocol=https \
+SRC_URI = "git://github.com/Yepkit/ykush.git;protocol=https;nobranch=1 \
            file://fix_makefile.patch"
 SRCREV = "30d490423782a1d5379d1691a2539fad6ff6046d"
 PV = "git"
-S = "${WORKDIR}/git"
+S = "${UNPACKDIR}/git"
 
 PATCHTOOL = "git"
 
@@ -19,5 +19,5 @@ do_install() {
 	install -m 755 ${S}/bin/ykushcmd ${D}${bindir}
 }
 
-INSANE_SKIP_${PN} = "ldflags"
-INSANE_SKIP_${PN}-dev = "ldflags"
+INSANE_SKIP:${PN} = "ldflags"
+INSANE_SKIP:${PN}-dev = "ldflags"

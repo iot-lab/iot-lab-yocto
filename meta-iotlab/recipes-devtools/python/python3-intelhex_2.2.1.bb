@@ -10,7 +10,7 @@ SRC_URI[sha256sum] = "009d8511e0d50639230c39af9607deee771cf026f67ef7507a8c3fd4fa
 
 inherit pypi setuptools3
 
-do_install_append() {
+do_install:append() {
     # fix up commands that use exact #! for python
     for i in ${D}${bindir}/*; do
         sed -i 's@^#!/usr/bin/python@#!/usr/bin/env python3@' $i

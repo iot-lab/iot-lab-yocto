@@ -3,7 +3,7 @@ LICENSE = "CLOSED"
 LIC_FILES_CHKSUM = "\
                     file://Doc/LicenseIncGUI.txt;md5=e4b273c1048dd2c3afe701297ce62697 \
                    "
-S = "${WORKDIR}/JLink_Linux_V${PV}_arm"
+S = "${UNPACKDIR}/JLink_Linux_V${PV}_arm"
 PR = "r0"
 
 SRC_URI="https://www.segger.com/downloads/jlink/JLink_Linux_V${PV}_arm.tgz"
@@ -27,10 +27,10 @@ do_install () {
   lnr ${D}/usr/local/share/JLink/libjlinkarm.so.7 	${D}/usr/local/share/JLink/libjlinkarm.so
 }
 
-INSANE_SKIP_${PN} = "already-stripped ldflags dev-so"
+INSANE_SKIP:${PN} = "already-stripped ldflags dev-so"
 
-FILES_${PN} += "/usr/local/share/JLink/JLinkExe "
-FILES_${PN} += "/usr/local/share/JLink/JLinkGDBServer "
-FILES_${PN} += "/usr/local/share/JLink/libjlinkarm.so.7.60.2 "
-FILES_${PN} += "/usr/local/share/JLink/libjlinkarm.so.7 "
-FILES_${PN} += "/usr/local/share/JLink/libjlinkarm.so "
+FILES:${PN} += "/usr/local/share/JLink/JLinkExe "
+FILES:${PN} += "/usr/local/share/JLink/JLinkGDBServer "
+FILES:${PN} += "/usr/local/share/JLink/libjlinkarm.so.7.60.2 "
+FILES:${PN} += "/usr/local/share/JLink/libjlinkarm.so.7 "
+FILES:${PN} += "/usr/local/share/JLink/libjlinkarm.so "

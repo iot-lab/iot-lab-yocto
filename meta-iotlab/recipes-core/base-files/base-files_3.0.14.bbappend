@@ -1,5 +1,5 @@
-PR_append = "-v0"
-FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
+PR:append = "-v0"
+FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
 SRC_URI += "file://etc_hosts"
 
 # base-files should not create 'hostname' file
@@ -8,9 +8,9 @@ hostname = ""
 
 # Make '/etc/hosts' volatile
 
-do_install_append() {
+do_install:append() {
     rm ${D}${sysconfdir}/hosts
 
     install -d                           ${D}${sysconfdir}/default/volatiles
-    install -m 0644 ${WORKDIR}/etc_hosts ${D}${sysconfdir}/default/volatiles/10_etc_hosts
+    install -m 0644 ${UNPACKDIR}/etc_hosts ${D}${sysconfdir}/default/volatiles/10_etc_hosts
 }

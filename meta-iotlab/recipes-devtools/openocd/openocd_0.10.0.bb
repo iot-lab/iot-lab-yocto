@@ -1,7 +1,7 @@
 DESCRIPTION = "Free and Open On-Chip Debugging, In-System Programming and Boundary-Scan Testing"
 HOMEPAGE = "http://openocd.berlios.de/"
 SECTION = "utils"
-LICENSE = "GPLv2"
+LICENSE = "GPL-2.0-only"
 LIC_FILES_CHKSUM = "file://COPYING;md5=b234ee4d69f5fce4486a80fdaf4a4263"
 
 PR = "r1"
@@ -20,18 +20,18 @@ DEPENDS += "texinfo-native"
 # Use git version 0.10.0: issues when using source code
 SRCREV = "646566e006acd58fb9ac405511d3ecca79f26d55"
 
-SRC_URI = "git://github.com/ntfreak/openocd.git;protocol=https"
+SRC_URI = "git://github.com/ntfreak/openocd.git;protocol=https;nobranch=1"
 SRC_URI += "file://0001-static-library.patch"
 
-S = "${WORKDIR}/git"
+S = "${UNPACKDIR}/git"
 
 ## ##################################################
 ## ##################################################
 
 PACKAGES = "${PN}-dbg ${PN}"
 
-FILES_${PN}-dbg += "/usr/local/bin/.debug"
-FILES_${PN}     += "/usr/local"
+FILES:${PN}-dbg += "/usr/local/bin/.debug"
+FILES:${PN}     += "/usr/local"
 
 # inherit autotools
 # Don't use out of tree build

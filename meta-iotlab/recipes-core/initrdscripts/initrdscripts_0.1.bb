@@ -2,10 +2,10 @@ DESCRIPTION = "Initscripts provide the basic system startup initialization scrip
 LICENSE = "CECILL-2.0"
 LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/CECILL-2.0;md5=574109ac4bdff61f9c3e0de892ecbd19"
 
-S = "${WORKDIR}"
+S = "${UNPACKDIR}"
 
-FILESEXTRAPATHS_prepend = "${THISDIR}/files/linux-node/:"
-FILESEXTRAPATHS_prepend = "${THISDIR}/files/gateway/:"
+FILESEXTRAPATHS:prepend = "${THISDIR}/files/linux-node/:"
+FILESEXTRAPATHS:prepend = "${THISDIR}/files/gateway/:"
 SRC_URI += "file://set_default_values_to_volatile.sh"
 SRC_URI += "file://set_time.sh"
 SRC_URI += "file://networking_ipv6"
@@ -17,60 +17,60 @@ SRC_URI += "file://gateway-server-network"
 SRC_URI += "file://serial_redirection"
 
 # split package to use update-rc.d class
-ALLOW_EMPTY_${PN}   = "1"
+ALLOW_EMPTY:${PN}   = "1"
 
-RDEPENDS_${PN}      = "${PN}-settime ${PN}-volatile ${PN}-ipv6 ${PN}-flashidle ${PN}-mountnode ${PN}-mountgw ${PN}-networkgw ${PN}-serial"
+RDEPENDS:${PN}      = "${PN}-settime ${PN}-volatile ${PN}-ipv6 ${PN}-flashidle ${PN}-mountnode ${PN}-mountgw ${PN}-networkgw ${PN}-serial"
 PACKAGES            =+ "${PN}-settime ${PN}-volatile ${PN}-ipv6 ${PN}-flashidle ${PN}-mountnode ${PN}-mountgw ${PN}-networkgw ${PN}-serial"
 
 inherit update-rc.d
 INITSCRIPT_PACKAGES = "${PN}-settime ${PN}-volatile ${PN}-ipv6 ${PN}-flashidle ${PN}-mountnode ${PN}-mountgw ${PN}-networkgw"
 
-INITSCRIPT_NAME_${PN}-volatile   = "set_default_values_to_volatile.sh"
-INITSCRIPT_PARAMS_${PN}-volatile = "start 80 S ."
-FILES_${PN}-volatile             = "${sysconfdir}/init.d/set_default_values_to_volatile.sh"
+INITSCRIPT_NAME:${PN}-volatile   = "set_default_values_to_volatile.sh"
+INITSCRIPT_PARAMS:${PN}-volatile = "start 80 S ."
+FILES:${PN}-volatile             = "${sysconfdir}/init.d/set_default_values_to_volatile.sh"
 
 # requires /etc/hosts to be configured by set_default_values
-RDEPENDS_${PN}-settime          += "coreutils"
-INITSCRIPT_NAME_${PN}-settime    = "set_time.sh"
-INITSCRIPT_PARAMS_${PN}-settime  = "start 81 S ."
-FILES_${PN}-settime              = "${sysconfdir}/init.d/set_time.sh"
+RDEPENDS:${PN}-settime          += "coreutils"
+INITSCRIPT_NAME:${PN}-settime    = "set_time.sh"
+INITSCRIPT_PARAMS:${PN}-settime  = "start 81 S ."
+FILES:${PN}-settime              = "${sysconfdir}/init.d/set_time.sh"
 
-INITSCRIPT_NAME_${PN}-mountnode       = "nfs_mount_conf_shared"
-INITSCRIPT_PARAMS_${PN}-mountnode     = "defaults 82 18"
-FILES_${PN}-mountnode                 = "${sysconfdir}/init.d/nfs_mount_conf_shared"
+INITSCRIPT_NAME:${PN}-mountnode       = "nfs_mount_conf_shared"
+INITSCRIPT_PARAMS:${PN}-mountnode     = "defaults 82 18"
+FILES:${PN}-mountnode                 = "${sysconfdir}/init.d/nfs_mount_conf_shared"
 
-INITSCRIPT_NAME_${PN}-mountgw       = "nfs_mount_conf_users"
-INITSCRIPT_PARAMS_${PN}-mountgw     = "defaults 82 18"
-FILES_${PN}-mountgw                 += "${sysconfdir}/init.d/nfs_mount_conf_users"
-FILES_${PN}-mountgw                 += "/iotlab/users"
+INITSCRIPT_NAME:${PN}-mountgw       = "nfs_mount_conf_users"
+INITSCRIPT_PARAMS:${PN}-mountgw     = "defaults 82 18"
+FILES:${PN}-mountgw                 += "${sysconfdir}/init.d/nfs_mount_conf_users"
+FILES:${PN}-mountgw                 += "/iotlab/users"
 
 # start AFTER nfs mount (check eth0 ip to mount nfs directory)
 
-INITSCRIPT_NAME_${PN}-networkgw       = "gateway-server-network"
-INITSCRIPT_PARAMS_${PN}-networkgw     = "defaults 83 17"
-FILES_${PN}-networkgw                 += "${sysconfdir}/init.d/gateway-server-network"
+INITSCRIPT_NAME:${PN}-networkgw       = "gateway-server-network"
+INITSCRIPT_PARAMS:${PN}-networkgw     = "defaults 83 17"
+FILES:${PN}-networkgw                 += "${sysconfdir}/init.d/gateway-server-network"
 
-INITSCRIPT_NAME_${PN}-ipv6       = "networking_ipv6"
-INITSCRIPT_PARAMS_${PN}-ipv6     = "defaults 84 16"
-FILES_${PN}-ipv6                 += "${sysconfdir}/init.d/networking_ipv6"
-FILES_${PN}-ipv6                 += "${sysconfdir}/profile.d/ipv6.sh"
+INITSCRIPT_NAME:${PN}-ipv6       = "networking_ipv6"
+INITSCRIPT_PARAMS:${PN}-ipv6     = "defaults 84 16"
+FILES:${PN}-ipv6                 += "${sysconfdir}/init.d/networking_ipv6"
+FILES:${PN}-ipv6                 += "${sysconfdir}/profile.d/ipv6.sh"
 
 # don't start by default by update-rc.d
-RDEPENDS_${PN}-serial              += "gateway-code"
-FILES_${PN}-serial                 = "${sysconfdir}/init.d/serial_redirection"
+RDEPENDS:${PN}-serial              += "gateway-code"
+FILES:${PN}-serial                 = "${sysconfdir}/init.d/serial_redirection"
 
 # don't try to check elf files
 INHIBIT_PACKAGE_STRIP = "1"
 INHIBIT_PACKAGE_DEBUG_STRIP = "1"
 INHIBIT_PACKAGE_DEBUG_SPLIT = "1"
 INHIBIT_SYSROOT_STRIP = "1"
-INSANE_SKIP_${PN}-flashidle += "arch"
-INSANE_SKIP_${PN}-flashidle-dbg += "arch"
+INSANE_SKIP:${PN}-flashidle += "arch"
+INSANE_SKIP:${PN}-flashidle-dbg += "arch"
 
-RDEPENDS_${PN}-flashidle += "gateway-code"
-INITSCRIPT_NAME_${PN}-flashidle = "flash_idle"
-INITSCRIPT_PARAMS_${PN}-flashidle = "start 85 S ."
-FILES_${PN}-flashidle     += "${sysconfdir}/init.d/flash_idle"
+RDEPENDS:${PN}-flashidle += "gateway-code"
+INITSCRIPT_NAME:${PN}-flashidle = "flash_idle"
+INITSCRIPT_PARAMS:${PN}-flashidle = "start 85 S ."
+FILES:${PN}-flashidle     += "${sysconfdir}/init.d/flash_idle"
 
 # release files
 do_install() {
@@ -104,7 +104,7 @@ do_install() {
     install -m 0755 ${S}/serial_redirection                ${D}/${sysconfdir}/init.d/
 }
 
-pkg_postinst_${PN}-mountnode() {
+pkg_postinst:${PN}-mountnode() {
   install -m 0755 -d $D${ROOT_HOME}/shared
   # add A8 symlink to shared directory (eg. A8 Open node backward compatibility)
   ln -s -r $D${ROOT_HOME}/shared $D${ROOT_HOME}/A8
