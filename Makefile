@@ -3,38 +3,19 @@
 #
 #
 
-TARGET ?= a8
+TARGET ?= rpi4
 
-IMAGES = iotlab-image
-IMAGES += iotlab-image-gateway
-IMAGES += iotlab-image-autotest
-
-EXTRA_BUILDS =
+IMAGES = iotlab-image-gateway
 
 # Define variables specific to the given target
-ifeq ($(TARGET), a8)
-  BUILD_DIR = build
-  TARGET_ARCH = cortexa8hf-neon
-  TARGET_IMG = var-som-am35
-  KERNEL_IMG = uImage
-
-  # Use a mapping between image target of make with image name in yocto
-  iotlab-image = iotlab-image-open-a8
-  iotlab-image-gateway = iotlab-image-gateway
-  iotlab-image-autotest = iotlab-image-open-a8-autotest
-
-  # We also build a mtd-rw version of the kernel for A8
-  EXTRA_BUILDS = build-kernel-mtd-rw
-else ifeq ($(TARGET), rpi2)
+ifeq ($(TARGET), rpi2)
   BUILD_DIR = build-rpi2
   TARGET_ARCH = cortexa7t2hf-neon-vfpv4
   TARGET_IMG = raspberrypi2
   KERNEL_IMG = zImage
 
   # Use a mapping between image target of make with image name in yocto
-  iotlab-image = iotlab-image-rpi2
   iotlab-image-gateway = iotlab-image-gateway-rpi2
-  iotlab-image-autotest = iotlab-image-rpi2-autotest
 else ifeq ($(TARGET), rpi3)
   BUILD_DIR = build-rpi3
   TARGET_ARCH = cortexa7t2hf-neon-vfpv4
@@ -42,9 +23,7 @@ else ifeq ($(TARGET), rpi3)
   KERNEL_IMG = zImage
 
   # Use a mapping between image target of make with image name in yocto
-  iotlab-image = iotlab-image-rpi3
   iotlab-image-gateway = iotlab-image-gateway-rpi3
-  iotlab-image-autotest = iotlab-image-rpi3-autotest
 else ifeq ($(TARGET), rpi4)
   BUILD_DIR = build-rpi4
   TARGET_ARCH = cortexa7t2hf-neon-vfpv4
@@ -52,16 +31,21 @@ else ifeq ($(TARGET), rpi4)
   KERNEL_IMG = zImage
 
   # Use a mapping between image target of make with image name in yocto
-  iotlab-image = iotlab-image-rpi4
   iotlab-image-gateway = iotlab-image-gateway-rpi4
-  iotlab-image-autotest = iotlab-image-rpi4-autotest
+else ifeq ($(TARGET), rpi5)
+  BUILD_DIR = build-rpi5
+  TARGET_ARCH = cortexa76
+  TARGET_IMG = raspberrypi5
+  KERNEL_IMG = Image
+
+  # Use a mapping between image target of make with image name in yocto
+  iotlab-image-gateway = iotlab-image-gateway-rpi5
 else
   $(error Unsupported target, '$(TARGET)')
 endif
 
 PKGS_DIR = $(BUILD_DIR)/tmp/deploy/ipk/$(TARGET_ARCH)
 IMGS_DIR = $(BUILD_DIR)/tmp/deploy/images/$(TARGET_IMG)
-IMGS_MTD_RW_DIR = $(IMGS_DIR)-mtd-rw
 
 .PHONY: init submodules $(BUILD_DIR)/conf/local.conf
 
@@ -94,13 +78,8 @@ target-info:
 	@echo ""
 	@echo "Available image targets:"
 	@for img in $(IMAGES); do echo "  - $$img"; done;
-	@if [ ! -z "$(EXTRA_BUILDS)" ]; \
-	then \
-	echo "\nOther build targets:"; \
-	for target in $(EXTRA_BUILDS); do echo "  - $$target"; done; \
-	fi
 
-build-all: $(IMAGES) $(EXTRA_BUILDS)
+build-all: $(IMAGES)
 
 $(IMAGES): %: build-img-% clean-img-%
 
@@ -123,7 +102,7 @@ ifeq (1,$(BUILD_IN_DOCKER))
 else
 	@# build package
 	time bash -c \
-                "source ./poky/oe-init-build-env $(BUILD_DIR); bitbake -k $*"
+                "unset ga_auto_remove GA_AUTO_REMOVE; source ./poky/oe-init-build-env $(BUILD_DIR); bitbake -k $*"
 	@echo ""
 	@echo ""
 	@echo "$*" ipk package files should be found here:
@@ -137,7 +116,7 @@ ifeq (1,$(BUILD_IN_DOCKER))
 else
 	@# build native package
 	time bash -c \
-                "source ./poky/oe-init-build-env $(BUILD_DIR); bitbake -k $*-native"
+                "unset ga_auto_remove GA_AUTO_REMOVE; source ./poky/oe-init-build-env $(BUILD_DIR); bitbake -k $*-native"
 endif
 
 .PHONY: clean-pkg-%
@@ -147,7 +126,7 @@ ifeq (1,$(BUILD_IN_DOCKER))
 else
 	@# clean package
 	time bash -c \
-                "source ./poky/oe-init-build-env $(BUILD_DIR); bitbake -c cleanall $*"
+                "unset ga_auto_remove GA_AUTO_REMOVE; source ./poky/oe-init-build-env $(BUILD_DIR); bitbake -c cleanall $*"
 endif
 
 .PHONY: build-uboot
@@ -155,14 +134,13 @@ build-uboot: init
 ifeq (1,$(BUILD_IN_DOCKER))
 	$(DOCKER_CMD) make $@
 else
-	@# build u-Boot
+	@# build u-boot (and, on rpi5, the netboot boot.scr)
 	time bash -c \
-                "source ./poky/oe-init-build-env $(BUILD_DIR); bitbake -k virtual/bootloader"
+                "unset ga_auto_remove GA_AUTO_REMOVE; source ./poky/oe-init-build-env $(BUILD_DIR); bitbake -k virtual/bootloader"
 	@echo ""
 	@echo ""
-	@echo "$*" U-Boot files should be found here:
+	@echo "u-boot files should be found here:"
 	@ls $(IMGS_DIR)/u-boot*
-	@ls $(IMGS_DIR)/MLO*
 endif
 
 .PHONY: clean-uboot
@@ -172,7 +150,7 @@ ifeq (1,$(BUILD_IN_DOCKER))
 else
 	@# clean u-boot
 	time bash -c \
-                "source ./poky/oe-init-build-env $(BUILD_DIR); bitbake -c cleanall virtual/bootloader"
+                "unset ga_auto_remove GA_AUTO_REMOVE; source ./poky/oe-init-build-env $(BUILD_DIR); bitbake -c cleanall virtual/bootloader"
 endif
 
 .PHONY: build-kernel
@@ -182,7 +160,7 @@ ifeq (1,$(BUILD_IN_DOCKER))
 else
 	@# build kernel
 	time bash -c \
-                "source ./poky/oe-init-build-env $(BUILD_DIR); bitbake -k virtual/kernel"
+                "unset ga_auto_remove GA_AUTO_REMOVE; source ./poky/oe-init-build-env $(BUILD_DIR); bitbake -k virtual/kernel"
 	@echo ""
 	@echo ""
 	@echo "$*" Kernel files should be found here:
@@ -196,31 +174,7 @@ ifeq (1,$(BUILD_IN_DOCKER))
 else
 	@# clean kernel
 	time bash -c \
-                "source ./poky/oe-init-build-env $(BUILD_DIR); bitbake -c cleanall virtual/kernel"
-endif
-
-.PHONY: build-kernel-mtd-rw
-build-kernel-mtd-rw: init
-ifeq (1,$(BUILD_IN_DOCKER))
-	$(DOCKER_CMD) make $@
-else
-	@# build mtd writeable Kernel
-	time bash -c \
-                "source ./poky/oe-init-build-env $(BUILD_DIR); MACHINE=$(TARGET_IMG)-mtd-rw bitbake -k virtual/kernel"
-	@echo ""
-	@echo ""
-	@echo "$*" Kernel mtd writeable files should be found here:
-	@ls $(IMGS_MTD_RW_DIR)/$(KERNEL_IMG)*
-endif
-
-.PHONY: clean-kernel-mtd-rw
-clean-kernel-mtd-rw: init
-ifeq (1,$(BUILD_IN_DOCKER))
-	$(DOCKER_CMD) make $@
-else
-	@# clean kernel mtd writeable package
-	time bash -c \
-                "source ./poky/oe-init-build-env $(BUILD_DIR); MACHINE=$(TARGET_IMG)-mtd-rw bitbake -c cleanall virtual/kernel"
+                "unset ga_auto_remove GA_AUTO_REMOVE; source ./poky/oe-init-build-env $(BUILD_DIR); bitbake -c cleanall virtual/kernel"
 endif
 
 .PHONY: build-img-%
@@ -230,7 +184,7 @@ ifeq (1,$(BUILD_IN_DOCKER))
 else
 	@# build image
 	time bash -c \
-		"source ./poky/oe-init-build-env $(BUILD_DIR); bitbake -k $($*)"
+		"unset ga_auto_remove GA_AUTO_REMOVE; source ./poky/oe-init-build-env $(BUILD_DIR); bitbake -k $($*)"
 	@echo ""
 	@echo ""
 	@echo "$*" image files should be found here:
