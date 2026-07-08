@@ -1,10 +1,10 @@
-FROM debian:stretch
+FROM debian:bookworm
 
 RUN apt-get update -yq \
  && DEBIAN_FRONTEND=noninteractive \
     apt-get install -yq --no-install-recommends \
     ca-certificates \
-    # Yocto requirements
+    # Yocto requirements (walnascar), see poky/documentation/tools/host_packages_scripts/ubuntu_essential.sh
     build-essential \
     chrpath \
     cmake \
@@ -12,29 +12,37 @@ RUN apt-get update -yq \
     curl \
     debianutils \
     diffstat \
+    file \
     gawk \
     gcc-multilib \
-    git-core \
-    iputils-ping \ 
+    git \
+    iputils-ping \
+    libacl1 \
     libbz2-dev \
-    libegl1-mesa \
+    libegl1 \
+    liblz4-tool \
     libreadline-dev \
-    libsdl1.2-dev \
+    libsdl2-dev \
     libssl-dev \
     locales \
     ntpdate \
     python3 \
-    python3-pip \
-    python3-pexpect \
+    python3-dev \
+    python-is-python3 \
+    python3-git \
     python3-jinja2 \
-    python-dev \
+    python3-pexpect \
+    python3-pip \
+    python3-subunit \
     screen \
+    socat \
     texinfo \
     time \
     unzip \
     wget \
     xterm \
     xz-utils \
+    zstd \
     # Oml2 requirements
     autoconf \
     automake \
@@ -43,11 +51,10 @@ RUN apt-get update -yq \
     check \
     libpopt-dev \
     libsqlite3-dev \
-    libtool \
     libxml2-dev \
     libxml2-utils \
     pkg-config \
-    python-matplotlib \
+    python3-matplotlib \
     ruby \
     sqlite3 \
     valgrind \
@@ -67,9 +74,9 @@ RUN git clone https://github.com/mytestbed/oml.git && \
 
 RUN sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen \
  && locale-gen
-ENV LANG en_US.UTF-8  
-ENV LANGUAGE en_US.UTF-8 
-ENV LC_ALL en_US.UTF-8
+ENV LANG=en_US.UTF-8
+ENV LANGUAGE=en_US.UTF-8
+ENV LC_ALL=en_US.UTF-8
 
 WORKDIR /shared
 
@@ -82,7 +89,5 @@ USER dev
 
 RUN git config --global user.email "admin@iot-lab.info"
 RUN git config --global user.name "IoT-LAB"
-# bug with ca-certificates
-RUN git config --global http.sslverify false
 
 CMD ["/bin/bash"]
