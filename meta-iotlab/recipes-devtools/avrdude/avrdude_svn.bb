@@ -8,6 +8,9 @@ DEPENDS = "bison-native libusb elfutils hidapi libftdi readline"
 inherit autotools
 
 PV = "6.3+svn${SRCPV}"
-SRC_URI = "svn://svn.savannah.nongnu.org/svn/avrdude/;protocol=http;module=trunk;rev=1425"
+# svn.savannah.nongnu.org no longer serves SVN over HTTP/WebDAV (port 80 is
+# closed); use the native svn:// protocol instead. That protocol also drops
+# the "/svn/" prefix that only exists in the WebDAV URL layout.
+SRC_URI = "svn://svn.savannah.nongnu.org/avrdude/;protocol=svn;module=trunk;rev=1425"
 
 S = "${UNPACKDIR}/trunk/avrdude"
