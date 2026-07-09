@@ -1,0 +1,12 @@
+# dhcp command should not autostart tftp
+setenv autoload no
+dhcp || reset
+tftp ${fdt_addr_r} rpi5/bcm2712-rpi-5-b.dtb
+fdt addr ${fdt_addr_r}
+fdt resize 32768
+tftp ${kernel_addr_r} rpi5/Image || reset
+setenv nfs_bootargs "rootwait rw root=/dev/nfs nfsroot=${rootpath} earlyprintk"
+setenv console_bootargs "console=ttyS0,115200"
+setenv other_bootargs "ip=dhcp panic=15"
+setenv bootargs "$nfs_bootargs $console_bootargs $other_bootargs"
+booti ${kernel_addr_r} - ${fdt_addr_r} || reset

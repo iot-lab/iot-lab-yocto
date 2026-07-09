@@ -1,0 +1,15 @@
+# dhcp command should not autostart tftp
+setenv autoload no
+dhcp || reset
+tftp ${fdt_addr_r} rpi2/bcm2709-rpi-2-b.dtb
+fdt addr ${fdt_addr_r}
+fdt resize 32768
+load mmc 0:1 0x2608000 /overlays/spi0-hw-cs.dtbo
+fdt apply 0x2608000
+tftp ${kernel_addr_r} rpi2/zImage || reset
+setenv nfs_bootargs "rootwait rw root=/dev/nfs nfsroot=${rootpath} earlyprintk"
+setenv console_bootargs "8250.nr_uarts=1 console=ttyS0,115200"
+setenv rpi_bootargs "smsc95xx.macaddr=${ethaddr} dwc_otg.speed=1"
+setenv other_bootargs "ip=dhcp panic=15"
+setenv bootargs "$nfs_bootargs $console_bootargs $rpi_bootargs $other_bootargs"
+bootz ${kernel_addr_r} - ${fdt_addr_r} || reset
