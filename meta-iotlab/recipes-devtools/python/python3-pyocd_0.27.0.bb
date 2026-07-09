@@ -9,4 +9,15 @@ SRC_URI[sha256sum] = "a5fd9d3faa64397adc6426f8ddb771ab4cb31e7fcaacff9a352ea70615
 
 PYPI_PACKAGE = "pyocd"
 
+# Pre-satisfy setup.py's setup_requires=['setuptools_scm', ...] so setuptools
+# doesn't try (and fail, no network in do_compile) to pip-fetch it itself.
+DEPENDS += "python3-setuptools-scm-native"
+
 inherit pypi setuptools3
+
+do_configure:prepend() {
+    # setuptools_scm_git_archive is a dead PyPI package (its functionality
+    # was folded into setuptools_scm itself); leaving it in setup_requires
+    # makes setuptools try and fail to pip-fetch it at build time.
+    sed -i "/setuptools_scm_git_archive/d" ${S}/setup.py
+}
