@@ -13,7 +13,7 @@ BBFILE_COLLECTIONS += "iotlab"
 BBFILE_PATTERN_iotlab = "^${LAYERDIR}"
 BBFILE_PRIORITY_iotlab = "10"
 
-LAYERSERIES_COMPAT_iotlab = "krogoth"
+LAYERSERIES_COMPAT_iotlab = "walnascar"
 ```
 You can note for example that the Bitbake recipes for the layer are appended to **BBFILES** variable, the layer name is appended to **BBFILE_COLLECTIONS** and you define layer priority (allows to choose the layer that takes precedence) in **BBFILE_PRIORITY_iotlab**.
 
@@ -33,15 +33,19 @@ BBLAYERS ?= " \
   ${TOPDIR}/../meta-openembedded/meta-oe \
   ${TOPDIR}/../meta-openembedded/meta-networking \
   ${TOPDIR}/../meta-openembedded/meta-python \
-  ${TOPDIR}/../meta-java/ \
   ${TOPDIR}/../meta-iotlab/ \
+  ${TOPDIR}/../meta-raspberrypi/ \
   "
 BBLAYERS_NON_REMOVABLE ?= " \
   ${TOPDIR}/../poky/meta \
   ${TOPDIR}/../poky/meta-poky \
+  "
 ```
 
-You can see that we have two build directories, build and build-rpi3, which correspond respectively to the IoT-LAB A8 and RPI3 hardware.
+You can see that we have four build directories, `build-rpi2`, `build-rpi3`,
+`build-rpi4` and `build-rpi5`, one per supported Raspberry Pi gateway model
+(the var-som-am35/Open A8 target has been retired from this branch — it
+remains supported on the `dunfell`-based `master` branch).
 
 ### Bitbake recipes
 
@@ -53,27 +57,26 @@ LICENSE = "CECILL-2.0"
 LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/CECILL-2.0;md5=574109ac4bdff61f9c3e0de892ecbd19"
 
 PACKAGES =+ "${PN}-list ${PN}-config"
-S = "${WORKDIR}"
-FILESEXTRAPATHS_prepend := "${THISDIR}/src:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/src:"
 
 # metapackage
 DEPENDS = "libftdi libusb1"
 
-RDEPENDS_${PN} += "${PN}-list ${PN}-config"
-ALLOW_EMPTY_${PN} = "1"
+RDEPENDS:${PN} += "${PN}-list ${PN}-config"
+ALLOW_EMPTY:${PN} = "1"
 
+inherit pkgconfig
 
-DESCRIPTION_${PN}-list = "IOT-LAB ftdi list"
-FILES_${PN}-list = "${bindir}/ftdi-devices-list"
-RDEPENDS_${PN}-list = "libftdi libusb1"
+DESCRIPTION:${PN}-list = "IOT-LAB ftdi list"
+FILES:${PN}-list = "${bindir}/ftdi-devices-list"
+RDEPENDS:${PN}-list = "libftdi libusb1"
 
-DESCRIPTION_${PN}-config = "IOT-LAB ftdi eeprom config"
-FILES_${PN}-config = "${bindir}/ftdi-eeprom-config"
-RDEPENDS_${PN}-config = "libftdi libusb1"
+DESCRIPTION:${PN}-config = "IOT-LAB ftdi eeprom config"
+FILES:${PN}-config = "${bindir}/ftdi-eeprom-config"
+RDEPENDS:${PN}-config = "libftdi libusb1"
 
-SRC_URI = "git://github.com/iot-lab/iot-lab-ftdi-utils.git;protocol=git;tag=${PV}"
-S = "${WORKDIR}/git/"
-
+SRC_URI = "git://github.com/iot-lab/iot-lab-ftdi-utils.git;protocol=https;tag=${PV};nobranch=1"
+S = "${UNPACKDIR}/git"
 
 do_compile () {
   export LDFLAGS="$(pkg-config --libs libftdi1) ${LDFLAGS}"
@@ -97,55 +100,41 @@ You can view in this file:
 * **do_compile**: provide a compile task which tells Bitbake how to compile. We set CFLAGS and LDFLAGS environment variables and launch oe_runmake used to run make
 * **do_install**: provide install task files
 
-The result on A8 node:
-```
-root@a8-1:~# opkg list | grep ftdi
-ftdi-utils - 1.0.0-r0
-ftdi-utils-config - 1.0.0-r0
-ftdi-utils-list - 1.0.0-r0
+Note the `:` override syntax (`RDEPENDS:${PN}`, `FILES:${PN}-list`, ...)
+rather than the older underscore form (`RDEPENDS_${PN}`) — this recipe, like
+the rest of `meta-iotlab`, was modernized for the `walnascar` release, which
+dropped support for the underscore override syntax.
 
-root@a8-1:~# opkg files ftdi-utils       
-Package ftdi-utils (1.0.0-r0) is installed on root and has the following files:
-
-root@a8-1:~# opkg files ftdi-utils-list
-Package ftdi-utils-list (1.0.0-r0) is installed on root and has the following files:
-/usr/bin/ftdi-devices-list
-
-root@a8-1:~# opkg files ftdi-utils-config
-Package ftdi-utils-config (1.0.0-r0) is installed on root and has the following files:
-/usr/bin/ftdi-eeprom-config
-```
+Once built, this produces three packages (`ftdi-utils`, `ftdi-utils-list`,
+`ftdi-utils-config`) installable with `opkg` on a gateway, e.g.
+`opkg files ftdi-utils-list` would list `/usr/bin/ftdi-devices-list`.
 
 ### Customizing Images
 
-You can customize an image by creating a custom image recipe file that defines additional software as part of the image. The easiest way is to use **IMAGE_INSTALL** variable which specify the **packagegroup** to install into an image. View the iotlab-image-open-a8.bb recipe file for the open A8 image generation. (eg. meta-iotlab/recipes-core/images directory)
+You can customize an image by creating a custom image recipe file that defines additional software as part of the image. The easiest way is to use **IMAGE_INSTALL** variable which specify the **packagegroup** to install into an image. View the `iotlab-image-gateway-rpi5.bb` recipe file for the RPi5 gateway image generation (`meta-iotlab/recipes-core/images/` directory) — there is one such recipe per target (`iotlab-image-gateway-rpi2/rpi3/rpi4/rpi5.bb`).
 
 ```
-DESCRIPTION = "IoT-LAB image for Open A8 used by users"
+DESCRIPTION = "IoT-LAB image for RPI5 gateways"
 include iotlab-image.inc
 
-IMAGE_INSTALL += "open-a8-packagegroup"
-```
-This file include a generic iotlab-image.inc file with the minimal IoT-LAB requirements and Linux node package group. Thus you can simply add in the package group recipe file (eg. recipes-core/packagegroups/linux-node-packagegroup.bb) your custom package in RDEPENDS_${PN} variable. 
-
-```
-DESCRIPTION = "IoT-LAB image for Open A8 used by users"
-include iotlab-image.inc
-
+# Include modules in rootfs
 IMAGE_INSTALL += " \
-        linux-node-packagegroup \
-        u-boot-fw-utils \
-        flash-scripts-open-a8 \
-        "
+    kernel-modules \
+    gateway-packagegroup \
+    mjpg-streamer \
+    sudo \
+    rtl-sdr \
+    ykush \
+    "
 ```
- 
-In the iotlab-image.inc you can view that we inherit of core-image which is the most basic image allowing a device to boot to a Linux. We also use **IMAGE_FEATURES** variable to enable or high-level feature like use openssh server instead of minimal dropbear or activate read_only filesystem and **DISTRO_FEATURES** with ipv6 support. 
+This file includes the generic `iotlab-image.inc` file with the minimal IoT-LAB requirements, then the gateway package group. Thus you can simply add your custom package to the package group recipe file (`recipes-core/packagegroups/gateway-packagegroup.bb`, or the more minimal `base-packagegroup.bb` it's built on) in its `RDEPENDS:${PN}` variable, or add it directly to a specific target's `IMAGE_INSTALL` as shown above.
+
+In `iotlab-image.inc` you can view that we inherit of core-image which is the most basic image allowing a device to boot to a Linux. We also use **IMAGE_FEATURES** variable to enable or high-level feature like use openssh server instead of minimal dropbear or activate read_only filesystem and **DISTRO_FEATURES** with ipv6/nfs support (further headless-gateway trimming — dropping `opengl`/`wayland`/`vulkan`/`x11` and `ptest` — happens distro-wide in `conf/distro/iotlab.conf`, not in this file).
 
 ```
 DESCRIPTION = "IoT-LAB base image, supports target devices"
 LICENSE = "GPLv2"
 inherit core-image
-
 
 IMAGE_FEATURES += "          \
         ssh-server-openssh   \
@@ -158,22 +147,24 @@ IMAGE_FEATURES += "          \
 DISTRO_FEATURES += "nfs ipv6"
 
 IMAGE_INSTALL +="               \
-        lsb                     \
         tzdata                  \
         cronie                  \
+        logrotate                \
+        ...
 ```
 
 ### Recipes structure
 
+| Recipes directory    | Recipes                                                          |
+|-----------------------|------------------------------------------------------------------|
+| recipes-core          | Images (`iotlab-image-gateway-*`), packagegroups                 |
+| recipes-bsp           | `uboot-netboot` (rpi2-5 network-boot script), `libubootenv`      |
+| recipes-kernel        | Currently unused — RPi kernels come straight from meta-raspberrypi, no local override needed |
+| recipes-connectivity  | OpenSSH, OML2, NTP                                                |
+| recipes-devtools      | OpenOCD, avrdude, edbg, avarice, segger-jlink, jimtcl, pseudo, Python3 dependencies |
+| recipes-extended      | sudo, procps                                                      |
+| recipes-support       | Gateway python app (`gateway-code`), FTDI tools, LoRa gateway/packet-forwarder, mjpg-streamer, rtl-sdr, ykush, uhubctl, pycom-utils |
 
-| Recipes directory    | Recipes                                           |
-|----------------------|---------------------------------------------------|
-| recipes-core         | Images, package groups, sshd keys, initrd scripts |
-| recipes-bsp          | U-boot (eg. A8 nodes)                             |
-| recipes-kernel       | Linux kernel (eg. A8 nodes)                       |
-| recipes-support      | Gateway python app                                |
-| recipes-connectivity | OpenSSL/SSH, OML, websocket, MQTT, NTP            |
-| recipes-devtools     | OpenOCD, Edbg, Python2/3 dependencies              |
-
-
+See also `meta-iotlab/recipes.txt` for the canonical description of what each
+`recipes-*` category is meant to hold.
 

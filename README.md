@@ -59,6 +59,59 @@ If you want to build for RPI5 hardware:
     $ bitbake -k iotlab-image-gateway-rpi5
 
 
+Troubleshooting
+---------------
+
+### `PermissionError: [Errno 1] Operation not permitted` on `do_unpack`/`do_prepare_recipe_sysroot`
+
+Bitbake tries to disable network access for tasks that don't need it
+(`do_unpack`, `do_prepare_recipe_sysroot`, ...) by creating an unprivileged
+user namespace. On Ubuntu 23.10+/24.04 and other distros with the
+`apparmor_restrict_unprivileged_userns` kernel hardening enabled, this fails
+with a traceback ending in:
+
+    File ".../bitbake/lib/bb/utils.py", line 1716, in disable_network
+        with open("/proc/self/uid_map", "w") as f:
+    PermissionError: [Errno 1] Operation not permitted
+
+Fix (until next reboot):
+
+    $ sudo sysctl kernel.apparmor_restrict_unprivileged_userns=0
+
+To make it persistent, add `kernel.apparmor_restrict_unprivileged_userns=0`
+to a file under `/etc/sysctl.d/`. Note this loosens a security hardening
+feature system-wide, not just for bitbake.
+
+`BUILD_IN_DOCKER=1` builds aren't affected by this: the Makefile already
+runs the container with `--security-opt apparmor=unconfined` to sidestep it.
+
+### `do_package` fails with `got *at() syscall for unknown directory` / tar `Bad address`
+
+On hosts with a newer `tar` (>= 1.35, e.g. Debian 13/Ubuntu 24.04+, ships a
+CVE fix that switched hardlink-preserving copies to the `openat2` syscall),
+`do_package` (and `do_unpack`/`do_prepare_recipe_sysroot`) can fail with:
+
+    got *at() syscall for unknown directory, fd 4
+    unknown base path for fd 4, path ...
+    tar: ...: Cannot open: Bad address
+
+The pseudo version pinned by poky (`walnascar-5.2.4`) predates upstream
+pseudo's `openat2` support, so its syscall interception loses track of the
+directory file descriptor `tar` hands it. This is a known upstream
+regression (see the Yocto 5.0.15/5.3.1 release notes) not yet fixed in a
+`walnascar` point release.
+
+Fixed locally via `meta-iotlab/recipes-devtools/pseudo/pseudo_git.bbappend`,
+which bumps pseudo's `SRCREV` to the first upstream release with `openat2`
+support (`pseudo-1.9.4`) and drops/rebases the local patches that conflict
+with that newer base. No action needed — this is already in the tree and
+applies automatically. If you still hit this error, run:
+
+    $ bitbake -c cleansstate pseudo-native
+    $ bitbake pseudo-native
+
+then retry your build.
+
 Yocto and OpenEmbedded
 ----------------------
 

@@ -88,6 +88,7 @@ DOCKER_IMAGE_VERSION ?= latest
 # Use BUILD_IN_DOCKER=0 env to disable build in docker for sub-make, to avoid
 # recursive calls to docker
 DOCKER_CMD = docker run --rm --hostname yocto       \
+    --security-opt apparmor=unconfined              \
     -v $(shell pwd):/shared                         \
     $(if $(BUILD_DOWNLOAD_DIR),-v $(BUILD_DOWNLOAD_DIR):$(BUILD_DOWNLOAD_DIR),) \
     -e BUILD_IN_DOCKER=0                            \

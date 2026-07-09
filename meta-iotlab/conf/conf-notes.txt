@@ -7,5 +7,7 @@ Common targets are:
     meta-ide-support
 
 IoT-LAB
-    iotlab-image-open-a8
-    iotlab-image-gateway
+    iotlab-image-gateway-rpi2
+    iotlab-image-gateway-rpi3
+    iotlab-image-gateway-rpi4
+    iotlab-image-gateway-rpi5
