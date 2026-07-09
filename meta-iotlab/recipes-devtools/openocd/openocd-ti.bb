@@ -52,7 +52,12 @@ PARAMS_CROSS += " --libdir=${STAGING_DIR_TARGET}/lib "
 PARAMS_INST   = " --prefix=/opt/openocd-ti "
 
 do_configure() {
-    autoreconf -f -i
+    # --no-recursive: don't descend into the vendored jimtcl/libjaylink
+    # subdirs, both disabled via --disable-internal-*  below anyway. jimtcl's
+    # configure.ac there is only a dummy stub for AC_CONFIG_SUBDIRS (jimtcl
+    # itself doesn't use autoconf) and lacks AC_INIT, which newer autoconf
+    # rejects outright.
+    autoreconf -f -i --no-recursive
     ./configure ${PARAMS_INST} ${PARAMS_CROSS} ${PARAMS_BUILD} ${EXTRA_OECONF}
 }
 
