@@ -3,7 +3,7 @@
 #
 #
 
-TARGET ?= rpi4
+TARGET ?= rpi5
 
 IMAGES = iotlab-image-gateway
 

@@ -27,9 +27,9 @@ To build images you can run:
     # or one by one
     $ make iotlab-image-gateway
 
-By default the Makefile builds the gateway image for RPI4 hardware. If you want to build for another Raspberry Pi model you should specify the target as follows:
+By default the Makefile builds the gateway image for RPI5 hardware. If you want to build for another Raspberry Pi model you should specify the target as follows:
 
-    $ make TARGET=rpi5 iotlab-image-gateway
+    $ make TARGET=rpi4 iotlab-image-gateway
 
 Supported values for `TARGET` are `rpi2`, `rpi3`, `rpi4` and `rpi5`.
 
