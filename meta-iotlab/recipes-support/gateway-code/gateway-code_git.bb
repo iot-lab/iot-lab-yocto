@@ -89,5 +89,6 @@ pkg_postinst:${PN}-server () {
   usermod $OPT -a -G dialout ${WWW_USER}
 }
 
-# Allow shipping arduino elf files
+# Allow shipping arduino elf files (and their split-out debug symbols)
 INSANE_SKIP:${PN} = "arch"
+INSANE_SKIP:${PN}-dbg = "arch"
