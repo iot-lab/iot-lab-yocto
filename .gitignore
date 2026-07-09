@@ -7,4 +7,6 @@ tmp/
 *.log
 sanity_info
 templateconf.cfg
+conf-notes.txt
+conf-summary.txt
 .idea/
