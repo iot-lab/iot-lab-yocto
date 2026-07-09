@@ -37,3 +37,10 @@ EXTRA_OECONF = " --prefix=/usr "
 do_configure() {
   oe_runconf
 }
+
+do_install:append() {
+    # build-jim-ext embeds the build host's cross-compiler invocation and
+    # sysroot path, so it can't work on target. jimtcl here only exists to
+    # satisfy openocd-ti's link against libjim, so drop it.
+    rm -f ${D}${bindir}/build-jim-ext
+}
