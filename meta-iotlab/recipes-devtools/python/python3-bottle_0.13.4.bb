@@ -3,10 +3,10 @@ DESCRIPTION = "Fast and simple WSGI-framework for small web-applications"
 HOMEPAGE = "https://pypi.python.org/pypi/bottle/"
 SECTION = "devel/python"
 LICENSE = "MIT"
-LIC_FILES_CHKSUM = "file://README.rst;md5=1f9017c97709920b7382f39fb402466f"
+LIC_FILES_CHKSUM = "file://LICENSE;md5=8740fee0ffaa1364bffd091f9d316bbf"
 
-SRC_URI[md5sum] = "a00b7e9a1ab3be7c19c1235fea2ccb40"
-SRC_URI[sha256sum] = "0819b74b145a7def225c0e83b16a4d5711fde751cd92bae467a69efce720f69e"
+SRC_URI[md5sum] = "a8dd2700b477b86a38510a2a31d07c78"
+SRC_URI[sha256sum] = "787e78327e12b227938de02248333d788cfe45987edca735f8f88e03472c3f47"
 
 PYPI_PACKAGE = "bottle"
 
