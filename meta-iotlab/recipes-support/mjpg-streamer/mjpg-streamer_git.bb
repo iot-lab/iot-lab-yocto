@@ -14,6 +14,11 @@ PATCHTOOL = "git"
 
 DEPENDS = "libgphoto2 v4l-utils libsdl udev"
 
+# httpd.h defines (not just declares) `client_infos`, relying on the
+# pre-GCC10 -fcommon default to merge duplicate definitions across
+# translation units; GCC 14 defaults to -fno-common and fails to link.
+CFLAGS += "-fcommon"
+
 # Add support for raspicam on rpi platforms
 DEPENDS:append_rpi = " ${@bb.utils.contains("MACHINE_FEATURES", "vc4graphics", "", "userland", d)}"
 # https://lists.yoctoproject.org/pipermail/yocto/2014-June/019933.html
