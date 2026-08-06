@@ -33,7 +33,8 @@ network_control() {
 }
 
 get_primary_ip() {
-  primary_ip=$(ip -4 addr show eth0 | grep -v "secondary" | grep -Po '(?<=inet )[\d.]+')
+  # BusyBox grep has no -P (Perl regex/lookbehind support) - use sed instead.
+  primary_ip=$(ip -4 addr show eth0 | grep -v "secondary" | sed -n 's/.*inet \([0-9.]*\).*/\1/p')
 }
 
 main() {
