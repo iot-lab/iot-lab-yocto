@@ -96,6 +96,13 @@ DOCKER_CMD = docker run --rm --hostname yocto       \
     -u $(shell id -u):$(shell id -g)                \
     $(DOCKER_IMAGE):$(DOCKER_IMAGE_VERSION)
 
+# Build the Dockerfile locally under the same tag DOCKER_CMD uses, so
+# `docker run` picks up the local image instead of pulling from the
+# registry (docker only pulls when no local image matches the tag).
+.PHONY: docker-build
+docker-build:
+	docker image build . -t $(DOCKER_IMAGE):$(DOCKER_IMAGE_VERSION)
+
 .PHONY: build-pkg-%
 build-pkg-%: init
 ifeq (1,$(BUILD_IN_DOCKER))

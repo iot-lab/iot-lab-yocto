@@ -64,8 +64,21 @@ BUILD_IN_DOCKER=1 BUILD_DOWNLOAD_DIR=/path/to/shared-downloads make iotlab-image
 
 ### Build the Docker image locally
 
-Simply build the Docker image with the following command:
+```
+make docker-build
+```
+
+This builds the Dockerfile and tags it as `fitiotlab/iot-lab-yocto:latest`
+(the same tag `BUILD_IN_DOCKER=1` uses by default), so subsequent
+`BUILD_IN_DOCKER=1` runs use your local image instead of pulling from the
+registry — useful if the published image is out of date and you can't push
+a new one right now. Docker only pulls when no local image matches the tag,
+so as long as the tag matches you won't hit a registry pull.
+
+To build/tag under a different name or version, set `DOCKER_IMAGE` /
+`DOCKER_IMAGE_VERSION` for both the build and the run:
 
 ```
-docker image build . -t fitiotlab/iot-lab-yocto
+DOCKER_IMAGE_VERSION=local make docker-build
+DOCKER_IMAGE_VERSION=local BUILD_IN_DOCKER=1 make iotlab-image-gateway
 ```
