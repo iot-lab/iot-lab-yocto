@@ -13,6 +13,7 @@ ifeq ($(TARGET), rpi2)
   TARGET_ARCH = cortexa7t2hf-neon-vfpv4
   TARGET_IMG = raspberrypi2
   KERNEL_IMG = zImage
+  BUILD_BOOTLOADER = 1
 
   # Use a mapping between image target of make with image name in yocto
   iotlab-image-gateway = iotlab-image-gateway-rpi2
@@ -21,6 +22,7 @@ else ifeq ($(TARGET), rpi3)
   TARGET_ARCH = cortexa7t2hf-neon-vfpv4
   TARGET_IMG = raspberrypi3
   KERNEL_IMG = zImage
+  BUILD_BOOTLOADER = 1
 
   # Use a mapping between image target of make with image name in yocto
   iotlab-image-gateway = iotlab-image-gateway-rpi3
@@ -29,6 +31,7 @@ else ifeq ($(TARGET), rpi4)
   TARGET_ARCH = cortexa7t2hf-neon-vfpv4
   TARGET_IMG = raspberrypi4
   KERNEL_IMG = zImage
+  BUILD_BOOTLOADER = 1
 
   # Use a mapping between image target of make with image name in yocto
   iotlab-image-gateway = iotlab-image-gateway-rpi4
@@ -37,6 +40,11 @@ else ifeq ($(TARGET), rpi5)
   TARGET_ARCH = cortexa76
   TARGET_IMG = raspberrypi5
   KERNEL_IMG = Image
+  # rpi5 doesn't build/deploy U-Boot: mainline has no working RP1 Ethernet
+  # driver, so RPI_USE_U_BOOT is disabled for this machine (see
+  # meta-iotlab's iotlab.conf) and netboot goes through the RPi5
+  # firmware/EEPROM instead.
+  BUILD_BOOTLOADER = 0
 
   # Use a mapping between image target of make with image name in yocto
   iotlab-image-gateway = iotlab-image-gateway-rpi5
@@ -141,8 +149,10 @@ endif
 build-uboot: init
 ifeq (1,$(BUILD_IN_DOCKER))
 	$(DOCKER_CMD) make $@
+else ifeq (0,$(BUILD_BOOTLOADER))
+	@echo "$(TARGET) doesn't use U-Boot, nothing to build."
 else
-	@# build u-boot (and, on rpi5, the netboot boot.scr)
+	@# build u-boot
 	time bash -c \
                 "unset ga_auto_remove GA_AUTO_REMOVE; source ./poky/oe-init-build-env $(BUILD_DIR); bitbake -k virtual/bootloader"
 	@echo ""
@@ -155,6 +165,8 @@ endif
 clean-uboot: init
 ifeq (1,$(BUILD_IN_DOCKER))
 	$(DOCKER_CMD) make $@
+else ifeq (0,$(BUILD_BOOTLOADER))
+	@echo "$(TARGET) doesn't use U-Boot, nothing to clean."
 else
 	@# clean u-boot
 	time bash -c \
@@ -190,13 +202,20 @@ build-img-%: init
 ifeq (1,$(BUILD_IN_DOCKER))
 	$(DOCKER_CMD) make $@
 else
-	@# build image
+	@# build image and bootloader together (when the target uses one), in
+	@# a single bitbake run, so both stay 'reachable' and neither's
+	@# deploy artifacts get pruned by bitbake's sstate reachable-stamps
+	@# cleanup
 	time bash -c \
-		"unset ga_auto_remove GA_AUTO_REMOVE; source ./poky/oe-init-build-env $(BUILD_DIR); bitbake -k $($*)"
+		"unset ga_auto_remove GA_AUTO_REMOVE; source ./poky/oe-init-build-env $(BUILD_DIR); bitbake -k $($*) $(if $(filter 1,$(BUILD_BOOTLOADER)),virtual/bootloader)"
 	@echo ""
 	@echo ""
 	@echo "$*" image files should be found here:
 	@ls $(IMGS_DIR)/$($*)*
+ifeq (1,$(BUILD_BOOTLOADER))
+	@echo "u-boot files should be found here:"
+	@ls $(IMGS_DIR)/u-boot*
+endif
 endif
 
 .PHONY: clean-img-%
