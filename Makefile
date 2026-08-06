@@ -204,6 +204,6 @@ clean-img-%:
 	@# keep only the last one
 	@# don't match the symlink or the last build image
 	rm -f $(shell find $(IMGS_DIR)/ -name '$($*)-$(TARGET_IMG)*' -type f  \
-		! -name $(shell readlink $(IMGS_DIR)/$($*)-$(TARGET_IMG).tar.gz) \
-		! -name $(shell readlink $(IMGS_DIR)/$($*)-$(TARGET_IMG).manifest) \
+		! -name $(shell readlink $(IMGS_DIR)/$($*)-$(TARGET_IMG).rootfs.tar.gz) \
+		! -name $(shell readlink $(IMGS_DIR)/$($*)-$(TARGET_IMG).rootfs.manifest) \
                 )
