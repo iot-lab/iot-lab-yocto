@@ -2,9 +2,11 @@ DESCRIPTION = "U-Boot netboot script: dhcp -> tftp kernel+dtb -> nfsroot"
 LICENSE = "MIT"
 LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecda2f7b4f302"
 
-# rpi2/rpi3/rpi4 use 32-bit U-Boot (bootz/zImage), rpi5 uses 64-bit (booti/Image).
-# UBOOT_ARCH is resolved per-machine automatically by kernel-arch.bbclass.
-COMPATIBLE_MACHINE = "raspberrypi2|raspberrypi3|raspberrypi4|raspberrypi5"
+# rpi2/rpi3/rpi4 use 32-bit U-Boot (bootz/zImage).
+# rpi5 is excluded: mainline U-Boot has no working RP1 Ethernet driver, so
+# it can't dhcp/tftp netboot there. See rpi5-netboot-config instead, which
+# uses the RPi5 firmware/EEPROM's own native netboot.
+COMPATIBLE_MACHINE = "raspberrypi2|raspberrypi3|raspberrypi4"
 
 DEPENDS = "u-boot-mkimage-native"
 INHIBIT_DEFAULT_DEPS = "1"
