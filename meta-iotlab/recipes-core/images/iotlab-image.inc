@@ -1,6 +1,18 @@
 DESCRIPTION = "IoT-LAB base image, supports target devices"
 LICENSE = "GPLv2"
-inherit core-image
+inherit core-image extrausers
+
+# meta-raspberrypi's udev-rules-rpi (99-com.rules, same file Raspberry Pi OS
+# ships) assigns /dev/i2c-*, /dev/spidev*, gpio nodes etc. to these groups,
+# but nothing creates them - udevd falls back to a default group and logs
+# "specified group 'i2c'/'spi'/'gpio' unknown" for each at boot. Raspberry
+# Pi OS creates them via raspberrypi-sys-mods; do the same here.
+EXTRA_USERS_PARAMS += "                  \
+        groupadd -r gpio;                \
+        groupadd -r spi;                 \
+        groupadd -r i2c;                 \
+        usermod -a -G gpio,spi,i2c root; \
+        "
 
 
 IMAGE_FEATURES += "          \
