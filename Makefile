@@ -121,8 +121,9 @@ else
                 "unset ga_auto_remove GA_AUTO_REMOVE; source ./poky/oe-init-build-env $(BUILD_DIR); bitbake -k $*"
 	@echo ""
 	@echo ""
-	@echo "$*" ipk package files should be found here:
-	@ls $(PKGS_DIR)/$**
+	@echo "$*: ipk package files (if any) should be found here:"
+	@ls $(PKGS_DIR)/$** 2>/dev/null || \
+		echo "  (none - $* may be a deploy-only recipe; check $(IMGS_DIR)/ instead)"
 endif
 
 .PHONY: build-pkg-%-native
