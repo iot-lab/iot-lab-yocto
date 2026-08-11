@@ -7,7 +7,7 @@ fdt resize 32768
 tftp ${kernel_addr_r} rpi3/zImage || reset
 setenv nfs_bootargs "rootwait rw root=/dev/nfs nfsroot=${rootpath} earlyprintk"
 setenv console_bootargs "8250.nr_uarts=1 console=ttyS0,115200"
-setenv rpi_bootargs "smsc95xx.macaddr=${ethaddr}"
+setenv rpi_bootargs "lan78xx.macaddr=${ethaddr}"
 setenv other_bootargs "ip=dhcp panic=15"
 setenv bootargs "$nfs_bootargs $console_bootargs $rpi_bootargs $other_bootargs"
 bootz ${kernel_addr_r} - ${fdt_addr_r} || reset
