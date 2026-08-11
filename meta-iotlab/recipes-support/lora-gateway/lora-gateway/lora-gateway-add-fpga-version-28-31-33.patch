@@ -30,3 +30,15 @@ index 7e396bc..478f46a 100644
  /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
  
  int reg_w_align32(void *spi_target, uint8_t spi_mux_mode, uint8_t spi_mux_target, struct lgw_reg_s r, int32_t reg_value) {
+diff --git a/libloragw/inc/loragw_reg.h b/libloragw/inc/loragw_reg.h
+index 1111111..2222222 100644
+--- a/libloragw/inc/loragw_reg.h
++++ b/libloragw/inc/loragw_reg.h
+@@ -46,6 +46,7 @@ struct lgw_reg_s {
+ 
+ int reg_w_align32(void *spi_target, uint8_t spi_mux_mode, uint8_t spi_mux_target, struct lgw_reg_s r, int32_t reg_value);
+ int reg_r_align32(void *spi_target, uint8_t spi_mux_mode, uint8_t spi_mux_target, struct lgw_reg_s r, int32_t *reg_value);
++uint8_t read_fpga_version(void);
+ 
+ /* -------------------------------------------------------------------------- */
+ /* --- PUBLIC CONSTANTS ----------------------------------------------------- */
