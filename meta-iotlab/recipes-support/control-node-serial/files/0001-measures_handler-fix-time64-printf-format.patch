@@ -1,0 +1,27 @@
+Upstream-Status: Pending
+
+Toolchains that default tv_sec/tv_usec (time_t/suseconds_t) to 64 bits
+even on 32-bit targets (_TIME_BITS=64) make %lu/%06lu mismatch the
+actual argument width, which -Werror=format turns into a build error:
+
+    error: format '%lu' expects argument of type 'long unsigned int',
+    but argument 3 has type '__time64_t' {aka 'long long int'}
+
+Cast to 'long long' and print with %lld/%06lld instead: this is always
+correct for both 32- and 64-bit time_t, since the cast only ever widens.
+
+diff --git a/src/measures_handler.c b/src/measures_handler.c
+index 1111111..2222222 100644
+--- a/src/measures_handler.c
++++ b/src/measures_handler.c
+@@ -251,8 +251,8 @@ static void handle_ack_pkt(uint8_t *data)
+         case SET_TIME:
+             gettimeofday(&time_ack, NULL);
+             timeval_substract(&time_diff, &time_ack, &set_time_ref);
+-            PRINT_MSG("config_ack set_time %lu.%06lu\n",
+-                    time_diff.tv_sec, time_diff.tv_usec);
++            PRINT_MSG("config_ack set_time %lld.%06lld\n",
++                    (long long)time_diff.tv_sec, (long long)time_diff.tv_usec);
+             timerclear(&set_time_ref);
+             break;
+         case CONFIG_CONSUMPTION:

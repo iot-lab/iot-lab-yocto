@@ -4,9 +4,11 @@ LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/CECILL-2.0;md5=574109ac4bdff61f
 
 DEPENDS = "oml2 oml2-native"
 
-SRC_URI  = "git://github.com/iot-lab/control_node_serial.git;protocol=https;branch=main"
+SRC_URI  = "git://github.com/iot-lab/control_node_serial.git;protocol=https;branch=main \
+            file://0001-measures_handler-fix-time64-printf-format.patch \
+"
 
-PR = "r4"
+PR = "r5"
 PV = "git-src${SRCDATE}-r${SRCPV}"
 
 S = "${UNPACKDIR}/git"
