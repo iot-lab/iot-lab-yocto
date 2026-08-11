@@ -9,9 +9,6 @@ IMAGE_INSTALL += " \
     sudo \
     rtl-sdr \
     ykush \
-    lora-gateway-utils \
-    lora-packet-forwarder \
-    lora-gateway-bridge \
     mosquitto \
     uhubctl \
 	"
