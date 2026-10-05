@@ -5,6 +5,7 @@ downloads/
 sstate-cache/
 tmp/
 *.log
+bitbake.lock
 sanity_info
 templateconf.cfg
 conf-notes.txt
