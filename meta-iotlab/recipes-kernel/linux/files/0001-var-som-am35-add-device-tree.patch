@@ -1,0 +1,352 @@
+From b0e04172295ae6de69a0dc4cee4749222b371e4d Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Ga=C3=ABtan=20Harter?= <hartergaetan@gmail.com>
+Date: Sun, 4 Apr 2021 17:42:12 +0200
+Subject: [PATCH 1/7] var-som-am35: add device tree
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+It supports:
+
+ * memory
+ * RTC chip
+ * ehci-usb 1 (HUB on IoT-LAB)
+ * ehci-usb 2 (FTDI chip on IoT-LAB)
+ * Internal NAND with partitions read-only (and rw in separate dts)
+
+Disabled:
+
+ * uart4 as it causes a stacktrace
+ * sgx_module as it crashes when probing device for ti-sysc driver
+
+Notes:
+
+ * Not included 'ti,am3517-evm' compatible string as it seems to work without.
+   Even if it was present in the 'am3517-evm' board we were close from.
+
+Signed-off-by: Gaëtan Harter <hartergaetan@gmail.com>
+---
+ arch/arm/boot/dts/Makefile                |   4 +-
+ arch/arm/boot/dts/var-som-am35-mtd-rw.dts |  25 +++
+ arch/arm/boot/dts/var-som-am35.dts        | 262 ++++++++++++++++++++++
+ 3 files changed, 290 insertions(+), 1 deletion(-)
+ create mode 100644 arch/arm/boot/dts/var-som-am35-mtd-rw.dts
+ create mode 100644 arch/arm/boot/dts/var-som-am35.dts
+
+diff --git a/arch/arm/boot/dts/Makefile b/arch/arm/boot/dts/Makefile
+index b21b3a64641a..fe90cee1bbd4 100644
+--- a/arch/arm/boot/dts/Makefile
++++ b/arch/arm/boot/dts/Makefile
+@@ -725,7 +725,9 @@ dtb-$(CONFIG_ARCH_OMAP3) += \
+ 	omap3-sbc-t3730.dtb \
+ 	omap3-sniper.dtb \
+ 	omap3-thunder.dtb \
+-	omap3-zoom3.dtb
++	omap3-zoom3.dtb \
++	var-som-am35.dtb \
++	var-som-am35-mtd-rw.dtb
+ dtb-$(CONFIG_SOC_TI81XX) += \
+ 	am3874-iceboard.dtb \
+ 	dm8148-evm.dtb \
+diff --git a/arch/arm/boot/dts/var-som-am35-mtd-rw.dts b/arch/arm/boot/dts/var-som-am35-mtd-rw.dts
+new file mode 100644
+index 000000000000..fce980d5ad0d
+--- /dev/null
++++ b/arch/arm/boot/dts/var-som-am35-mtd-rw.dts
+@@ -0,0 +1,25 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * Copyright (C) 2021 Gaëtan Harter <hartergaetan@gmail.com>
++ */
++/dts-v1/;
++#include "var-som-am35.dts"
++
++/* Re-enable NAND partitions as read-write */
++&nand {
++	partition@0 {
++		/delete-property/ read-only;
++	};
++	partition@0x80000 {
++		/delete-property/ read-only;
++	};
++	partition@0x1c0000 {
++		/delete-property/ read-only;
++	};
++	partition@0x280000 {
++		/delete-property/ read-only;
++	};
++	partition@0x780000 {
++		/delete-property/ read-only;
++	};
++};
+diff --git a/arch/arm/boot/dts/var-som-am35.dts b/arch/arm/boot/dts/var-som-am35.dts
+new file mode 100644
+index 000000000000..dd4e3657dc14
+--- /dev/null
++++ b/arch/arm/boot/dts/var-som-am35.dts
+@@ -0,0 +1,262 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * Copyright (C) 2021 Gaëtan Harter <hartergaetan@gmail.com>
++ */
++/dts-v1/;
++
++#include "am3517.dtsi"
++
++/ {
++	model = "Variscite SOM AM35 - IoT-LAB";
++	compatible = "variscite,var-som-am35", "ti,am3517", "ti,omap3";
++	chosen {
++		/*
++		 * With device tree, CONFIG_CMDLINE is not taken into account
++		 * So use this one here.
++		 */
++		bootargs = "";
++	};
++
++	memory@80000000 {
++		device_type = "memory";
++		reg = <0x80000000 0x10000000>; /* 256 MB */
++	};
++
++	/* Adapted from 'omap3-beagle.dts'
++	 *
++	 * gpio_NUM = <&gpio(NUM / 32 +1) (NUM % 32) GPIO_ACTIVE_LOW>
++	 */
++	hsusb1_phy: hsusb1_phy {
++		compatible = "usb-nop-xceiv";
++		reset-gpios = <&gpio5 26 GPIO_ACTIVE_LOW>;	/* gpio_154 */
++		#phy-cells = <0>;
++	};
++
++	hsusb2_phy: hsusb2_phy {
++		compatible = "usb-nop-xceiv";
++		reset-gpios = <&gpio5 24 GPIO_ACTIVE_LOW>;	/* gpio_152 */
++		#phy-cells = <0>;
++	};
++};
++
++&omap3_pmx_core {
++	/* https://www.ti.com/lit/ug/sprugr0c/sprugr0c.pdf
++	 * Table 6-5. Core and Wakeup Control Module Pad Configuration Registers(continued)
++	 * Page 625
++	 */
++	pinctrl-names = "default";
++	pinctrl-0 = <
++		&hsusb1_rst_pins
++		&hsusb2_rst_pins
++		&hsusb2_pins
++	>;
++
++	hsusb1_rst_pins: pinmux_hsusb1_rst_pins {
++		pinctrl-single,pins = <
++			OMAP3_CORE1_IOPAD(0x2188, PIN_OUTPUT | MUX_MODE4)	/* mcbsp4_clkx.gpio_154 */
++		>;
++	};
++	hsusb2_rst_pins: pinmux_hsusb2_rst_pins {
++		pinctrl-single,pins = <
++			OMAP3_CORE1_IOPAD(0x2184, PIN_OUTPUT | MUX_MODE4)	/* mcbsp4_dx.gpio_152 */
++		>;
++	};
++
++	hsusb2_pins: pinmux_hsusb2_pins {
++		pinctrl-single,pins = <
++			OMAP3_CORE1_IOPAD(0x21d4, PIN_INPUT_PULLDOWN | MUX_MODE3)	/* mcspi1_cs3.hsusb2_data2 */
++			OMAP3_CORE1_IOPAD(0x21d6, PIN_INPUT_PULLDOWN | MUX_MODE3)	/* mcspi2_clk.hsusb2_data7 */
++			OMAP3_CORE1_IOPAD(0x21d8, PIN_INPUT_PULLDOWN | MUX_MODE3)	/* mcspi2_simo.hsusb2_data4 */
++			OMAP3_CORE1_IOPAD(0x21da, PIN_INPUT_PULLDOWN | MUX_MODE3)	/* mcspi2_somi.hsusb2_data5 */
++			OMAP3_CORE1_IOPAD(0x21dc, PIN_INPUT_PULLDOWN | MUX_MODE3)	/* mcspi2_cs0.hsusb2_data6 */
++			OMAP3_CORE1_IOPAD(0x21de, PIN_INPUT_PULLDOWN | MUX_MODE3)	/* mcspi2_cs1.hsusb2_data3 */
++		>;
++	};
++};
++
++&omap3_pmx_core2 {
++	pinctrl-names = "default";
++	pinctrl-0 = <
++		&hsusb1_pins
++		&hsusb2_2_pins
++	>;
++
++	/* Mode from am3517-evm.dts */
++	hsusb1_pins: pinmux_hsusb1_pins {
++		pinctrl-single,pins = <
++			OMAP3430_CORE2_IOPAD(0x25d8, PIN_OUTPUT | MUX_MODE3)	/* etk_clk.hsusb1_stp */
++			OMAP3430_CORE2_IOPAD(0x25da, PIN_OUTPUT | MUX_MODE3)	/* etk_ctl.hsusb1_clk */
++			OMAP3430_CORE2_IOPAD(0x25ec, PIN_INPUT | MUX_MODE3)	/* etk_d8.hsusb1_dir */
++			OMAP3430_CORE2_IOPAD(0x25ee, PIN_INPUT | MUX_MODE3)	/* etk_d9.hsusb1_nxt */
++			OMAP3430_CORE2_IOPAD(0x25dc, PIN_INPUT | MUX_MODE3)	/* etk_d0.hsusb1_data0 */
++			OMAP3430_CORE2_IOPAD(0x25de, PIN_INPUT | MUX_MODE3)	/* etk_d1.hsusb1_data1 */
++			OMAP3430_CORE2_IOPAD(0x25e0, PIN_INPUT | MUX_MODE3)	/* etk_d2.hsusb1_data2 */
++			OMAP3430_CORE2_IOPAD(0x25ea, PIN_INPUT | MUX_MODE3)	/* etk_d7.hsusb1_data3 */
++			OMAP3430_CORE2_IOPAD(0x25e4, PIN_INPUT | MUX_MODE3)	/* etk_d4.hsusb1_data4 */
++			OMAP3430_CORE2_IOPAD(0x25e6, PIN_INPUT | MUX_MODE3)	/* etk_d5.hsusb1_data5 */
++			OMAP3430_CORE2_IOPAD(0x25e8, PIN_INPUT | MUX_MODE3)	/* etk_d6.hsusb1_data6 */
++			OMAP3430_CORE2_IOPAD(0x25e2, PIN_INPUT | MUX_MODE3)	/* etk_d3.hsusb1_data7 */
++		>;
++	};
++
++	hsusb2_2_pins: pinmux_hsusb2_2_pins {
++		pinctrl-single,pins = <
++			OMAP3430_CORE2_IOPAD(0x25f0, PIN_OUTPUT | MUX_MODE3)	/* etk_d10.hsusb2_clk */
++			OMAP3430_CORE2_IOPAD(0x25f2, PIN_OUTPUT | MUX_MODE3)	/* etk_d11.hsusb2_stp */
++			OMAP3430_CORE2_IOPAD(0x25f4, PIN_INPUT_PULLDOWN | MUX_MODE3)	/* etk_d12.hsusb2_dir */
++			OMAP3430_CORE2_IOPAD(0x25f6, PIN_INPUT_PULLDOWN | MUX_MODE3)	/* etk_d13.hsusb2_nxt */
++			OMAP3430_CORE2_IOPAD(0x25f8, PIN_INPUT_PULLDOWN | MUX_MODE3)	/* etk_d14.hsusb2_data0 */
++			OMAP3430_CORE2_IOPAD(0x25fa, PIN_INPUT_PULLDOWN | MUX_MODE3)	/* etk_d15.hsusb2_data1 */
++		>;
++	};
++};
++
++&davinci_emac {
++	status = "okay";
++};
++
++&davinci_mdio {
++	status = "okay";
++};
++
++&i2c1 {
++	clock-frequency = <400000>;
++	rtc@68 {
++		compatible = "dallas,ds1307";
++		reg = <0x68>;
++		status = "okay";
++	};
++};
++
++&i2c2 {
++	clock-frequency = <400000>;
++};
++
++&i2c3 {
++	clock-frequency = <400000>;
++};
++
++&gpmc {
++	/* Copied from am3517-som.dtsi in kernel 5.4
++	 * Partition copied/adapted from omap3-beagle.dts and board-varam35.c
++	 */
++	ranges = <0 0 0x30000000 0x1000000>;	/* CS0: 16MB for NAND */
++
++	nand: nand@0,0 {
++		/*
++		 * nand: device found, Manufacturer ID: 0x2c, Chip ID: 0xca
++		 * nand: Micron MT29F2G16ABAEAWP
++		 * nand: 256 MiB, SLC, erase size: 128 KiB, page size: 2048, OOB size: 64
++		 * nand: using OMAP_ECC_BCH8_CODE_HW_DETECTION_SW
++		 */
++		compatible = "ti,omap2-nand";
++		linux,mtd-name = "micron,mt29f2g16abaeawp";
++		reg = <0 0 4>; /* CS0, offset 0, IO size 4 */
++		nand-bus-width = <16>;
++		ti,nand-ecc-opt = "bch8";
++		gpmc,sync-clk-ps = <0>;
++		gpmc,cs-on-ns = <0>;
++		gpmc,cs-rd-off-ns = <44>;
++		gpmc,cs-wr-off-ns = <44>;
++		gpmc,adv-on-ns = <6>;
++		gpmc,adv-rd-off-ns = <34>;
++		gpmc,adv-wr-off-ns = <44>;
++		gpmc,we-off-ns = <40>;
++		gpmc,oe-off-ns = <54>;
++		gpmc,access-ns = <64>;
++		gpmc,rd-cycle-ns = <82>;
++		gpmc,wr-cycle-ns = <82>;
++		gpmc,wr-access-ns = <40>;
++		gpmc,wr-data-mux-bus-ns = <0>;
++		gpmc,device-width = <2>;
++		#address-cells = <1>;
++		#size-cells = <1>;
++
++		status = "disabled";
++
++		partition@0 {
++			label = "X-Loader";
++			reg = <0 0x80000>;
++			read-only;
++		};
++		partition@0x80000 {
++			label = "U-Boot";
++			reg = <0x80000 0x1c0000>;
++			read-only;
++		};
++		partition@0x1c0000 {
++			label = "U-Boot Env";
++			reg = <0x240000 0x40000>;
++			read-only;
++		};
++		partition@0x280000 {
++			label = "Kernel";
++			reg = <0x280000 0x500000>;
++			read-only;
++		};
++		partition@0x780000 {
++			label = "Filesystem";
++			reg = <0x780000 0xf880000>;
++			read-only;
++		};
++	};
++};
++
++&nand {
++	status = "okay";
++};
++
++&uart3 {
++	status = "okay";
++};
++
++&uart4 {
++	/*
++	 * Disable as causes stacktrace
++	 * Unhandled fault: external abort on non-linefetch (0x1028)
++	 * PC is at serial_omap_pm+0x48/0x144
++	 * LR is at serial_omap_pm+0x2c/0x144
++	 *
++	 * Was normally fixed by 19e79687de22f23bcfb5e79cce3daba20af228d1
++	 *
++	 * Still crashing in 5.4 with it.
++	 */
++	status = "disabled";
++};
++
++&usbhshost {
++	port1-mode = "ehci-phy";
++	port2-mode = "ehci-phy";
++};
++
++&usbhsehci {
++	phys = <
++		&hsusb1_phy
++		&hsusb2_phy
++	>;
++};
++
++&mmc1 {
++	status = "disabled";
++};
++
++&mmc2 {
++	status = "disabled";
++};
++
++&mmc3 {
++	status = "disabled";
++};
++
++&sham {
++	status = "disabled";
++};
++
++&usb_otg_hs {
++	status = "disabled";
++};
++
++&sgx_module {
++	/* Crashes when loading ti-sysc driver. Added in 5.4 in am3517.dtsi */
++	status = "disabled";
++};
+-- 
+2.17.1
+

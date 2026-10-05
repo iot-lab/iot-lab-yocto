@@ -1,0 +1,79 @@
+From 83298c0df10a55a5fc155860de8785a959e9026d Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Ga=C3=ABtan=20Harter?= <hartergaetan@gmail.com>
+Date: Wed, 3 Feb 2021 15:53:20 +0100
+Subject: [PATCH 2/7] davinci_emac: allow setting the mac address with an
+ 'eth=' boot parameter
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+This allows backward compatibility with u-boot passing the ethernet
+address through 'eth=' on the command line.
+
+Signed-off-by: Gaëtan Harter <hartergaetan@gmail.com>
+---
+ drivers/net/ethernet/ti/davinci_emac.c | 41 ++++++++++++++++++++++++++
+ 1 file changed, 41 insertions(+)
+
+diff --git a/drivers/net/ethernet/ti/davinci_emac.c b/drivers/net/ethernet/ti/davinci_emac.c
+index ae27be85e363..73d80dd57947 100644
+--- a/drivers/net/ethernet/ti/davinci_emac.c
++++ b/drivers/net/ethernet/ti/davinci_emac.c
+@@ -1744,6 +1744,41 @@ davinci_emac_of_get_pdata(struct platform_device *pdev, struct emac_priv *priv)
+ 	return  pdata;
+ }
+ 
++/* Copied from arch/c6x/kernel/soc.c */
++static u8 cmdline_mac[6];
++
++static int __init get_mac_addr_from_cmdline(char *str)
++{
++	int count, i, val;
++
++	for (count = 0; count < 6 && *str; count++, str += 3) {
++		if (!isxdigit(str[0]) || !isxdigit(str[1]))
++			return 0;
++		if (str[2] != (count < 5 ? ':' : '\0'))
++			return 0;
++
++		for (i = 0, val = 0; i < 2; i++) {
++			val = val << 4;
++			val |= isdigit(str[i]) ?
++				str[i] - '0' : toupper(str[i]) - 'A' + 10;
++		}
++		cmdline_mac[count] = val;
++	}
++	return 1;
++}
++
++/* IoT-LAB Hack to get ethernet address from command line */
++__setup("eth=", get_mac_addr_from_cmdline);
++
++static int emac_mac_addr_from_cmdline(u8 *mac_addr)
++{
++	if (is_valid_ether_addr(cmdline_mac)) {
++		ether_addr_copy(mac_addr, cmdline_mac);
++		return 0;
++	}
++	return 1;
++}
++
+ static int davinci_emac_try_get_mac(struct platform_device *pdev,
+ 				    int instance, u8 *mac_addr)
+ {
+@@ -1897,6 +1932,12 @@ static int davinci_emac_probe(struct platform_device *pdev)
+ 	if (!rc)
+ 		ether_addr_copy(ndev->dev_addr, priv->mac_addr);
+ 
++	if (!emac_mac_addr_from_cmdline(priv->mac_addr)) {
++		ether_addr_copy(ndev->dev_addr, priv->mac_addr);
++		dev_info(&pdev->dev, "using command line MAC addr: %pM\n",
++			 priv->mac_addr);
++	}
++
+ 	if (!is_valid_ether_addr(priv->mac_addr)) {
+ 		/* Use random MAC if still none obtained. */
+ 		eth_hw_addr_random(ndev);
+-- 
+2.17.1
+
