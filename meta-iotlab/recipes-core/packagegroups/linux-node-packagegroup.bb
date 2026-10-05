@@ -1,10 +1,10 @@
 DESCRIPTION = "Package group list for open A8 image"
-LICENSE = "GPLv2"
+LICENSE = "GPL-2.0-only"
 
 inherit packagegroup
 
 # gateway-code-standalone 
-RDEPENDS_${PN} += " \
+RDEPENDS:${PN} += " \
     base-packagegroup \
     gateway-code \
     sshd-keys-linux-node \
@@ -16,7 +16,7 @@ RDEPENDS_${PN} += " \
     "
 
 # OpenWSN python package dependencies
-RDEPENDS_${PN} += " \
+RDEPENDS:${PN} += " \
     python3-scons \
     python3-bottle \
     python3-pydispatcher \
@@ -30,16 +30,16 @@ RDEPENDS_${PN} += " \
     "
 
 # nghttp2 package dependencies
-RDEPENDS_${PN} += " \
+RDEPENDS:${PN} += " \
     python3-cython \
     "
 
-RDEPENDS_${PN} += " \
+# openjdk-8/openjre-8 are not available anymore: meta-java was dropped with
+# the switch to walnascar.
+RDEPENDS:${PN} += " \
     mosquitto \
     mosquitto-rsmb \
     paho-mqtt-c \
-    openjdk-8 \
-    openjre-8 \
     openvpn \
     python3-paho-mqtt \
     wpantund \

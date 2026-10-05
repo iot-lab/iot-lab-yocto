@@ -8,18 +8,15 @@ LIC_FILES_CHKSUM = " \
         file://epl-v10;md5=659c8e92a40b6df1d9e3dccf5ae45a08 \
         "
 
-PR = "r2"
+PV = "1.3.0.2+git"
 
-PV = "git-src${SRCDATE}-r${SRCPV}"
+SRC_URI  = "git://github.com/eclipse/mosquitto.rsmb.git;protocol=https;branch=master"
+SRCREV = "36fd4ba9433da172f0af580eb6c1a3139b63c355"
 
-SRC_URI  = "git://github.com/eclipse/mosquitto.rsmb.git;protocol=https"
-SRCREV = "${AUTOREV}"
-
-S = "${WORKDIR}/git/"
+S = "${WORKDIR}/git"
 B = "${S}/rsmb/src"
 
-# run make in ${B}
-inherit base
+# No build system class: the default do_compile runs make in ${B}
 
 do_install() {
         install -d                              ${D}${bindir}
@@ -29,5 +26,5 @@ do_install() {
         install         ${B}/Messages.1.3.0.2   ${D}${bindir}/Messages.1.3.0.2
 }
 
-INSANE_SKIP_${PN} = "ldflags"
-INSANE_SKIP_${PN}-dev = "ldflags"
+INSANE_SKIP:${PN} = "ldflags"
+INSANE_SKIP:${PN}-dev = "ldflags"
