@@ -13,6 +13,7 @@ address through 'eth=' on the command line.
 Ported to 6.12: the MAC address is parsed with mac_pton() and set with
 eth_hw_addr_set(), the netdev address being read-only now.
 
+Upstream-Status: Inappropriate [IoT-LAB specific]
 Signed-off-by: Gaëtan Harter <hartergaetan@gmail.com>
 ---
  drivers/net/ethernet/ti/davinci_emac.c | 27 ++++++++++++++++++++++++++

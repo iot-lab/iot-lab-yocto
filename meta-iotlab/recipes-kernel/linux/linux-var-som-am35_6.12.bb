@@ -29,12 +29,20 @@ KERNEL_LOCALVERSION = "-clochette"
 
 DEPENDS += "u-boot-tools-native"
 
+# The generated arch/arm/include/generated/asm/mach-types.h records the build
+# directory in a comment
+INSANE_SKIP:${PN}-src += "buildpaths"
+
 # The gateway U-Boot loads a uImage containing the zImage with the device
-# tree appended (KERNEL_DEVICETREE_BUNDLE in the machine configuration).
+# tree of the machine appended (CONFIG_ARM_APPENDED_DTB). Built here rather
+# than with KERNEL_DEVICETREE_BUNDLE: its deploy code reads ${D}/boot/zImage,
+# which kernel.bbclass installs with a version suffix.
 do_deploy:append() {
+    cat ${B}/${KERNEL_OUTPUT_DIR}/zImage ${DEPLOYDIR}/${MACHINE}.dtb \
+        > ${B}/zImage-${MACHINE}.dtb.bin
     uboot-mkimage -A arm -O linux -T kernel -C none -a 80008000 -e 80008000 \
         -n "${DISTRO_NAME}/${PV}/${MACHINE}" \
-        -d ${DEPLOYDIR}/${KERNEL_IMAGETYPE}-${MACHINE}.dtb${KERNEL_DTB_BIN_EXT} \
+        -d ${B}/zImage-${MACHINE}.dtb.bin \
         ${DEPLOYDIR}/uImage-${KERNEL_IMAGE_NAME}${KERNEL_IMAGE_BIN_EXT}
     ln -sf uImage-${KERNEL_IMAGE_NAME}${KERNEL_IMAGE_BIN_EXT} ${DEPLOYDIR}/uImage-${MACHINE}${KERNEL_IMAGE_BIN_EXT}
     ln -sf uImage-${KERNEL_IMAGE_NAME}${KERNEL_IMAGE_BIN_EXT} ${DEPLOYDIR}/uImage

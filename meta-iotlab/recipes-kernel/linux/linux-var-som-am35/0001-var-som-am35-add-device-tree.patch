@@ -23,6 +23,7 @@ Ported to 6.12: the device trees moved to arch/arm/boot/dts/ti/omap/ and
 the NAND partition nodes are named after their reg property, without the
 0x prefix, as dtc requires.
 
+Upstream-Status: Inappropriate [IoT-LAB specific]
 Signed-off-by: Gaëtan Harter <hartergaetan@gmail.com>
 ---
  arch/arm/boot/dts/ti/omap/Makefile            |   4 +-
