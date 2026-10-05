@@ -42,10 +42,9 @@ BBLAYERS_NON_REMOVABLE ?= " \
   "
 ```
 
-You can see that we have four build directories, `build-rpi2`, `build-rpi3`,
-`build-rpi4` and `build-rpi5`, one per supported Raspberry Pi gateway model
-(the var-som-am35/Open A8 target has been retired from this branch — it
-remains supported on the `dunfell`-based `master` branch).
+You can see that we have five build directories, `build-a8` for the
+var-som-am35 gateways and Open A8 nodes, and `build-rpi2`, `build-rpi3`,
+`build-rpi4` and `build-rpi5`, one per supported Raspberry Pi gateway model.
 
 ### Bitbake recipes
 

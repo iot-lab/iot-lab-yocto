@@ -7,8 +7,29 @@ TARGET ?= rpi5
 
 IMAGES = iotlab-image-gateway
 
+EXTRA_BUILDS =
+
 # Define variables specific to the given target
-ifeq ($(TARGET), rpi2)
+ifeq ($(TARGET), a8)
+  BUILD_DIR = build-a8
+  TARGET_ARCH = cortexa8hf-neon
+  TARGET_IMG = var-som-am35
+  KERNEL_IMG = uImage
+  # The bootloader stays in the board NAND, it is not rebuilt.
+  BUILD_BOOTLOADER = 0
+
+  # Open A8 Linux node images, used by the experiments
+  IMAGES += iotlab-image-open-a8
+  IMAGES += iotlab-image-open-a8-autotest
+
+  # Use a mapping between image target of make with image name in yocto
+  iotlab-image-gateway = iotlab-image-gateway
+  iotlab-image-open-a8 = iotlab-image-open-a8
+  iotlab-image-open-a8-autotest = iotlab-image-open-a8-autotest
+
+  # We also build a mtd-rw version of the kernel for A8
+  EXTRA_BUILDS = build-kernel-mtd-rw
+else ifeq ($(TARGET), rpi2)
   BUILD_DIR = build-rpi2
   TARGET_ARCH = cortexa7t2hf-neon-vfpv4
   TARGET_IMG = raspberrypi2
@@ -86,8 +107,14 @@ target-info:
 	@echo ""
 	@echo "Available image targets:"
 	@for img in $(IMAGES); do echo "  - $$img"; done;
+	@if [ ! -z "$(EXTRA_BUILDS)" ]; \
+	then \
+	echo ""; \
+	echo "Other build targets:"; \
+	for target in $(EXTRA_BUILDS); do echo "  - $$target"; done; \
+	fi
 
-build-all: $(IMAGES)
+build-all: $(IMAGES) $(EXTRA_BUILDS)
 
 $(IMAGES): %: build-img-% clean-img-%
 
@@ -186,6 +213,20 @@ else
 	@echo ""
 	@echo "$*" Kernel files should be found here:
 	@ls $(IMGS_DIR)/$(KERNEL_IMG)*
+endif
+
+.PHONY: build-kernel-mtd-rw
+build-kernel-mtd-rw: init
+ifeq (1,$(BUILD_IN_DOCKER))
+	$(DOCKER_CMD) make $@
+else
+	@# build the kernel with writable NAND partitions
+	time bash -c \
+                "unset ga_auto_remove GA_AUTO_REMOVE; source ./poky/oe-init-build-env $(BUILD_DIR); MACHINE=$(TARGET_IMG)-mtd-rw bitbake -k virtual/kernel"
+	@echo ""
+	@echo ""
+	@echo "mtd-rw kernel files should be found here:"
+	@ls $(IMGS_DIR)-mtd-rw/$(KERNEL_IMG)*
 endif
 
 .PHONY: clean-kernel

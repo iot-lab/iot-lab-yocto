@@ -1,9 +1,7 @@
 Build IoT-LAB images and packages
 =================================
 
-[Yocto Project](https://www.yoctoproject.org/) aim to develop embedded Linux images and user-space applications that run on targeted devices like Raspberry Pi gateways (RPI2, RPI3, RPI4, RPI5).
-
-**Legacy hardware note**: the var-som-am35 (IoT-LAB Open A8) target has been retired from this branch. It remains supported on the `dunfell`-based `master` branch, which is kept in maintenance mode.
+[Yocto Project](https://www.yoctoproject.org/) aim to develop embedded Linux images and user-space applications that run on targeted devices like Raspberry Pi gateways (RPI2, RPI3, RPI4, RPI5) and var-som-am35 (A8) gateways and Open A8 nodes.
 
 The process of building images and packages has been wrapped in a Makefile for easier use. This will setup you environment  if it hasn't been set before, update the configuration for your machine and build the images or packages.
 
@@ -31,7 +29,14 @@ By default the Makefile builds the gateway image for RPI5 hardware. If you want 
 
     $ make TARGET=rpi4 iotlab-image-gateway
 
-Supported values for `TARGET` are `rpi2`, `rpi3`, `rpi4` and `rpi5`.
+Supported values for `TARGET` are `a8`, `rpi2`, `rpi3`, `rpi4` and `rpi5`.
+
+The `a8` target (var-som-am35 machine) also builds the Open A8 node images
+and a kernel with writable NAND partitions:
+
+    $ make TARGET=a8 iotlab-image-open-a8
+    $ make TARGET=a8 iotlab-image-open-a8-autotest
+    $ make TARGET=a8 build-kernel-mtd-rw
 
 Build packages
 -----------------

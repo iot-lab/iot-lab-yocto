@@ -40,9 +40,9 @@ BUILD_IN_DOCKER=1 make build-uboot
 BUILD_IN_DOCKER=1 make build-kernel
 ```
 
-By default, the target is `rpi5`. Supported values for `TARGET` are `rpi2`,
-`rpi3`, `rpi4` and `rpi5` (see the top-level README — the var-som-am35/A8
-target has been retired from this branch). To build another target, add
+By default, the target is `rpi5`. Supported values for `TARGET` are `a8`,
+`rpi2`, `rpi3`, `rpi4` and `rpi5` (see the top-level README). To build another
+target, add
 `TARGET=<target>` to the make command, as usual:
 
 ```
