@@ -26,5 +26,8 @@ do_install() {
         install         ${B}/Messages.1.3.0.2   ${D}${bindir}/Messages.1.3.0.2
 }
 
+# The Makefile ignores the Yocto compiler and linker flags: no GNU_HASH, and
+# build paths left in the debug symbols of broker_dbg
 INSANE_SKIP:${PN} = "ldflags"
 INSANE_SKIP:${PN}-dev = "ldflags"
+INSANE_SKIP:${PN}-dbg = "buildpaths"
