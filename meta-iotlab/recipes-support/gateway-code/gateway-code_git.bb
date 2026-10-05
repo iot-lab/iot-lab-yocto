@@ -24,7 +24,8 @@ PACKAGES =+ "${PN}-server"
 WWW_DIR ?= "${localstatedir}/www"
 WWW_USER ?= "www-data"
 
-inherit update-rc.d setuptools3 useradd
+# iot-lab-gateway is a pyproject.toml (hatchling) project, without setup.py
+inherit update-rc.d python_hatchling useradd
 INITSCRIPT_PACKAGES = "${PN}-server"
 INITSCRIPT_NAME:${PN}-server = "gateway-server-daemon"
 # must start after gateway-server-network init.d script (S83/K17) which set virtual ip for open nodes
